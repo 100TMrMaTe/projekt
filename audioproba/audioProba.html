@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+  <div style="width:1px; height:1px; overflow:hidden;">
+  <iframe 
+    width="200" height="113"
+    src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&controls=1"
+    title="YouTube audio player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
+
+<form action="https://www.youtube.com/results" method="get" target="">
+  <input type="text" name="search_query" placeholder="Keresés a YouTube-on">
+  <button type="submit">Keresés</button>
+</form>
+
+
+
+
+    <button id="playBtn">Play/Pause</button>
+
+    <iframe id="ytplayer" width="0" height="0" src="https://www.youtube.com/embed/VIDEÓ_ID?enablejsapi=1"
+        frameborder="0">
+    </iframe>
+
+
+
+
+    <script>
+        let player;
+
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('ytplayer');
+        }
+
+        document.getElementById('playBtn').onclick = function () {
+            if (player.getPlayerState() === 1) {
+                player.pauseVideo();
+            } else {
+                player.playVideo();
+            }
+        };
+    </script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+</body>
+
+</html>
