@@ -1,0 +1,13 @@
+Három oldal lesz:
+-Reg/Bej:
+	Ott taroljuk az eddig elfogadott regbol a emailt es jelszót. 
+	Ha valaki regisztralni akar akkor ezeket az adatokat az admin felulethez tovabbitjuk egy listában es az admin el tudja fogadni a regeket.
+	
+	
+-Admin oldal:
+	Harom lista:
+		1. lista: reg felsorolasa + gomb elfogadas / elutasitas.
+		2. Lista: Ha valaki bejelentkezett, annnak taroljuk az email cimet es a bejelentkezesi datumat.
+		3. lista: prifilok lista akik mar elvannak fogadva gomb torol.
+-Felhasznalói oldal:
+	A weboldal fo tartalma itt jelenik meg.
