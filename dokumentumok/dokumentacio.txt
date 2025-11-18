@@ -1,0 +1,68 @@
+dokumentácio:
+
+
+raspberryrire telepitettük az alap grafikus felületét.
+
+appache telepités:"sudo apt update", "sudo apt install apache2"
+
+"sudo apt upgrade -y"
+
+mct telepitettunk:"sudo apt update", "sudo apt install mc"
+
+ssh telepités:"sudo apt update", "sudo apt install ssh"
+
+fixáltuk a raspberry ip cimet hogy sshnkeresztul mindig eltudjuk erni: mi esetunk: 172.16.2.100 gateway: 1.1.1.1 manual setting.
+
+sudo nmtui
+
+
+eloszor putyban teszt majd Visualban.
+
+
+3 felhasznalo letrehozas:petya,matyi,mate:  sudo usermod -aG sudo felhasználónév
+
+
+"sudo usermod -aG matyi"
+jelszo:******
+
+"sudo usermod -aG petya"
+jelszo:******
+
+"sudo usermod -aG mate"
+jelszo:******
+
+
+létrehoztunk egy csoportot nekikmajd hozza adtuk oket
+
+
+sudo groupadd webdevs
+
+sudo usermod -aG webdevs user1
+sudo usermod -aG webdevs user2
+sudo usermod -aG webdevs user3
+
+
+engedejezzuk  csoport tagjainak hogy tudjak irni olvasni a fájlokat a mappában es tudjanak is hozza adni
+
+"sudo chown -R root:webdevs /var/www/html"
+"sudo chmod -R 2775 /var/www/html"
+
+acl hogy egyideuleg tudjuk fejleszteni oket
+
+"sudo apt update"
+"sudo apt install acl"
+"sudo setfacl -R -d -m g:webdevs:rwx /var/www/html"
+
+
+letoltjuk a vsftpdt hogy elerjuk ftp kacsolattal igy tehetunk ra fájlokat es kepeket:
+
+"sudo apt update"
+"sudo apt install vsftpd"
+
+ftp hez engedelyezni kell az enbereknek hogy legyen irasi joguk hogy tudjanak feltolteni fájlt
+
+/etc/vsftpd.conf --->ebbe a fajlba kikell torolni a # a "write_enable=YES" elol.
+
+
+
+
