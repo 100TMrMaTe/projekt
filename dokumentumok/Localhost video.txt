@@ -1,0 +1,4 @@
+Localhost video:
+
+A localhost használatával a beágyazott videok minden esetben lejatszhatok, amit kihasználva fel lehet oket hasznalni, 
+hogy letoltes nelkul es a video kepe megjelenitese nelkul elindithassuk. A video eltunetese egy google bovitmeny segitsegevel fog megtortenni.
