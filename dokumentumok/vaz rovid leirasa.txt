@@ -5,8 +5,9 @@ Három oldal lesz:
 	
 	
 -Admin oldal:
-	Ketto lista:
-		1. lista:  reg felsorolasa + gomb elfogadas / elutasitas.
+	Harom lista:
+		1. lista: reg felsorolasa + gomb elfogadas / elutasitas.
 		2. Lista: Ha valaki bejelentkezett, annnak taroljuk az email cimet es a bejelentkezesi datumat.
+		3. lista: prifilok lista akik mar elvannak fogadva gomb torol.
 -Felhasznalói oldal:
 	A weboldal fo tartalma itt jelenik meg.
