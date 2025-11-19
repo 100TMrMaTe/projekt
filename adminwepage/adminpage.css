@@ -1,0 +1,6 @@
+span {
+            word-break: break-word;
+            overflow-wrap: break-word;
+            max-width: 60%;
+            display: block;
+        }
