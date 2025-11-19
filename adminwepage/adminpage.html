@@ -11,34 +11,88 @@
 </head>
 
 <body>
+    <!-- searchbar a datumok kereséséhez -->
     <div class="container py-3">
         <div class="row g-3">
             <div class="col-12 col-md-4">
                 <div class="card">
-                    <div class="card-header text-center fw-bold">Incoming Requests</div>
+                    <div class="card-header text-center fw-bold">Kérelmek</div>
+                    <ul class="list-group list-group-flush" style="max-height: 400px;">
+
+                        <li
+                            class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
+                            <div class="d-flex flex-column">
+                                <strong>konyhasi mate</strong>
+                                <span>13.c</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-danger btn-sm" onclick="remove(this)">Elutasít</button>
+                                <button class="btn btn-success btn-sm" onclick="remove(this)">Jóváhagy</button>
+                            </div>
+                        </li>
+
+                        <li
+                            class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
+                            <div class="d-flex flex-column">
+                                <strong>konyhasi mate</strong>
+                                <span>13.c</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-danger btn-sm" onclick="remove(this)">Elutasít</button>
+                                <button class="btn btn-success btn-sm" onclick="remove(this)">Jóváhagy</button>
+                            </div>
+                        </li>
+
+                        <li
+                            class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
+                            <div class="d-flex flex-column">
+                                <strong>konyhasi mate</strong>
+                                <span>13.c</span>
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-danger btn-sm" onclick="remove(this)">Elutasít</button>
+                                <button class="btn btn-success btn-sm" onclick="remove(this)">Jóváhagy</button>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="card">
+                    <div class="card-header text-center fw-bold">Felhasználók</div>
                     <ul class="list-group list-group-flush">
 
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>talas.laszlo.martin.21@ady-nagyatad.hu</span>
+                        <li
+                            class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
+                            <div class="d-flex flex-column">
+                                <strong>konyhasi mate</strong>
+                                <span>13.c</span>
+                            </div>
                             <div class="d-flex gap-2">
-                                <button class="btn btn-danger btn-sm" onclick="remove(this)">deny</button>
-                                <button class="btn btn-success btn-sm" onclick="remove(this)">approve</button>
+                                <button class="btn btn-danger btn-sm text-white" onclick="remove(this)">Törlés</button>
                             </div>
                         </li>
 
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>talas.laszlo.martin.21@ady-nagyatad.hu</span>
+                        <li
+                            class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
+                            <div class="d-flex flex-column">
+                                <strong>konyhasi mate</strong>
+                                <span>13.c</span>
+                            </div>
                             <div class="d-flex gap-2">
-                                <button class="btn btn-danger btn-sm" onclick="remove(this)">deny</button>
-                                <button class="btn btn-success btn-sm" onclick="remove(this)">approve</button>
+                                <button class="btn btn-danger btn-sm text-white" onclick="remove(this)">Törlés</button>
                             </div>
                         </li>
 
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>konyhasi.mate.21@ady-nagyatad.hu</span>
+                        <li
+                            class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
+                            <div class="d-flex flex-column">
+                                <strong>konyhasi mate</strong>
+                                <span>13.c</span>
+                            </div>
                             <div class="d-flex gap-2">
-                                <button class="btn btn-danger btn-sm" onclick="remove(this)">deny</button>
-                                <button class="btn btn-success btn-sm" onclick="remove(this)">approve</button>
+                                <button class="btn btn-danger btn-sm text-white" onclick="remove(this)">Törlés</button>
                             </div>
                         </li>
 
@@ -48,60 +102,29 @@
 
             <div class="col-12 col-md-4">
                 <div class="card">
-                    <div class="card-header text-center fw-bold">Users</div>
+                    <div class="card-header text-center fw-bold ">Felhasználói Naplók</div>
                     <ul class="list-group list-group-flush">
 
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>talas.laszlo.martin.21@ady-nagyatad.hu</span>
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-danger btn-sm text-white" onclick="remove(this)">discard</button>
-                            </div>
-                        </li>
-
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>talas.laszlo.martin.21@ady-nagyatad.hu</span>
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-danger btn-sm text-white" onclick="remove(this)">discard</button>
-                            </div>
-                        </li>
-
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <span>talas.laszlo.martin.21@ady-nagyatad.hu</span>
-                            <div class="d-flex gap-2">
-                                <button class="btn btn-danger btn-sm text-white" onclick="remove(this)">discard</button>
-                            </div>
-                        </li>
-
-                    </ul>
-                </div>
-            </div>
-
-            <div class="col-12 col-md-4">
-                <div class="card">
-                    <div class="card-header text-center fw-bold">User Logs</div>
-                    <ul class="list-group list-group-flush">
-
-                        <li class="list-group-item">
+                        <li class="list-group-item bg-dark text-white">
                             <div class="d-flex flex-column">
-                                <strong>konyhasi.mate.21@ady-nagyatad.hu</strong>
-                                <small>2024-06-10 14:23:45</small>
-                            </div>
-                        </li>
-
-                        <li class="list-group-item">
-                            <div class="d-flex flex-column">
-                                <strong>konyhasi.mate.21@ady-nagyatad.hu</strong>
-                                <small>2024-06-10 14:23:45</small>
-                            </div>
-                        </li>
-
-                        <li class="list-group-item">
-                            <div class="d-flex flex-column">
-                                <strong>konyhasi.mate.21@ady-nagyatad.hu</strong>
+                                <strong>Sir Tibius Lucius / 13.C</strong>
                                 <span>2024-06-10 14:23:45</span>
                             </div>
                         </li>
 
+                        <li class="list-group-item bg-dark text-white">
+                            <div class="d-flex flex-column">
+                                <strong>Konyhási Máté / 13.C</strong>
+                                <span>2024-06-10 14:23:45</span>
+                            </div>
+                        </li>
+
+                        <li class="list-group-item bg-dark text-white">
+                            <div class="d-flex flex-column">
+                                <strong>Tabako arkus circurus / 9.D</strong>
+                                <span>2024-06-10 14:23:45</span>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
