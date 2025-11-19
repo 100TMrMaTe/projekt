@@ -13,34 +13,32 @@
 <body>
     <div class="container py-3">
         <div class="row g-3">
-
-            <!-- Incoming Requests -->
             <div class="col-12 col-md-4">
-                <div class="card h-100">
+                <div class="card">
                     <div class="card-header text-center fw-bold">Incoming Requests</div>
                     <ul class="list-group list-group-flush">
 
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span>talas.laszlo.martin.21@ady-nagyatad.hu</span>
                             <div class="d-flex gap-2">
-                                <button class="btn btn-danger btn-sm">deny</button>
-                                <button class="btn btn-success btn-sm">approve</button>
+                                <button class="btn btn-danger btn-sm" onclick="remove(this)">deny</button>
+                                <button class="btn btn-success btn-sm" onclick="remove(this)">approve</button>
                             </div>
                         </li>
 
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span>talas.laszlo.martin.21@ady-nagyatad.hu</span>
                             <div class="d-flex gap-2">
-                                <button class="btn btn-danger btn-sm">deny</button>
-                                <button class="btn btn-success btn-sm">approve</button>
+                                <button class="btn btn-danger btn-sm" onclick="remove(this)">deny</button>
+                                <button class="btn btn-success btn-sm" onclick="remove(this)">approve</button>
                             </div>
                         </li>
 
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span>konyhasi.mate.21@ady-nagyatad.hu</span>
                             <div class="d-flex gap-2">
-                                <button class="btn btn-danger btn-sm">deny</button>
-                                <button class="btn btn-success btn-sm">approve</button>
+                                <button class="btn btn-danger btn-sm" onclick="remove(this)">deny</button>
+                                <button class="btn btn-success btn-sm" onclick="remove(this)">approve</button>
                             </div>
                         </li>
 
@@ -48,40 +46,38 @@
                 </div>
             </div>
 
-            <!-- Users -->
             <div class="col-12 col-md-4">
-                <div class="card h-100">
+                <div class="card">
                     <div class="card-header text-center fw-bold">Users</div>
                     <ul class="list-group list-group-flush">
 
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span>talas.laszlo.martin.21@ady-nagyatad.hu</span>
                             <div class="d-flex gap-2">
-                                <button class="btn btn-danger btn-sm text-white">discard</button>
-                            </div> 
+                                <button class="btn btn-danger btn-sm text-white" onclick="remove(this)">discard</button>
+                            </div>
                         </li>
 
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span>talas.laszlo.martin.21@ady-nagyatad.hu</span>
                             <div class="d-flex gap-2">
-                                <button class="btn btn-danger btn-sm text-white">discard</button>
-                            </div> 
+                                <button class="btn btn-danger btn-sm text-white" onclick="remove(this)">discard</button>
+                            </div>
                         </li>
 
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span>talas.laszlo.martin.21@ady-nagyatad.hu</span>
                             <div class="d-flex gap-2">
-                                <button class="btn btn-danger btn-sm text-white">discard</button>
-                            </div> 
+                                <button class="btn btn-danger btn-sm text-white" onclick="remove(this)">discard</button>
+                            </div>
                         </li>
 
                     </ul>
                 </div>
             </div>
 
-            <!-- User Logs -->
             <div class="col-12 col-md-4">
-                <div class="card h-100">
+                <div class="card">
                     <div class="card-header text-center fw-bold">User Logs</div>
                     <ul class="list-group list-group-flush">
 
@@ -112,6 +108,7 @@
 
         </div>
     </div>
+    <script src="adminpage.js"></script>
 </body>
 
 </html>
