@@ -5,88 +5,119 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"></script>
-        <style>
-            span {
-                word-break: break-all;
-                display: block;
-            }
-        </style>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        span {
+            word-break: break-word;
+            overflow-wrap: break-word;
+            max-width: 60%;
+            display: block;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="row">
+    <div class="container py-3">
+        <div class="row g-3">
+
+            <!-- Incoming Requests -->
             <div class="col-12 col-md-4">
-                <div class="col-12 p-2">
-                    <div class="card">
-                        <div class="card-header text-center fw-bold">
-                            Incoming Requests
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span>talas.laszlo.martin.21@ady-nagyatad.hu</span>
-                                <div class="btn-group">
-                                    <input type="submit" class="btn btn-danger btn-sm deny me-2 rounded" value="deny">
-                                    <input type="submit" class="btn btn-success btn-sm rounded" value="approve">
-                                </div>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span>nev1</span>
-                                <div class="btn-group">
-                                    <input type="submit" class="btn btn-danger btn-sm deny me-2 rounded" value="deny">
-                                    <input type="submit" class="btn btn-success btn-sm rounded" value="approve">
-                                </div>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                <span>nev1</span>
-                                <div class="btn-group">
-                                    <input type="submit" class="btn btn-danger btn-sm deny me-2 rounded" value="deny">
-                                    <input type="submit" class="btn btn-success btn-sm rounded" value="approve">
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                <div class="card h-100">
+                    <div class="card-header text-center fw-bold">Incoming Requests</div>
+                    <ul class="list-group list-group-flush">
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>talas.laszlo.martin.21@ady-nagyatad.hu</span>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-danger btn-sm">deny</button>
+                                <button class="btn btn-success btn-sm">approve</button>
+                            </div>
+                        </li>
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>talas.laszlo.martin.21@ady-nagyatad.hu</span>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-danger btn-sm">deny</button>
+                                <button class="btn btn-success btn-sm">approve</button>
+                            </div>
+                        </li>
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>konyhasi.mate.21@ady-nagyatad.hu</span>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-danger btn-sm">deny</button>
+                                <button class="btn btn-success btn-sm">approve</button>
+                            </div>
+                        </li>
+
+                    </ul>
                 </div>
             </div>
+
+            <!-- Users -->
             <div class="col-12 col-md-4">
-                <div class="col-12 p-2">
-                    <div class="card">
-                        <div class="card-header text-center fw-bold">
-                            Users
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">nev1<input
-                                    type="submit" value="discard"></li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">nev1<input
-                                    type="submit" value="discard"></li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">nev1<input
-                                    type="submit" value="discard"></li>
-                        </ul>
-                    </div>
+                <div class="card h-100">
+                    <div class="card-header text-center fw-bold">Users</div>
+                    <ul class="list-group list-group-flush">
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>talas.laszlo.martin.21@ady-nagyatad.hu</span>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-danger btn-sm text-white">discard</button>
+                            </div> 
+                        </li>
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>talas.laszlo.martin.21@ady-nagyatad.hu</span>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-danger btn-sm text-white">discard</button>
+                            </div> 
+                        </li>
+
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>talas.laszlo.martin.21@ady-nagyatad.hu</span>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-danger btn-sm text-white">discard</button>
+                            </div> 
+                        </li>
+
+                    </ul>
                 </div>
             </div>
+
+            <!-- User Logs -->
             <div class="col-12 col-md-4">
-                <div class="col-12 p-2">
-                    <div class="card">
-                        <div class="card-header text-center fw-bold">
-                            User Logs
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">nev1<input
-                                    type="submit"></li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">nev1<input
-                                    type="submit"></li>
-                            <li class="list-group-item d-flex justify-content-between align-items-center">nev1<input
-                                    type="submit"></li>
-                        </ul>
-                    </div>
+                <div class="card h-100">
+                    <div class="card-header text-center fw-bold">User Logs</div>
+                    <ul class="list-group list-group-flush">
+
+                        <li class="list-group-item">
+                            <div class="d-flex flex-column">
+                                <strong>konyhasi.mate.21@ady-nagyatad.hu</strong>
+                                <small>2024-06-10 14:23:45</small>
+                            </div>
+                        </li>
+
+                        <li class="list-group-item">
+                            <div class="d-flex flex-column">
+                                <strong>konyhasi.mate.21@ady-nagyatad.hu</strong>
+                                <small>2024-06-10 14:23:45</small>
+                            </div>
+                        </li>
+
+                        <li class="list-group-item">
+                            <div class="d-flex flex-column">
+                                <strong>konyhasi.mate.21@ady-nagyatad.hu</strong>
+                                <span>2024-06-10 14:23:45</span>
+                            </div>
+                        </li>
+
+                    </ul>
                 </div>
             </div>
+
         </div>
     </div>
 </body>
