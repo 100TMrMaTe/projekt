@@ -20,4 +20,22 @@ if (mysqli_query($conn, $sql)) {
 }
 
 // Select the database
-mysqli_select_db($conn,"projekt");
+mysqli_select_db($conn, "projekt");
+
+// sql to create table
+$sql = "CREATE TABLE MyGuests (
+id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+user_name VARCHAR(255) NOT NULL,
+email VARCHAR(255) NOT NULL,
+user_class VARCHAR(255) NOT NULL,
+user_password varchar(255) NOT NULL,
+)";
+
+if (mysqli_query($conn, $sql)) {
+  echo "Table MyGuests created successfully";
+} else {
+  echo "Error creating table: " . mysqli_error($conn);
+}
+
+mysqli_close($conn);
+?>
