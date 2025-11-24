@@ -20,7 +20,7 @@ function create_databse_tables($conn)
   // Create database
   $sql = "CREATE DATABASE IF NOT EXISTS  projekt";
   if (mysqli_query($conn, $sql)) {
-    echo "Database created successfully";
+    //echo "Database created successfully";
   } else {
     echo "Error creating database: " . mysqli_error($conn);
   }
@@ -38,7 +38,7 @@ function create_databse_tables($conn)
 )";
 
   if (mysqli_query($conn, $sql)) {
-    echo "Table users created successfully";
+    //echo "Table users created successfully";
   } else {
     echo "Error creating table: " . mysqli_error($conn);
   }
@@ -54,11 +54,17 @@ function create_databse_tables($conn)
 )";
 
   if (mysqli_query($conn, $sql)) {
-    echo "Table user_log created successfully";
+    //echo "Table user_log created successfully";
   } else {
     echo "Error creating table: " . mysqli_error($conn);
   }
 }
+
+function Insert_to_users($conn,$user_name,$email,$user_class,$user_password)
+{
+  
+}
+
 
 
 create_databse_tables(connect_to_serer());
