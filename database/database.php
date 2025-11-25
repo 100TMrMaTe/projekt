@@ -1,5 +1,5 @@
 <?php
-function connect_to_serer()
+function Connect_to_serer()
 {
   $servername = "localhost";
   $username = "root";
@@ -15,7 +15,17 @@ function connect_to_serer()
   return $conn;
 }
 
-function create_databse_tables($conn)
+function Kill_server_connection($conn)
+{
+  mysqli_close($conn);
+}
+
+function Use_database($conn, $dbname)
+{
+  mysqli_select_db($conn, $dbname);
+}
+
+function Create_databse_tables($conn)
 {
   // Create database
   $sql = "CREATE DATABASE IF NOT EXISTS  projekt";
@@ -58,15 +68,42 @@ function create_databse_tables($conn)
   } else {
     echo "Error creating table: " . mysqli_error($conn);
   }
+
+  // sql to create table user_reg
+  $sql = "CREATE TABLE IF NOT EXISTS user_reg (
+  id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user_name VARCHAR(255),
+  user_class VARCHAR(255),
+  email VARCHAR(255),
+  user_password VARCHAR(255)
+)";
+
+  if (mysqli_query($conn, $sql)) {
+    //echo "Table user_log created successfully";
+  } else {
+    echo "Error creating table: " . mysqli_error($conn);
+  }
 }
 
-function Insert_to_users($conn,$user_name,$email,$user_class,$user_password)
+function Insert_into_users($conn, $user_name, $user_class, $email, $user_password)
 {
-  
+  $sql = "INSERT INTO users (user_name, email, user_class, user_password)
+      VALUES ('$user_name', '$email', '$user_class', '$user_password')";
+
+
+  if (mysqli_query($conn, $sql)) {
+    echo "New record created successfully";
+  } else {
+    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+  }
 }
 
+$conn = Connect_to_serer();
 
+Create_databse_tables($conn);
 
-create_databse_tables(connect_to_serer());
+Use_database($conn, 'projekt');
 
-mysqli_close(connect_to_serer());
+Insert_into_users($conn, 'mate', '13.c','kony@gmail.com', 'kony');
+
+Kill_server_connection($conn);
