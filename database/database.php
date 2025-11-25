@@ -92,7 +92,7 @@ function Insert_into_users($conn, $user_name, $user_class, $email, $user_passwor
 
 
   if (mysqli_query($conn, $sql)) {
-    echo "New record created successfully";
+    //echo "New record created successfully";
   } else {
     echo "Error: " . $sql . "<br>" . mysqli_error($conn);
   }
@@ -105,7 +105,7 @@ function Insert_into_users_reg($conn, $user_name, $user_class, $email, $user_pas
 
 
   if (mysqli_query($conn, $sql)) {
-    echo "New record created successfully";
+    //echo "New record created successfully";
   } else {
     echo "Error: " . $sql . "<br>" . mysqli_error($conn);
   }
@@ -118,19 +118,31 @@ function Insert_into_users_log($conn, $user_id, $user_name, $user_class, $datum)
 
 
   if (mysqli_query($conn, $sql)) {
-    echo "New record created successfully";
+    //echo "New record created successfully";
   } else {
     echo "Error: " . $sql . "<br>" . mysqli_error($conn);
   }
 }
 
-function delete_from_users($conn, $user_id)
+function Delete_from_users($conn, $user_id)
 {
   // sql to delete a record
-  $sql = "DELETE FROM MyGuests WHERE id=$user_id";
+  $sql = "DELETE FROM users WHERE id=$user_id";
 
   if (mysqli_query($conn, $sql)) {
-    echo "Record deleted successfully";
+    //echo "Record deleted successfully";
+  } else {
+    echo "Error deleting record: " . mysqli_error($conn);
+  }
+}
+
+function Delete_from_users_reg($conn, $user_id)
+{
+  // sql to delete a record
+  $sql = "DELETE FROM users_reg WHERE id=$user_id";
+
+  if (mysqli_query($conn, $sql)) {
+    //echo "Record deleted successfully";
   } else {
     echo "Error deleting record: " . mysqli_error($conn);
   }
@@ -144,5 +156,7 @@ Use_database($conn, 'projekt');
 //Insert_into_users($conn, 'mate', '13.c','kony@gmail.com', 'kony');
 //Insert_into_users_reg($conn, 'jani', '13.b','kony@gmai.com', 'jani');
 //Insert_into_users_log($conn, 1, 'mate','9.a', '2025-01-15 10:30:00');
+//Delete_from_users($conn, 1);
+//Delete_from_users_reg($conn, 1);
 
 Kill_server_connection($conn);
