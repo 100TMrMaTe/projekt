@@ -148,6 +148,26 @@ function Delete_from_users_reg($conn, $user_id)
   }
 }
 
+
+function Select_from_users($conn, $table_name)
+{
+  $sql = "SELECT * FROM " . $table_name;
+  $result = mysqli_query($conn, $sql);
+
+  if (!$result) {
+    return [];
+  }
+
+  $rows = [];
+
+  while ($row = mysqli_fetch_assoc($result)) {
+    $rows[] = $row;
+  }
+
+  return $rows;
+}
+
+
 $conn = Connect_to_serer();
 
 Create_databse_tables($conn);
@@ -158,5 +178,8 @@ Use_database($conn, 'projekt');
 //Insert_into_users_log($conn, 1, 'mate','9.a', '2025-01-15 10:30:00');
 //Delete_from_users($conn, 1);
 //Delete_from_users_reg($conn, 1);
+$array = Select_from_users($conn, 'users');
+
+var_dump($array[0]);
 
 Kill_server_connection($conn);
