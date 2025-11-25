@@ -124,6 +124,18 @@ function Insert_into_users_log($conn, $user_id, $user_name, $user_class, $datum)
   }
 }
 
+function delete_from_users($conn, $user_id)
+{
+  // sql to delete a record
+  $sql = "DELETE FROM MyGuests WHERE id=$user_id";
+
+  if (mysqli_query($conn, $sql)) {
+    echo "Record deleted successfully";
+  } else {
+    echo "Error deleting record: " . mysqli_error($conn);
+  }
+}
+
 $conn = Connect_to_serer();
 
 Create_databse_tables($conn);
