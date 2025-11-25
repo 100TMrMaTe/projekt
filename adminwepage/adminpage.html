@@ -1,3 +1,20 @@
+<?php
+include_once "../database/database.php";
+
+$conn = Connect_to_serer();
+
+Create_databse_tables($conn);
+Use_database($conn, 'projekt');
+
+$array = Select_from($conn, 'users');
+var_dump($array[0]);
+
+Kill_server_connection($conn);
+
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,8 +34,8 @@
             <div class="col-12 col-md-4">
                 <div class="card">
                     <div class="card-header text-center fw-bold">Kérelmek</div>
-                    <ul class="list-group list-group-flush" style="max-height: 400px;">
-
+                    <ul class="list-group list-group-flush" style="max-height: 400px;" id="reg" name="reg">
+                        <!--                         
                         <li
                             class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
                             <div class="d-flex flex-column">
@@ -54,6 +71,8 @@
                                 <button class="btn btn-success btn-sm" onclick="remove(this)">Jóváhagy</button>
                             </div>
                         </li>
+                        -->
+
                     </ul>
                 </div>
             </div>
@@ -61,8 +80,8 @@
             <div class="col-12 col-md-4">
                 <div class="card">
                     <div class="card-header text-center fw-bold">Felhasználók</div>
-                    <ul class="list-group list-group-flush">
-
+                    <ul class="list-group list-group-flush" id="users" name="users">
+                        <!--
                         <li
                             class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
                             <div class="d-flex flex-column">
@@ -95,7 +114,7 @@
                                 <button class="btn btn-danger btn-sm text-white" onclick="remove(this)">Törlés</button>
                             </div>
                         </li>
-
+                        -->
                     </ul>
                 </div>
             </div>
@@ -103,8 +122,8 @@
             <div class="col-12 col-md-4">
                 <div class="card">
                     <div class="card-header text-center fw-bold ">Felhasználói Naplók</div>
-                    <ul class="list-group list-group-flush">
-
+                    <ul class="list-group list-group-flush" id="log" name="log">
+                        <!--
                         <li class="list-group-item bg-dark text-white">
                             <div class="d-flex flex-column">
                                 <strong>Sir Tibius Lucius / 13.C</strong>
@@ -125,6 +144,7 @@
                                 <span>2024-06-10 14:23:45</span>
                             </div>
                         </li>
+                        -->
                     </ul>
                 </div>
             </div>
