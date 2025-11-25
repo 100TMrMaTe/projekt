@@ -54,7 +54,7 @@ function Create_databse_tables($conn)
   }
 
   // sql to create table user_log
-  $sql = "CREATE TABLE IF NOT EXISTS user_log (
+  $sql = "CREATE TABLE IF NOT EXISTS users_log (
   id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   user_id INT(11) UNSIGNED,
   user_name VARCHAR(255),
@@ -70,7 +70,7 @@ function Create_databse_tables($conn)
   }
 
   // sql to create table user_reg
-  $sql = "CREATE TABLE IF NOT EXISTS user_reg (
+  $sql = "CREATE TABLE IF NOT EXISTS users_reg (
   id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   user_name VARCHAR(255),
   user_class VARCHAR(255),
@@ -98,12 +98,39 @@ function Insert_into_users($conn, $user_name, $user_class, $email, $user_passwor
   }
 }
 
+function Insert_into_users_reg($conn, $user_name, $user_class, $email, $user_password)
+{
+  $sql = "INSERT INTO users_reg (user_name, user_class, email, user_password)
+      VALUES ('$user_name', '$user_class', '$email', '$user_password')";
+
+
+  if (mysqli_query($conn, $sql)) {
+    echo "New record created successfully";
+  } else {
+    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+  }
+}
+
+function Insert_into_users_log($conn, $user_id, $user_name, $user_class, $datum)
+{
+  $sql = "INSERT INTO users_log (user_id, user_name, user_class, datum)
+      VALUES ('$user_id', '$user_name', '$user_class', '$datum')";
+
+
+  if (mysqli_query($conn, $sql)) {
+    echo "New record created successfully";
+  } else {
+    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+  }
+}
+
 $conn = Connect_to_serer();
 
 Create_databse_tables($conn);
-
 Use_database($conn, 'projekt');
 
-Insert_into_users($conn, 'mate', '13.c','kony@gmail.com', 'kony');
+//Insert_into_users($conn, 'mate', '13.c','kony@gmail.com', 'kony');
+//Insert_into_users_reg($conn, 'jani', '13.b','kony@gmai.com', 'jani');
+//Insert_into_users_log($conn, 1, 'mate','9.a', '2025-01-15 10:30:00');
 
 Kill_server_connection($conn);
