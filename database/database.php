@@ -168,10 +168,10 @@ function Select_from($conn, $table_name)
 }
 
 
-$conn = Connect_to_serer();
+//$conn = Connect_to_serer();
 
-Create_databse_tables($conn);
-Use_database($conn, 'projekt');
+//Create_databse_tables($conn);
+//Use_database($conn, 'projekt');
 
 //Insert_into_users($conn, 'mate', '13.c','kony@gmail.com', 'kony');
 //Insert_into_users_reg($conn, 'jani', '13.b','kony@gmai.com', 'jani');
@@ -181,4 +181,4 @@ Use_database($conn, 'projekt');
 //$array = Select_from($conn, 'users_reg');
 //var_dump($array[0]);
 
-Kill_server_connection($conn);
+//Kill_server_connection($conn);
