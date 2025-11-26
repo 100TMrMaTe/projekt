@@ -2,12 +2,13 @@
 include_once "../database/database.php";
 
 $conn = Connect_to_serer();
-
 Create_databse_tables($conn);
 Use_database($conn, 'projekt');
 
-$array = Select_from($conn, 'users');
-var_dump($array[0]);
+$log = Select_from($conn, 'users_log');
+$reg = Select_from($conn, 'users_reg');
+$users = Select_from($conn, 'users');
+
 
 Kill_server_connection($conn);
 
@@ -35,11 +36,11 @@ Kill_server_connection($conn);
                 <div class="card">
                     <div class="card-header text-center fw-bold">Kérelmek</div>
                     <ul class="list-group list-group-flush" style="max-height: 400px;" id="reg" name="reg">
-                        <!--                         
+                                            
                         <li
                             class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
                             <div class="d-flex flex-column">
-                                <strong>konyhasi mate</strong>
+                                <strong>fdbgcfd mate</strong>
                                 <span>13.c</span>
                             </div>
                             <div class="d-flex gap-2">
@@ -51,7 +52,7 @@ Kill_server_connection($conn);
                         <li
                             class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
                             <div class="d-flex flex-column">
-                                <strong>konyhasi mate</strong>
+                                <strong>konygjfgjfghasi mate</strong>
                                 <span>13.c</span>
                             </div>
                             <div class="d-flex gap-2">
@@ -63,7 +64,7 @@ Kill_server_connection($conn);
                         <li
                             class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
                             <div class="d-flex flex-column">
-                                <strong>konyhasi mate</strong>
+                                <strong>konyhhgjhvasi mate</strong>
                                 <span>13.c</span>
                             </div>
                             <div class="d-flex gap-2">
@@ -71,7 +72,7 @@ Kill_server_connection($conn);
                                 <button class="btn btn-success btn-sm" onclick="remove(this)">Jóváhagy</button>
                             </div>
                         </li>
-                        -->
+                        
 
                     </ul>
                 </div>
@@ -123,13 +124,19 @@ Kill_server_connection($conn);
                 <div class="card">
                     <div class="card-header text-center fw-bold ">Felhasználói Naplók</div>
                     <ul class="list-group list-group-flush" id="log" name="log">
+                        <?php
+                            for ($i=0; $i<count($log); $i++)
+                            {
+                            echo    '<li class="list-group-item bg-dark text-white">';
+                            echo            '<div class="d-flex flex-column">';
+                            echo                '<strong>'.$log[$i]["user_name"].' / '.$log[$i]["user_class"].'</strong>';
+                            echo                '<span>'.$log[$i]["datum"].'</span>';
+                            echo            '</div>';
+                            echo        '</li>';
+                            }
+                        ?>
                         <!--
-                        <li class="list-group-item bg-dark text-white">
-                            <div class="d-flex flex-column">
-                                <strong>Sir Tibius Lucius / 13.C</strong>
-                                <span>2024-06-10 14:23:45</span>
-                            </div>
-                        </li>
+                        
 
                         <li class="list-group-item bg-dark text-white">
                             <div class="d-flex flex-column">
