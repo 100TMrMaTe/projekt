@@ -23,6 +23,36 @@
         body {
             background: linear-gradient(to bottom right, blue, cyan);
         }
+
+        .email {
+            background-color: rgb(50, 50, 50);
+            border-color: white;
+        }
+
+        .email::placeholder {
+            color: white;
+        }
+
+        .email:focus {
+            background-color: rgb(50, 50, 50);
+            box-shadow: none;
+            border-color: white;
+        }
+
+        .jelszo {
+            background-color: rgb(50, 50, 50);
+            border-color: white;
+        }
+
+        .jelszo::placeholder {
+            color: white;
+        }
+
+        .jelszo:focus {
+            background-color: rgb(50, 50, 50);
+            box-shadow: none;
+            border-color: white;
+        }
     </style>
 </head>
 
@@ -33,22 +63,28 @@
             <div class="col-1 col-sm-2 col-md-3 col-lg-4">
 
             </div>
-            <div class="col-10 col-sm-8 col-md-6 col-lg-4">
-                <div class="p-3 position-absolute top-50 start-50 translate-middle rounded-3" id="doboz">
-                    <form>
-                        <div class="mb-3">
-                            <label for="exampleInputEmail1" class="form-label">Email address</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1"
-                                aria-describedby="emailHelp">
-                            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            <div class="col-10 col-sm-8 col-md-6 col-lg-4 ">
+                <div class="p-3 position-absolute top-50 start-50 translate-middle rounded-3"
+                    style="background-color: rgb(50, 50, 50);" id="doboz">
+                    <form class="">
+                        <div class="mb-3 p-4">
+                            <label for="text" class="form-label d-flex justify-content-center">
+                                <h2 class=" text-white ">Bejelentkezés</h2>
+                            </label>
+                            <label for="bejelenkezoText" class="" style="color: rgb(165, 165, 165);">Kérjük írja be az
+                                email címet illetve a jelszavát.</label><br><br><br>
+                            <div>
+                                <input type="email" class="form-control email" style="height: 45px; color: white"
+                                    placeholder="Email" id="exampleInputEmail1" aria-describedby="emailHelp">
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="exampleInputPassword1" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1">
+                        <div class="mb-3 pb-4 ps-4 pe-4">
+                            <input type="password" class="form-control jelszo" placeholder="Jelszó" style="height: 45px; color: white"
+                                id="exampleInputPassword1">
                         </div>
-                        <div class="mb-3 form-check">
+                        <div class=" ps-4 form-check">
                             <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                            <label class="form-check-label  text-white" for="exampleCheck1 ">Maradj bejelentkezve.</label>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
