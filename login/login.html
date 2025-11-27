@@ -66,44 +66,14 @@
             text-decoration: none;
         }
 
-        .nev {
-            background-color: rgb(50, 50, 50);
-            border-color: white;
-        }
-
-        .nev::placeholder {
-            color: white;
-        }
-
-        .nev:focus {
-            background-color: rgb(50, 50, 50);
-            box-shadow: none;
-            border-color: white;
-        }
-
-        .osztaly {
-            background-color: rgb(50, 50, 50);
-            border-color: white;
-        }
-
-        .osztaly::placeholder {
-            color: white;
-        }
-
-        .osztaly:focus {
-            background-color: rgb(50, 50, 50);
-            box-shadow: none;
-            border-color: white;
-        }
-
         @media screen and (max-width: 842px) {
-            #doboz {
+            #doboz{
                 width: 420.58px;
             }
         }
 
         @media screen and (max-width: 450px) {
-            #doboz {
+            #doboz{
                 width: 90%;
             }
         }
@@ -112,48 +82,30 @@
 
 <body>
 
-    <div class="container h-100">
+    <div class="container-md h-100">
         <div class="row">
-            <div class="col col-sm-2 col-md-3 col-lg-4 d-sm-block d-none">
-
+            <div class="col col-md-2 col-lg-4 d-sm-block d-none">
+                
             </div>
-            <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+            <div class=" col-12 col-md-8 col-lg-4">
                 <div class="p-3 position-absolute top-50 start-50 translate-middle rounded-3"
-                    style="background-color: rgb(50, 50, 50); max-width: 450px;" id="doboz">
-                    <form class="" action="">
+                    style="background-color: rgb(50, 50, 50);" id="doboz">
+                    <form class="" action="login.php" method="post">
                         <div class="mb-3 p-4">
                             <label for="text" class="form-label d-flex justify-content-center">
-                                <h2 class=" text-white ">REGISZTRÁCIÓ</h2>
+                                <h2 class=" text-white ">BEJELENTKEZÉS</h2>
                             </label>
-                            <label for="bejelenkezoText" class=""
-                                style="color: rgb(165, 165, 165); word-break: break-word; overflow-wrap: break-word;">Kérjük,
-                                írja be a nevét, osztályát,
+                            <label for="bejelenkezoText" class="" style="color: rgb(165, 165, 165);">Kérjük, írja be az
                                 email címet, illetve a jelszavát.</label>
-
                             <div class="pt-5">
-                                <input type="text" class="form-control nev" style="height: 45px; color: white"
-                                    placeholder="Név" name="nev">
-                            </div>
-
-                            <div class="pt-3">
-                                <input type="text" class="form-control osztaly" style="height: 45px; color: white"
-                                    placeholder="Osztály" name="osztaly">
-                            </div>
-
-                            <div class="pt-3">
                                 <input type="email" class="form-control email" style="height: 45px; color: white"
-                                    placeholder="Email" id="exampleInputEmail1" name="email"
-                                    aria-describedby="emailHelp">
+                                    placeholder="Email" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
                             </div>
-
-                            <div class="pt-3">
-                                <input type="password" class="form-control jelszo" placeholder="Jelszó"
-                                    style="height: 45px; color: white" name="password" id="exampleInputPassword1">
-                            </div>
-
                         </div>
-
-
+                        <div class="mb-3 ps-4 pe-4">
+                            <input type="password" class="form-control jelszo" placeholder="Jelszó"
+                                style="height: 45px; color: white" id="exampleInputPassword1" name="password">
+                        </div>
                         <div class=" ps-5 pb-5 form-check">
                             <input type="checkbox" class="form-check-input" style="background-color: rgb(50, 50, 50);"
                                 id="exampleCheck1">
@@ -165,14 +117,14 @@
                                 style="background-color: rgb(50, 50, 50); border: 2px solid white;">BELÉPÉS</button>
                         </div>
                         <div class="mb-3 p-4">
-                            <label for="bejelenkezoText" class="" style="color: white">Van már fiókod? <a href=""
-                                    style="color: rgb(165, 165, 165); text-decoration:none">Bejelentkezés</a></label>
+                            <label for="bejelenkezoText" class="" style="color: white">Nincs fiókod? <a href="reg.html"
+                                    style="color: rgb(165, 165, 165); text-decoration:none">Regisztráció</a></label>
                         </div>
                     </form>
                 </div>
             </div>
-            <div class="col col-sm-2 col-md-3 col-lg-4 d-sm-block d-none">
-
+            <div class="col col-md-2 col-lg-4 d-sm-block d-none">
+                
             </div>
         </div>
     </div>
