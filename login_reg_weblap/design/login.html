@@ -61,20 +61,33 @@
         #doboz {
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6)
         }
+
         .btn-link {
-  text-decoration: none;
-}
+            text-decoration: none;
+        }
+
+        @media screen and (max-width: 842px) {
+            #doboz{
+                width: 420.58px;
+            }
+        }
+
+        @media screen and (max-width: 450px) {
+            #doboz{
+                width: 90%;
+            }
+        }
     </style>
 </head>
 
 <body>
 
-    <div class="container h-100">
+    <div class="container-md h-100">
         <div class="row">
-            <div class=" col-sm-2 col-md-2 col-lg-4">
-
+            <div class="col col-md-2 col-lg-4 d-sm-block d-none">
+                
             </div>
-            <div class="col-12 col-sm-8 col-md-8 col-lg-4">
+            <div class=" col-12 col-md-8 col-lg-4">
                 <div class="p-3 position-absolute top-50 start-50 translate-middle rounded-3"
                     style="background-color: rgb(50, 50, 50);" id="doboz">
                     <form class="" action="">
@@ -86,12 +99,12 @@
                                 email címet, illetve a jelszavát.</label>
                             <div class="pt-5">
                                 <input type="email" class="form-control email" style="height: 45px; color: white"
-                                    placeholder="Email" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                    placeholder="Email" id="exampleInputEmail1" aria-describedby="emailHelp" name="email">
                             </div>
                         </div>
                         <div class="mb-3 ps-4 pe-4">
                             <input type="password" class="form-control jelszo" placeholder="Jelszó"
-                                style="height: 45px; color: white" id="exampleInputPassword1">
+                                style="height: 45px; color: white" id="exampleInputPassword1" name="password">
                         </div>
                         <div class=" ps-5 pb-5 form-check">
                             <input type="checkbox" class="form-check-input" style="background-color: rgb(50, 50, 50);"
@@ -104,13 +117,14 @@
                                 style="background-color: rgb(50, 50, 50); border: 2px solid white;">BELÉPÉS</button>
                         </div>
                         <div class="mb-3 p-4">
-                            <label for="bejelenkezoText" class="" style="color: white">Nincs fiókod? <a href="" style="color: rgb(165, 165, 165); text-decoration:none">Regisztráció</a></label>  
+                            <label for="bejelenkezoText" class="" style="color: white">Nincs fiókod? <a href=""
+                                    style="color: rgb(165, 165, 165); text-decoration:none">Regisztráció</a></label>
                         </div>
                     </form>
                 </div>
             </div>
-            <div class=" col-sm-2 col-md-2 col-lg-4">
-
+            <div class="col col-md-2 col-lg-4 d-sm-block d-none">
+                
             </div>
         </div>
     </div>
