@@ -1,5 +1,6 @@
 <?php
 include_once "../database.php";
+
 mysqli_report(MYSQLI_REPORT_OFF);
 
 

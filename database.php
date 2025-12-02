@@ -1,5 +1,5 @@
 <?php
-function Connect_to_serer()
+function Connect_to_server()
 {
   $servername = "localhost";
   $username = "root";
@@ -168,7 +168,7 @@ function Select_from($conn, $table_name)
 }
 
 
-//$conn = Connect_to_serer();
+//$conn = Connect_to_server();
 
 //Create_databse_tables($conn);
 //Use_database($conn, 'projekt');
