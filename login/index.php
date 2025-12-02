@@ -1,6 +1,8 @@
 <?php
 include_once "../database.php";
 
+$conn = Connect_to_serer();
+
 mysqli_report(MYSQLI_REPORT_OFF);
 
 
