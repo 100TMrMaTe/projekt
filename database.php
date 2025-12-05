@@ -100,15 +100,22 @@ function Insert_into_users($conn, $user_name, $user_class, $email, $user_passwor
 
 function Insert_into_users_reg($conn, $user_name, $user_class, $email, $user_password)
 {
-  $sql = "INSERT INTO users_reg (user_name, user_class, email, user_password)
+  if (str_ends_with($email, '@ady-nagyatad.hu')) {
+    $sql = "INSERT INTO users_reg (user_name, user_class, email, user_password)
       VALUES ('$user_name', '$user_class', '$email', '$user_password')";
 
 
-  if (mysqli_query($conn, $sql)) {
-    //echo "New record created successfully";
-  } else {
-    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+    if (mysqli_query($conn, $sql)) {
+      $jsontomb["success"] = "success";
+    } else {
+      $jsontomb["error"] = "error";
+    }
+  } else{
+    $jsontomb["sulisemail"] = "Suliss emaillel regisztrálj";
   }
+
+
+  return $jsontomb;
 }
 
 function Insert_into_users_log($conn, $user_id, $user_name, $user_class, $datum)
