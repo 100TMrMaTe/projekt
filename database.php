@@ -111,7 +111,7 @@ function Insert_into_users_reg($conn, $user_name, $user_class, $email, $user_pas
     } else {
       $jsontomb["error"] = "error";
     }
-  } else{
+  } else {
     $jsontomb["sulisemail"] = "Suliss emaillel regisztrálj";
   }
 
@@ -119,7 +119,7 @@ function Insert_into_users_reg($conn, $user_name, $user_class, $email, $user_pas
   return $jsontomb;
 }
 
-function Insert_into_users_log($conn, $user_id, $user_name, $user_class, $datum , $vege)
+function Insert_into_users_log($conn, $user_id, $user_name, $user_class, $datum, $vege)
 {
   $sql = "INSERT INTO users_log (user_id, user_name, user_class, datum, vege)
       VALUES ('$user_id', '$user_name', '$user_class', '$datum', '$vege')";
@@ -132,28 +132,35 @@ function Insert_into_users_log($conn, $user_id, $user_name, $user_class, $datum 
   }
 }
 
-function Delete_from_users($conn, $user_id)
-{
-  // sql to delete a record
-  $sql = "DELETE FROM users WHERE id=$user_id";
-
-  if (mysqli_query($conn, $sql)) {
-    //echo "Record deleted successfully";
-  } else {
-    echo "Error deleting record: " . mysqli_error($conn);
-  }
-}
-
 function Delete_from_users_reg($conn, $user_id)
 {
-  // sql to delete a record
+  // sql to delete a record FROM THE CORRECT TABLE
   $sql = "DELETE FROM users_reg WHERE id=$user_id";
 
   if (mysqli_query($conn, $sql)) {
     //echo "Record deleted successfully";
+    return true;
   } else {
     echo "Error deleting record: " . mysqli_error($conn);
+    return false;
   }
+}
+
+function Delete_from_users($conn, $user_id)
+{
+  // sql to delete a record
+  mysqli_query($conn, "SET FOREIGN_KEY_CHECKS = 0");
+  $sql = "DELETE FROM users WHERE id=$user_id";
+
+  if (mysqli_query($conn, $sql)) {
+    //echo "Record deleted successfully";
+    return true;
+  } else {
+    echo "Error deleting record: " . mysqli_error($conn);
+    return false;
+  }
+
+  mysqli_query($conn, "SET FOREIGN_KEY_CHECKS = 1");
 }
 
 
