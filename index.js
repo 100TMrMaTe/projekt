@@ -15,15 +15,14 @@ function kuldes() {
     })
         .then((x) => x.json())
         .then((valasz) => {
-                document.getElementById("nev").value = "";
-                document.getElementById("osztaly").value = "";
-                document.getElementById("email").value = "";
-                document.getElementById("password").value = "";
-                console.log(valasz)
-                if(valasz.sulisemail)
-                {
-                    alert(valasz.sulisemail);
-                }
+            document.getElementById("nev").value = "";
+            document.getElementById("osztaly").value = "";
+            document.getElementById("email").value = "";
+            document.getElementById("password").value = "";
+            console.log(valasz)
+            if (valasz.sulisemail) {
+                alert(valasz.sulisemail);
+            }
         });
 }
 
@@ -40,22 +39,76 @@ function belepes() {
     })
         .then((x) => x.json())
         .then((valasz) => {
-                document.getElementById("email").value = "";
-                document.getElementById("password").value = "";
-                if(valasz == "mehetsz")
-                {
-                    window.location.href = "http://localhost/suliscucc/projekt/mainpage.html";
-                }
-                else{
-                    alert(valasz);
-                }
+            document.getElementById("email").value = "";
+            document.getElementById("password").value = "";
+            if (valasz == "mehetsz") {
+                window.location.href = "http://localhost/suliscucc/projekt/mainpage.html";
+            }
+            else {
+                alert(valasz);
+            }
         });
 }
 
-function get() {
-    fetch("index.php")
+function adminget() {
+    fetch("adminpage")
         .then(x => x.json())
         .then(y => {
             console.log(y);
+            y.reg.forEach(elem => {
+                document.getElementById("reg").innerHTML += regtabla(elem.id, elem.user_name, elem.user_class);
+            });
+            y.users.forEach(elem => {
+                document.getElementById("users").innerHTML += userstabla(elem.id, elem.user_name, elem.user_class);
+            });
+            y.log.forEach(elem => {
+                document.getElementById("log").innerHTML += logtabla(elem.user_name, elem.user_class, elem.datum);
+            });
         })
+}
+
+function regtabla(id, nev, osztaly) {
+    return `<li class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
+                <div class="d-flex flex-column">
+                    <strong>${nev}</strong>
+                    <span>${osztaly}</span>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-danger btn-sm" onclick="removereg(${id})">Elutasít</button>
+                    <button class="btn btn-success btn-sm" onclick="approvereg(${id})">Jóváhagy</button>
+                </div>
+            </li>`;
+}
+
+function userstabla(id, nev, osztaly) {
+
+    return `<li class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
+                <div class="d-flex flex-column">
+                    <strong>${nev}</strong>
+                    <span>${osztaly}</span>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-danger btn-sm text-white" onclick="removeusers(${id})">Törlés</button>
+                </div>
+            </li>`;
+}
+
+function logtabla(nev, osztaly, datum) {
+    return `<li class="list-group-item bg-dark text-white">
+                <div class="d-flex flex-column">
+                    <strong>${nev} / ${osztaly}</strong>
+                    <span>${datum}</span>
+                </div>
+            </li>`;
+}
+
+function removereg(id) {
+    fetch("removereg", {
+        method: "DELETE",
+        id: id,
+    })
+        .then((x) => x.json())
+        .then((valasz) => {
+           console.log(valasz);
+        });
 }

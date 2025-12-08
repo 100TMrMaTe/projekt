@@ -175,6 +175,24 @@ function Select_from($conn, $table_name)
   return $rows;
 }
 
+function Select_from_log($conn, $table_name)
+{
+  $sql = "SELECT * FROM " . $table_name . " ORDER BY id DESC LIMIT 100";
+  $result = mysqli_query($conn, $sql);
+
+  if (!$result) {
+    return [];
+  }
+
+  $rows = [];
+
+  while ($row = mysqli_fetch_assoc($result)) {
+    $rows[] = $row;
+  }
+
+  return $rows;
+}
+
 
 //$conn = Connect_to_server();
 
