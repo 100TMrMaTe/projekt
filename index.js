@@ -114,7 +114,7 @@ function removereg(id) {
     })
         .then((x) => x.json())
         .then((valasz) => {
-            console.log(valasz);
+            //console.log(valasz);
             adminget();
         });
 }
@@ -128,7 +128,7 @@ function removeusers(id) {
     })
         .then((x) => x.json())
         .then((valasz) => {
-            console.log(valasz);
+            //console.log(valasz);
 
             adminget();
         });
