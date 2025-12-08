@@ -60,6 +60,7 @@ function Create_databse_tables($conn)
   user_name VARCHAR(255),
   user_class VARCHAR(255),
   datum DATETIME,
+  vege DATETIME,
   FOREIGN KEY (user_id) REFERENCES users(id)
 )";
 
@@ -118,10 +119,10 @@ function Insert_into_users_reg($conn, $user_name, $user_class, $email, $user_pas
   return $jsontomb;
 }
 
-function Insert_into_users_log($conn, $user_id, $user_name, $user_class, $datum)
+function Insert_into_users_log($conn, $user_id, $user_name, $user_class, $datum , $vege)
 {
-  $sql = "INSERT INTO users_log (user_id, user_name, user_class, datum)
-      VALUES ('$user_id', '$user_name', '$user_class', '$datum')";
+  $sql = "INSERT INTO users_log (user_id, user_name, user_class, datum, vege)
+      VALUES ('$user_id', '$user_name', '$user_class', '$datum', '$vege')";
 
 
   if (mysqli_query($conn, $sql)) {

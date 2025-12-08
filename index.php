@@ -23,6 +23,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         foreach ($users as $x) {
             if ($x["email"] == $data["email"] && $x["user_password"] == $data["password"]) {
                 $result = "mehetsz";
+                
+                $vege = new DateTime();
+                $vege->modify('+20 minutes');
+
+                Insert_into_users_log($conn, $x["id"], $x["user_name"], $x["user_class"], date("Y-m-d H:i:s"), $vege->format("Y-m-d H:i:s"));
             }
         }
         if ($result == "") {
