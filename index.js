@@ -53,3 +53,9 @@ function belepes() {
                 }
         });
 }
+
+function regbetolt() {
+    fetch("index.php",{
+        method: "GET"
+    })
+}
