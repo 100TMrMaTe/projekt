@@ -41,4 +41,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    if ($apiParts[0] == "adminpage") {
+        $response = [];
+
+        $response["log"]   = Select_from_log($conn, "users_log");
+        $response["reg"]   = Select_from($conn, "users_reg");
+        $response["users"] = Select_from($conn, "users");
+
+        $json = json_encode($response);
+        echo $json;
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
+    $json = file_get_contents("php://input");
+    $data = json_decode($json, true);
+
+    if ($apiParts[0] == "removereg") {
+        $response = "error";
+
+        foreach ($users as $x) {
+            if ($x["id"] == $data["id"]) {
+                Delete_from_users_reg($conn, $x["id"]);
+                $response = "success";
+                break;
+            }
+        }
+
+        $json = json_encode($response);
+        echo $json;
+    }
+}
+
 Kill_server_connection($conn);
