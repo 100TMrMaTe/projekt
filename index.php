@@ -59,15 +59,18 @@ if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
     $data = json_decode($json, true);
 
     if ($apiParts[0] == "removereg") {
-        $response = "error";
+        $response["status"] = "error";
 
-        foreach ($users as $x) {
-            if ($x["id"] == $data["id"]) {
-                Delete_from_users_reg($conn, $x["id"]);
-                $response = "success";
-                break;
-            }
-        }
+        Delete_from_users_reg($conn, $data["id"]);
+        $response["status"] = "success";
+
+        $json = json_encode($response);
+        echo $json;
+    } else if ($apiParts[0] == "removeusers") {
+        $response["status"] = "error";
+
+        Delete_from_users($conn, $data["id"]);  
+        $response["status"] = "success";
 
         $json = json_encode($response);
         echo $json;

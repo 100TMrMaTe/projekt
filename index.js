@@ -55,6 +55,9 @@ function adminget() {
         .then(x => x.json())
         .then(y => {
             console.log(y);
+            document.getElementById("reg").innerHTML = "";
+            document.getElementById("log").innerHTML = "";
+            document.getElementById("users").innerHTML = "";
             y.reg.forEach(elem => {
                 document.getElementById("reg").innerHTML += regtabla(elem.id, elem.user_name, elem.user_class);
             });
@@ -105,10 +108,28 @@ function logtabla(nev, osztaly, datum) {
 function removereg(id) {
     fetch("removereg", {
         method: "DELETE",
-        id: id,
+        body: JSON.stringify({
+            id: id
+        }),
     })
         .then((x) => x.json())
         .then((valasz) => {
-           console.log(valasz);
+            console.log(valasz);
+            adminget();
+        });
+}
+
+function removeusers(id) {
+    fetch("removeusers", {
+        method: "DELETE",
+        body: JSON.stringify({
+            id: id
+        }),
+    })
+        .then((x) => x.json())
+        .then((valasz) => {
+            console.log(valasz);
+
+            adminget();
         });
 }
