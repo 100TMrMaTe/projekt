@@ -4,10 +4,9 @@ function kuldes() {
     email = document.getElementById("email").value;
     password = document.getElementById("password").value;
 
-    fetch("index.php", {
+    fetch("reg", {
         method: "POST",
         body: JSON.stringify({
-            login: "reg",
             nev: nev,
             osztaly: osztaly,
             email: email,
@@ -32,10 +31,9 @@ function belepes() {
     email = document.getElementById("email").value;
     password = document.getElementById("password").value;
 
-    fetch("index.php", {
+    fetch("login", {
         method: "POST",
         body: JSON.stringify({
-            login: "login",
             email: email,
             password: password,
         }),
@@ -54,8 +52,10 @@ function belepes() {
         });
 }
 
-function regbetolt() {
-    fetch("index.php",{
-        method: "GET"
-    })
+function get() {
+    fetch("index.php")
+        .then(x => x.json())
+        .then(y => {
+            console.log(y);
+        })
 }
