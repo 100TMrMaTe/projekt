@@ -88,15 +88,21 @@ function Create_databse_tables($conn)
 
 function Insert_into_users($conn, $user_name, $user_class, $email, $user_password)
 {
-  $sql = "INSERT INTO users (user_name, email, user_class, user_password)
-      VALUES ('$user_name', '$email', '$user_class', '$user_password')";
+    // Escape special characters
+    $user_name = mysqli_real_escape_string($conn, $user_name);
+    $user_class = mysqli_real_escape_string($conn, $user_class);
+    $email = mysqli_real_escape_string($conn, $email);
+    $user_password = mysqli_real_escape_string($conn, $user_password);
 
+    $sql = "INSERT INTO users (user_name, email, user_class, user_password)
+            VALUES ('$user_name', '$email', '$user_class', '$user_password')";
 
-  if (mysqli_query($conn, $sql)) {
-    //echo "New record created successfully";
-  } else {
-    echo "Error: " . $sql . "<br>" . mysqli_error($conn);
-  }
+    if (mysqli_query($conn, $sql)) {
+        return true;
+    } else {
+        echo "Error inserting user: " . mysqli_error($conn);
+        return false;
+    }
 }
 
 function Insert_into_users_reg($conn, $user_name, $user_class, $email, $user_password)
