@@ -54,7 +54,7 @@ function adminget() {
     fetch("adminpage")
         .then(x => x.json())
         .then(y => {
-            console.log(y);
+            //console.log(y);
             document.getElementById("reg").innerHTML = "";
             document.getElementById("log").innerHTML = "";
             document.getElementById("users").innerHTML = "";
@@ -134,26 +134,15 @@ function removeusers(id) {
         });
 }
 
-function approve(reg) {
-    email = document.getElementById("email").value;
-    password = document.getElementById("password").value;
-
-    fetch("login", {
+function approvereg(id) {
+    fetch("approveuser", {
         method: "POST",
         body: JSON.stringify({
-            email: email,
-            password: password,
+            id: id
         }),
     })
         .then((x) => x.json())
         .then((valasz) => {
-            document.getElementById("email").value = "";
-            document.getElementById("password").value = "";
-            if (valasz == "mehetsz") {
-                window.location.href = "http://localhost/suliscucc/projekt/mainpage.html";
-            }
-            else {
-                alert(valasz);
-            }
+            adminget();
         });
 }

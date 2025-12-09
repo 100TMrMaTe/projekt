@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $json = json_encode($result);
         echo $json;
-    } else if ($apiParts[0] == "registeruser") {
+    } else if ($apiParts[0] == "approveuser") {
         $regek = Select_from($conn, "users_reg");
         foreach ($regek as $x) {
             if ($x["id"] == $data["id"]) {
