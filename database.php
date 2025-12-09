@@ -7,11 +7,11 @@ function Connect_to_server()
 
   // Create connection
   $conn = mysqli_connect($servername, $username, $password);
-
   // Check connection
   if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
   }
+  mysqli_set_charset($conn, "utf8mb4");
   return $conn;
 }
 
@@ -22,7 +22,9 @@ function Kill_server_connection($conn)
 
 function Use_database($conn, $dbname)
 {
-  mysqli_select_db($conn, $dbname);
+  if (!mysqli_select_db($conn, $dbname)) {
+    die(mysqli_error($conn));
+  }
 }
 
 function Create_databse_tables($conn)
@@ -88,26 +90,33 @@ function Create_databse_tables($conn)
 
 function Insert_into_users($conn, $user_name, $user_class, $email, $user_password)
 {
-    // Escape special characters
-    $user_name = mysqli_real_escape_string($conn, $user_name);
-    $user_class = mysqli_real_escape_string($conn, $user_class);
-    $email = mysqli_real_escape_string($conn, $email);
-    $user_password = mysqli_real_escape_string($conn, $user_password);
+  $user_password = password_hash($user_password, PASSWORD_DEFAULT);
+  // Escape special characters
+  $user_name = mysqli_real_escape_string($conn, $user_name);
+  $user_class = mysqli_real_escape_string($conn, $user_class);
+  $email = mysqli_real_escape_string($conn, $email);
+  $user_password = mysqli_real_escape_string($conn, $user_password);
 
-    $sql = "INSERT INTO users (user_name, email, user_class, user_password)
+  $sql = "INSERT INTO users (user_name, email, user_class, user_password)
             VALUES ('$user_name', '$email', '$user_class', '$user_password')";
 
-    if (mysqli_query($conn, $sql)) {
-        return true;
-    } else {
-        echo "Error inserting user: " . mysqli_error($conn);
-        return false;
-    }
+  if (mysqli_query($conn, $sql)) {
+    return true;
+  } else {
+    echo "Error inserting user: " . mysqli_error($conn);
+    return false;
+  }
 }
 
 function Insert_into_users_reg($conn, $user_name, $user_class, $email, $user_password)
 {
   if (str_ends_with($email, '@ady-nagyatad.hu')) {
+    $user_password = password_hash($user_password, PASSWORD_DEFAULT);
+    $user_name = mysqli_real_escape_string($conn, $user_name);
+    $user_class = mysqli_real_escape_string($conn, $user_class);
+    $email = mysqli_real_escape_string($conn, $email);
+    $user_password = mysqli_real_escape_string($conn, $user_password);
+
     $sql = "INSERT INTO users_reg (user_name, user_class, email, user_password)
       VALUES ('$user_name', '$user_class', '$email', '$user_password')";
 
@@ -127,6 +136,11 @@ function Insert_into_users_reg($conn, $user_name, $user_class, $email, $user_pas
 
 function Insert_into_users_log($conn, $user_id, $user_name, $user_class, $datum, $vege)
 {
+  $user_name = mysqli_real_escape_string($conn, $user_name);
+  $user_class = mysqli_real_escape_string($conn, $user_class);
+  $datum = mysqli_real_escape_string($conn, $datum);
+  $vege = mysqli_real_escape_string($conn, $vege);
+
   $sql = "INSERT INTO users_log (user_id, user_name, user_class, datum, vege)
       VALUES ('$user_id', '$user_name', '$user_class', '$datum', '$vege')";
 
@@ -154,19 +168,21 @@ function Delete_from_users_reg($conn, $user_id)
 
 function Delete_from_users($conn, $user_id)
 {
-  // sql to delete a record
   mysqli_query($conn, "SET FOREIGN_KEY_CHECKS = 0");
+
   $sql = "DELETE FROM users WHERE id=$user_id";
 
-  if (mysqli_query($conn, $sql)) {
-    //echo "Record deleted successfully";
+  $result = mysqli_query($conn, $sql);
+
+  // Mindig visszakapcsoljuk a foreign key ellenőrzést
+  mysqli_query($conn, "SET FOREIGN_KEY_CHECKS = 1");
+
+  if ($result) {
     return true;
   } else {
     echo "Error deleting record: " . mysqli_error($conn);
     return false;
   }
-
-  mysqli_query($conn, "SET FOREIGN_KEY_CHECKS = 1");
 }
 
 
