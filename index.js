@@ -133,3 +133,27 @@ function removeusers(id) {
             adminget();
         });
 }
+
+function approve(reg) {
+    email = document.getElementById("email").value;
+    password = document.getElementById("password").value;
+
+    fetch("login", {
+        method: "POST",
+        body: JSON.stringify({
+            email: email,
+            password: password,
+        }),
+    })
+        .then((x) => x.json())
+        .then((valasz) => {
+            document.getElementById("email").value = "";
+            document.getElementById("password").value = "";
+            if (valasz == "mehetsz") {
+                window.location.href = "http://localhost/suliscucc/projekt/mainpage.html";
+            }
+            else {
+                alert(valasz);
+            }
+        });
+}

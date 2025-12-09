@@ -38,6 +38,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $json = json_encode($result);
         echo $json;
+    } else if ($apiParts[0] == "registeruser") {
+        $regek = Select_from($conn, "users_reg");
+        foreach ($regek as $x) {
+            if ($x["id"] == $data["id"]) {
+                $result = Insert_into_users($conn, $x["user_name"], $x["user_class"], $x["email"], $x["user_password"]);
+                if ($result) {
+                    Delete_from_users_reg($conn, $x["id"]);
+                }
+            }
+        }
+
+        $json = json_encode($result);
+        echo $json;
     }
 }
 
