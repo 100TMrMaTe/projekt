@@ -46,7 +46,8 @@ function Create_databse_tables($conn)
   user_name VARCHAR(255),
   email VARCHAR(255),
   user_class VARCHAR(255),
-  user_password VARCHAR(255)
+  user_password VARCHAR(255),
+  approved BOOLEAN DEFAULT FALSE
 )";
 
   if (mysqli_query($conn, $sql)) {
@@ -71,34 +72,20 @@ function Create_databse_tables($conn)
   } else {
     echo "Error creating table: " . mysqli_error($conn);
   }
-
-  // sql to create table user_reg
-  $sql = "CREATE TABLE IF NOT EXISTS users_reg (
-  id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  user_name VARCHAR(255),
-  user_class VARCHAR(255),
-  email VARCHAR(255),
-  user_password VARCHAR(255)
-)";
-
-  if (mysqli_query($conn, $sql)) {
-    //echo "Table user_log created successfully";
-  } else {
-    echo "Error creating table: " . mysqli_error($conn);
-  }
 }
 
-function Insert_into_users($conn, $user_name, $user_class, $email, $user_password)
+function Insert_into_users($conn, $user_name, $user_class, $email, $user_password, $approved = false)
 {
-  $user_password = password_hash($user_password, PASSWORD_DEFAULT);
+  
   // Escape special characters
   $user_name = mysqli_real_escape_string($conn, $user_name);
   $user_class = mysqli_real_escape_string($conn, $user_class);
   $email = mysqli_real_escape_string($conn, $email);
   $user_password = mysqli_real_escape_string($conn, $user_password);
+  $approved = $approved ? 1 : 0;
 
-  $sql = "INSERT INTO users (user_name, email, user_class, user_password)
-            VALUES ('$user_name', '$email', '$user_class', '$user_password')";
+  $sql = "INSERT INTO users (user_name, email, user_class, user_password, approved)
+            VALUES ('$user_name', '$email', '$user_class', '$user_password', '$approved')";
 
   if (mysqli_query($conn, $sql)) {
     return true;
@@ -108,30 +95,17 @@ function Insert_into_users($conn, $user_name, $user_class, $email, $user_passwor
   }
 }
 
-function Insert_into_users_reg($conn, $user_name, $user_class, $email, $user_password)
+function Update_user_approval($conn, $user_id, $approved)
 {
-  if (str_ends_with($email, '@ady-nagyatad.hu')) {
-    $user_password = password_hash($user_password, PASSWORD_DEFAULT);
-    $user_name = mysqli_real_escape_string($conn, $user_name);
-    $user_class = mysqli_real_escape_string($conn, $user_class);
-    $email = mysqli_real_escape_string($conn, $email);
-    $user_password = mysqli_real_escape_string($conn, $user_password);
+  $approved = $approved ? 1 : 0;
+  $sql = "UPDATE users SET approved='$approved' WHERE id=$user_id";
 
-    $sql = "INSERT INTO users_reg (user_name, user_class, email, user_password)
-      VALUES ('$user_name', '$user_class', '$email', '$user_password')";
-
-
-    if (mysqli_query($conn, $sql)) {
-      $jsontomb["success"] = "success";
-    } else {
-      $jsontomb["error"] = "error";
-    }
+  if (mysqli_query($conn, $sql)) {
+    return true;
   } else {
-    $jsontomb["sulisemail"] = "Suliss emaillel regisztrálj";
+    echo "Error updating user: " . mysqli_error($conn);
+    return false;
   }
-
-
-  return $jsontomb;
 }
 
 function Insert_into_users_log($conn, $user_id, $user_name, $user_class, $datum, $vege)
@@ -149,20 +123,6 @@ function Insert_into_users_log($conn, $user_id, $user_name, $user_class, $datum,
     //echo "New record created successfully";
   } else {
     echo "Error: " . $sql . "<br>" . mysqli_error($conn);
-  }
-}
-
-function Delete_from_users_reg($conn, $user_id)
-{
-  // sql to delete a record FROM THE CORRECT TABLE
-  $sql = "DELETE FROM users_reg WHERE id=$user_id";
-
-  if (mysqli_query($conn, $sql)) {
-    //echo "Record deleted successfully";
-    return true;
-  } else {
-    echo "Error deleting record: " . mysqli_error($conn);
-    return false;
   }
 }
 
@@ -204,6 +164,24 @@ function Select_from($conn, $table_name)
   return $rows;
 }
 
+function Select_from_where($conn, $table_name, $condition)
+{
+  $sql = "SELECT * FROM " . $table_name . " WHERE " . $condition;
+  $result = mysqli_query($conn, $sql);
+
+  if (!$result) {
+    return [];
+  }
+
+  $rows = [];
+
+  while ($row = mysqli_fetch_assoc($result)) {
+    $rows[] = $row;
+  }
+
+  return $rows;
+}
+
 function Select_from_log($conn, $table_name)
 {
   $sql = "SELECT * FROM " . $table_name . " ORDER BY id DESC LIMIT 100";
@@ -222,18 +200,18 @@ function Select_from_log($conn, $table_name)
   return $rows;
 }
 
-
 //$conn = Connect_to_server();
 
 //Create_databse_tables($conn);
 //Use_database($conn, 'projekt');
 
-//Insert_into_users($conn, 'mate', '13.c','kony@gmail.com', 'kony');
-//Insert_into_users_reg($conn, 'jani', '13.b','kony@gmai.com', 'jani');
+//Insert_into_users($conn, 'mate', '13.c','kony@gmail.com', 'kony', true);
+//Insert_into_users($conn, 'jani', '13.b','kony@gmai.com', 'jani', false);
 //Insert_into_users_log($conn, 1, 'mate','9.a', '2025-01-15 10:30:00');
+//Update_user_approval($conn, 2, true);
 //Delete_from_users($conn, 1);
-//Delete_from_users_reg($conn, 1);
-//$array = Select_from($conn, 'users_reg');
+//$array = Select_from_where($conn, 'users', 'approved = false');
 //var_dump($array[0]);
 
 //Kill_server_connection($conn);
+?>
