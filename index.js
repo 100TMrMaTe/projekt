@@ -22,6 +22,8 @@ function kuldes() {
             console.log(valasz)
             if (valasz.sulisemail) {
                 alert(valasz.sulisemail);
+            } else if (valasz.success) {
+                alert("Sikeres regisztráció! Várj az admin jóváhagyására.");
             }
         });
 }
@@ -41,11 +43,11 @@ function belepes() {
         .then((valasz) => {
             document.getElementById("email").value = "";
             document.getElementById("password").value = "";
-            if (valasz == "mehetsz") {
+            if (valasz.status == "success") {
                 window.location.href = "http://localhost/suliscucc/projekt/mainpage.html";
             }
             else {
-                alert(valasz);
+                alert(valasz.message);
             }
         });
 }

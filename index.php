@@ -13,42 +13,60 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $data = json_decode($json, true);
 
     if ($apiParts[0] == "reg") {
-        $result = Insert_into_users_reg($conn, $data["nev"], $data["osztaly"], $data["email"], $data["password"]);
-
-        $json = json_encode($result);
+        // Ellenőrizzük, hogy az email iskolai cím-e
+        if (str_ends_with($data["email"], '@ady-nagyatad.hu')) {
+            $user_password = password_hash($data["password"], PASSWORD_DEFAULT);
+            $result = Insert_into_users($conn, $data["nev"], $data["osztaly"], $data["email"], $user_password, false);
+            
+            if ($result) {
+                $response = ["success" => "success"];
+            } else {
+                $response = ["error" => "error"];
+            }
+        } else {
+            $response = ["sulisemail" => "Suliss emaillel regisztrálj"];
+        }
+        
+        $json = json_encode($response);
         echo $json;
-    }
+    } else if ($apiParts[0] == "login") {
+        $users = Select_from_where($conn, "users", "approved = true");
+        $result = ["status" => "error", "message" => "nincs ilyen felhasznalo"];
+        $found = false;
 
-    if ($apiParts[0] == "login") {
-        $users = Select_from($conn, "users");
-        $result = "";
         foreach ($users as $x) {
-            if ($x["email"] == $data["email"] && $x["user_password"] == $data["password"]) {
-                $result = "mehetsz";
+            if ($x["email"] == $data["email"]) {
+                $found = true;
+                if (password_verify($data["password"], $x["user_password"])) {
+                    $result = ["status" => "success", "message" => "mehetsz"];
 
-                $vege = new DateTime();
-                $vege->modify('+20 minutes');
+                    $vege = new DateTime();
+                    $vege->modify('+20 minutes');
 
-                Insert_into_users_log($conn, $x["id"], $x["user_name"], $x["user_class"], date("Y-m-d H:i:s"), $vege->format("Y-m-d H:i:s"));
+                    Insert_into_users_log(
+                        $conn,
+                        $x["id"],
+                        $x["user_name"],
+                        $x["user_class"],
+                        date("Y-m-d H:i:s"),
+                        $vege->format("Y-m-d H:i:s")
+                    );
+                    break;
+                } else {
+                    $result = ["status" => "error", "message" => "hibas jelszo"];
+                    break;
+                }
             }
         }
-        if ($result == "") {
-            $result = "nincs ilyen felhasznalo ocskos";
+
+        if (!$found) {
+            $result = ["status" => "error", "message" => "nincs ilyen felhasznalo vagy a regisztráció még nincs jóváhagyva"];
         }
 
         $json = json_encode($result);
         echo $json;
     } else if ($apiParts[0] == "approveuser") {
-        $regek = Select_from($conn, "users_reg");
-        foreach ($regek as $x) {
-            if ($x["id"] == $data["id"]) {
-                $result = Insert_into_users($conn, $x["user_name"], $x["user_class"], $x["email"], $x["user_password"]);
-                if ($result) {
-                    Delete_from_users_reg($conn, $x["id"]);
-                }
-            }
-        }
-
+        $result = Update_user_approval($conn, $data["id"], true);
         $json = json_encode($result);
         echo $json;
     }
@@ -59,8 +77,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $response = [];
 
         $response["log"]   = Select_from_log($conn, "users_log");
-        $response["reg"]   = Select_from($conn, "users_reg");
-        $response["users"] = Select_from($conn, "users");
+        $response["reg"]   = Select_from_where($conn, "users", "approved = false");
+        $response["users"] = Select_from_where($conn, "users", "approved = true");
 
         $json = json_encode($response);
         echo $json;
@@ -74,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
     if ($apiParts[0] == "removereg") {
         $response["status"] = "error";
 
-        if (Delete_from_users_reg($conn, $data["id"])) {
+        if (Delete_from_users($conn, $data["id"])) {
             $response["status"] = "success";
         }
 
@@ -93,3 +111,4 @@ if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
 }
 
 Kill_server_connection($conn);
+?>
