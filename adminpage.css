@@ -1,0 +1,39 @@
+span,
+strong {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    display: block;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    background: linear-gradient(to bottom right, blue, cyan);
+}
+
+.card {
+    border: 2px solid white;
+    box-shadow: 0 0 5px white;
+}
+
+.card-header {
+    background-color: black;
+    color: white;
+    border-bottom: 2px solid white;
+}
+
+.btn {
+    border: 1px solid black;
+    box-shadow: 0 0 2px white;
+    border-radius: 8px;
+}
+
+ul.list-group {
+    max-height: 400px;
+    overflow-y: auto;
+
+}
