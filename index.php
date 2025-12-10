@@ -38,6 +38,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $json = json_encode($result);
         echo $json;
+    } else if ($apiParts[0] == "approveuser") {
+        $regek = Select_from($conn, "users_reg");
+        foreach ($regek as $x) {
+            if ($x["id"] == $data["id"]) {
+                $result = Insert_into_users($conn, $x["user_name"], $x["user_class"], $x["email"], $x["user_password"]);
+                if ($result) {
+                    Delete_from_users_reg($conn, $x["id"]);
+                }
+            }
+        }
+
+        $json = json_encode($result);
+        echo $json;
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    if ($apiParts[0] == "adminpage") {
+        $response = [];
+
+        $response["log"]   = Select_from_log($conn, "users_log");
+        $response["reg"]   = Select_from($conn, "users_reg");
+        $response["users"] = Select_from($conn, "users");
+
+        $json = json_encode($response);
+        echo $json;
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
+    $json = file_get_contents("php://input");
+    $data = json_decode($json, true);
+
+    if ($apiParts[0] == "removereg") {
+        $response["status"] = "error";
+
+        if (Delete_from_users_reg($conn, $data["id"])) {
+            $response["status"] = "success";
+        }
+
+        $json = json_encode($response);
+        echo $json;
+    } else if ($apiParts[0] == "removeusers") {
+        $response["status"] = "error";
+
+        if (Delete_from_users($conn, $data["id"])) {
+            $response["status"] = "success";
+        }
+
+        $json = json_encode($response);
+        echo $json;
     }
 }
 
