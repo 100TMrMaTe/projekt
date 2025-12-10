@@ -1,60 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="hu">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>YouTube Kereső</title>
+    <style>
+        body { font-family: Arial; max-width: 700px; margin: 40px auto; }
+        input { width: 80%; padding: 10px; font-size: 18px; }
+        button { padding: 10px 15px; font-size: 18px; }
+        .result { margin-top: 20px; }
+        .video {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+    </style>
 </head>
-
 <body>
 
+<h1>YouTube kereső</h1>
 
-  <div style="width:1px; height:1px; overflow:hidden;">
-  <iframe 
-    width="200" height="113"
-    src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=0&controls=1"
-    title="YouTube audio player"
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowfullscreen>
-  </iframe>
-</div>
+<input id="query" type="text" placeholder="Kereső kifejezés...">
+<button onclick="searchYouTube()">Keresés</button>
 
-<form action="https://www.youtube.com/results" method="get" target="">
-  <input type="text" name="search_query" placeholder="Keresés a YouTube-on">
-  <button type="submit">Keresés</button>
-</form>
+<div id="results" class="result"></div>
+
+<script>
+async function searchYouTube() {
+    const query = document.getElementById("query").value;
+    const resultsDiv = document.getElementById("results");
+    resultsDiv.innerHTML = "<p>Keresés folyamatban...</p>";
 
 
+    const api = "AIzaSyAvqcZuWfXHENDGZOhjSKoKyaZe4xGtTVM";
+    // 🔥 FONTOS: Mostantól a saját szervered hívódik meg, nem a YouTube API közvetlenül!
+    const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=3&q=${encodeURIComponent(query)}&key=${api}`;
 
+    const response = await fetch(URL);
+    
+    const data = await response.json();
 
-    <button id="playBtn">Play/Pause</button>
+    console.log(data);
+    console.log(data.items[0].id.videoId);
+    resultsDiv.innerHTML = "";
 
-    <iframe id="ytplayer" width="0" height="0" src="https://www.youtube.com/embed/VIDEÓ_ID?enablejsapi=1"
-        frameborder="0">
-    </iframe>
+    if (!data.items) {
+        resultsDiv.innerHTML = "<p>Nincs találat vagy hiba történt.</p>";
+        return;
+    }
 
+    data.items.forEach(item => {
+        const videoId = item.id.videoId;
+        const title = item.snippet.title;
+        const thumb = item.snippet.thumbnails.medium.url;
 
-
-
-    <script>
-        let player;
-
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('ytplayer');
-        }
-
-        document.getElementById('playBtn').onclick = function () {
-            if (player.getPlayerState() === 1) {
-                player.pauseVideo();
-            } else {
-                player.playVideo();
-            }
-        };
-    </script>
-    <script src="https://www.youtube.com/iframe_api"></script>
+        resultsDiv.innerHTML += `
+            <div class="video">
+                <h3>${title}</h3>
+                <img src="${thumb}" /><br>
+                <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">Megnyitás YouTube-on</a>
+            </div>
+        `;
+    });
+}
+</script>
 
 </body>
-
 </html>
