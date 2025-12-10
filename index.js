@@ -41,6 +41,7 @@ function belepes() {
     })
         .then((x) => x.json())
         .then((valasz) => {
+            console.log(valasz);
             document.getElementById("email").value = "";
             document.getElementById("password").value = "";
             if (valasz.status == "success") {
