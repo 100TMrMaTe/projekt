@@ -8,11 +8,8 @@
         input { width: 80%; padding: 10px; font-size: 18px; }
         button { padding: 10px 15px; font-size: 18px; }
         .result { margin-top: 20px; }
-        .video {
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #ccc;
-        }
+        .video { margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #ccc; cursor: pointer; }
+        #player { margin-top: 30px; }
     </style>
 </head>
 <body>
@@ -24,15 +21,18 @@
 
 <div id="results" class="result"></div>
 
+<div id="player"></div>
+
+<label>Hangerő:</label>
+<input id="volumeSlider" type="range" min="0" max="100" value="50" oninput="setVolume(this.value)">
+
 <script>
 let timer = null;
+let player;
 
 function startSearch() {
     clearTimeout(timer);
-
-    timer = setTimeout(() => {
-        searchYouTube();
-    }, 500); // 0.5 mp várakozás
+    timer = setTimeout(() => { searchYouTube(); }, 500);
 }
 
 async function searchYouTube() {
@@ -47,7 +47,6 @@ async function searchYouTube() {
     resultsDiv.innerHTML = "<p>Keresés folyamatban...</p>";
 
     const api = "AIzaSyAvqcZuWfXHENDGZOhjSKoKyaZe4xGtTVM";
-
     const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=3&q=${encodeURIComponent(query)}&key=${api}`;
 
     const response = await fetch(URL);
@@ -65,22 +64,41 @@ async function searchYouTube() {
         const title = item.snippet.title;
         const thumb = item.snippet.thumbnails.medium.url;
 
-        resultsDiv.innerHTML += `
-            <div class="video">
-                <h3>${title}</h3>
-                <img src="${thumb}" /><br>
-                <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">Megnyitás YouTube-on</a>
-            </div>
+        const div = document.createElement("div");
+        div.className = "video";
+        div.innerHTML = `
+            <h3>${title}</h3>
+            <img src="${thumb}"><br>
+            <span>Kattints a megnyitáshoz</span>
         `;
+        div.onclick = () => embedVideo(videoId);
+
+        resultsDiv.appendChild(div);
     });
 }
+
+function embedVideo(id) {
+    document.getElementById("player").innerHTML = `
+        <iframe id="ytFrame" width="600" height="340" src="https://www.youtube.com/embed/${id}?enablejsapi=1" frameborder="0" allow="autoplay"></iframe>
+    `;
+
+    setTimeout(() => {
+        player = new YT.Player('ytFrame');
+    }, 500);
+}
+
+function setVolume(v) {
+    if (player && player.setVolume) {
+        player.setVolume(v);
+    }
+}
+
+// YouTube API betöltése
+var tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 </script>
 
 </body>
 </html>
-
-
-
-
-
-AIzaSyAvqcZuWfXHENDGZOhjSKoKyaZe4xGtTVM
