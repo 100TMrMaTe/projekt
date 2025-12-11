@@ -1,7 +1,7 @@
 <?php
 function Connect_to_server()
 {
-  $servername = "localhost";
+  $servername = "172.16.2.100";
   $username = "root";
   $password = "";
 
