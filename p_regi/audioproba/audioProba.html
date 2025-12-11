@@ -19,28 +19,40 @@
 
 <h1>YouTube kereső</h1>
 
-<input id="query" type="text" placeholder="Kereső kifejezés...">
+<input id="query" type="text" placeholder="Kereső kifejezés..." oninput="startSearch()">
 <button onclick="searchYouTube()">Keresés</button>
 
 <div id="results" class="result"></div>
 
 <script>
+let timer = null;
+
+function startSearch() {
+    clearTimeout(timer);
+
+    timer = setTimeout(() => {
+        searchYouTube();
+    }, 500); // 0.5 mp várakozás
+}
+
 async function searchYouTube() {
     const query = document.getElementById("query").value;
     const resultsDiv = document.getElementById("results");
+
+    if (query.length < 3) {
+        resultsDiv.innerHTML = "<p>Írj be legalább 3 karaktert...</p>";
+        return;
+    }
+
     resultsDiv.innerHTML = "<p>Keresés folyamatban...</p>";
 
-
     const api = "AIzaSyAvqcZuWfXHENDGZOhjSKoKyaZe4xGtTVM";
-    // 🔥 FONTOS: Mostantól a saját szervered hívódik meg, nem a YouTube API közvetlenül!
+
     const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=3&q=${encodeURIComponent(query)}&key=${api}`;
 
     const response = await fetch(URL);
-    
     const data = await response.json();
 
-    console.log(data);
-    console.log(data.items[0].id.videoId);
     resultsDiv.innerHTML = "";
 
     if (!data.items) {
@@ -66,3 +78,9 @@ async function searchYouTube() {
 
 </body>
 </html>
+
+
+
+
+
+AIzaSyAvqcZuWfXHENDGZOhjSKoKyaZe4xGtTVM
