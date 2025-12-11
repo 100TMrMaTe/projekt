@@ -1,0 +1,26 @@
+oldal otletek:
+
+
+telefon:
+ketto ful: az elso az osszes zene(ha nincs kereses) + egy kereso
+	   masodik ful tartalmaz egy keresot alatta egy lista amiben kijön a keresett video
+
+
+gepen:
+	bal oldalt a kereso es allatta a keresett videok/zenek, es itt jeleneik meg alapbol a korabban kilistazott zenek.
+	jobb oldalt lesz a lejatszas, hangero, csuszka, zenecime. Alatta megjelennek a  lejatszasi listaba helyezett zenek (kedvelt zenek), ez mindenkinek sajat az altala 	kedelt zenek lennenek (id-k alapjan).
+		
+
+
+
+mukodes:
+	ha nincs a listában akkor hasznalja csak a youtube kereso apijat. 
+	A video funkcionaltasa csak kulon gombok a weboldalon (pl.:megallit/elindit, csuszka, hangcsuszka)
+	a rusberry-n lesz beágyazva a video, es a gombok küldik a kliensnek a metodusokat.
+
+
+
+kedvenc zenek megjelenitese fiokonkent. 
+
+kiiirni egy navbarra a bejelentkezett emailt es hogy mennyi ideje van meg vissza az automatikus kijelentkezesig;
+	

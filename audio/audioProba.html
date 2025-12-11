@@ -59,10 +59,13 @@ async function searchYouTube() {
         return;
     }
 
+    linkList.innerHTML = "";
     data.items.forEach(item => {
         const videoId = item.id.videoId;
         const title = item.snippet.title;
         const thumb = item.snippet.thumbnails.medium.url;
+
+        linkList.innerHTML += `<p><a href=\"https://www.youtube.com/watch?v=${videoId}\" target=\"_blank\">${title}</a></p>`;
 
         const div = document.createElement("div");
         div.className = "video";
@@ -99,6 +102,8 @@ tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 </script>
+
+<div id="linkList" style="position: fixed; right: 20px; top: 40px; width: 250px; background: #f5f5f5; padding: 10px; border: 1px solid #ccc; border-radius: 8px; max-height: 80vh; overflow-y: auto;"></div>
 
 </body>
 </html>
