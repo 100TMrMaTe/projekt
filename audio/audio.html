@@ -9,18 +9,19 @@
     <title>Document</title>
     <style>
         .email {
-            background-color: rgb(50, 50, 50);
-            border-color: white;
+
+            border-color: rgb(50, 50, 50);
         }
 
         .email::placeholder {
-            color: white;
+            color: black;
         }
 
         .email:focus {
-            background-color: rgb(50, 50, 50);
+
+
             box-shadow: none;
-            border-color: white;
+            border-color: rgb(50, 50, 50);
         }
     </style>
 </head>
@@ -38,11 +39,14 @@
 
 
                 <div class="pt-5">
-                    <input type="email" class="form-control email" style="height: 45px; color: white"
-                        placeholder="Email" id="email" aria-describedby="emailHelp" name="email">
+                    <input type="text" oninput="KeresesKezdese()" class="form-control email"
+                        style="height: 45px; color: black;" placeholder="Keresés..." id="kereso" name="kereso">
                 </div>
-                
-                <button onclick="searchYouTube()">Keresés</button>
+
+                <button onclick="keres()">Keresés</button>
+
+
+                <div id="eredmeny" class="eredmeny"></div>
 
             </div>
 
@@ -55,6 +59,108 @@
         </div>
     </div>
 
+
+    <script>
+        let timer = null;
+        let player;
+
+        function KeresesKezdese() {
+            clearTimeout(timer);
+            timer = setTimeout(() => { keres(); }, 500);
+        }
+
+        function keres() {
+            const kereso = document.getElementById("kereso").value;
+            const eredmeny = document.getElementById("eredmeny");
+
+            if (kereso.length < 3) {
+                eredmeny.innerHTML = "<p>Írj be legalább 3 karaktert...</p>";
+                return;
+            }
+
+            eredmeny.innerHTML = "<p>Keresés folyamatban...</p>";
+
+            const apikulcs = "AIzaSyAvqcZuWfXHENDGZOhjSKoKyaZe4xGtTVM";
+            const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=3&q=${encodeURIComponent(kereso)}&key=${apikulcs}`;
+
+
+
+
+            fetch(URL, {
+            })
+                .then(valasz => valasz.json())
+                .then(adatok => {
+
+
+                    videok = [];
+
+
+                    adat.items.forEach(item => {
+                        videok.push({
+                            videoId: item.id.videoId,
+                            title: item.snippet.title,
+                            img: item.snippet.thumbnails.medium.url
+                        });
+                    });
+
+                    console.log(videok);
+
+                });
+
+
+
+            //console.log(adat[0]);
+
+            eredmeny.innerHTML = "";
+
+            if (!adat.items) {
+                eredmeny.innerHTML = "<p>Nincs találat vagy hiba történt.</p>";
+                return;
+            }
+
+            linkList.innerHTML = "";
+            data.items.forEach(item => {
+                const videoId = item.id.videoId;
+                const title = item.snippet.title;
+                const thumb = item.snippet.thumbnails.medium.url;
+
+                linkList.innerHTML += `<p><a href=\"https://www.youtube.com/watch?v=${videoId}\" target=\"_blank\">${title}</a></p>`;
+
+                const div = document.createElement("div");
+                div.className = "video";
+                div.innerHTML = `
+            <h3>${title}</h3>
+            <img src="${thumb}"><br>
+            <span>Kattints a megnyitáshoz</span>
+        `;
+                div.onclick = () => embedVideo(videoId);
+
+                resultsDiv.appendChild(div);
+            });
+        }
+
+        function embedVideo(id) {
+            document.getElementById("player").innerHTML = `
+        <iframe id="ytFrame" width="600" height="340" src="https://www.youtube.com/embed/${id}?enablejsapi=1" frameborder="0" allow="autoplay"></iframe>
+    `;
+
+            setTimeout(() => {
+                player = new YT.Player('ytFrame');
+            }, 500);
+        }
+
+        function setVolume(v) {
+            if (player && player.setVolume) {
+                player.setVolume(v);
+            }
+        }
+
+        // YouTube API betöltése
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    </script>
 </body>
 
 </html>
