@@ -1,5 +1,5 @@
 <?php
-include_once "database.php";
+include_once "database/database.php";
 
 $conn = Connect_to_server();
 

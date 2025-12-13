@@ -1,8 +1,8 @@
 function kuldes() {
-    nev = document.getElementById("nev").value;
-    osztaly = document.getElementById("osztaly").value;
-    email = document.getElementById("email").value;
-    password = document.getElementById("password").value;
+    let nev = document.getElementById("nev").value;
+    let osztaly = document.getElementById("osztaly").value;
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
 
     fetch("reg", {
         method: "POST",
@@ -29,8 +29,8 @@ function kuldes() {
 }
 
 function belepes() {
-    email = document.getElementById("email").value;
-    password = document.getElementById("password").value;
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
 
     fetch("login", {
         method: "POST",
@@ -45,7 +45,7 @@ function belepes() {
             document.getElementById("email").value = "";
             document.getElementById("password").value = "";
             if (valasz.status == "success") {
-                window.location.href = "http://localhost/suliscucc/projekt/mainpage.html";
+                window.location.href = "../audio/audio.html";
             }
             else {
                 alert(valasz.message);
