@@ -131,8 +131,6 @@ function removeusers(id) {
     })
         .then((x) => x.json())
         .then((valasz) => {
-            //console.log(valasz);
-
             adminget();
         });
 }
