@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $json = json_encode($result);
         echo $json;
-    } else if ($apiParts[0] == "approveuser") {
+    } else if ($apiParts[1] == "approveuser") {
         $result = Update_user_approval($conn, $data["id"], true);
         $json = json_encode($result);
         echo $json;
@@ -73,7 +73,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if ($apiParts[0] == "adminpage") {
+    if ($apiParts[1] == "adminpage") {
         $response = [];
 
         $response["log"]   = Select_from_log($conn, "users_log");
@@ -88,8 +88,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
     $json = file_get_contents("php://input");
     $data = json_decode($json, true);
-
-    if ($apiParts[0] == "removereg") {
+    if ($apiParts[1] == "removereg") {
+        
         $response["status"] = "error";
 
         if (Delete_from_users($conn, $data["id"])) {
@@ -98,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "DELETE") {
 
         $json = json_encode($response);
         echo $json;
-    } else if ($apiParts[0] == "removeusers") {
+    } else if ($apiParts[1] == "removeusers") {
         $response["status"] = "error";
 
         if (Delete_from_users($conn, $data["id"])) {
