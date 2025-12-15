@@ -61,6 +61,8 @@
 
 
     <script>
+
+
         let timer = null;
         let player;
 
@@ -82,63 +84,103 @@
 
             const apikulcs = "AIzaSyAvqcZuWfXHENDGZOhjSKoKyaZe4xGtTVM";
             const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=3&q=${encodeURIComponent(kereso)}&key=${apikulcs}`;
+            /*
+                        fetch(URL, {
+                        })
+                            .then(valasz => valasz.json())
+                            .then(adatok => {
+            
+            
+                                videok = [];
+            
+            
+                                adatok.items.forEach(item => {
+                                    videok.push({
+                                        videoId: item.id.videoId,
+                                        title: item.snippet.title,
+                                        img: item.snippet.thumbnails.medium.url
+                                    });
+                                });
+            
+                                console.log(videok);
+            
+            
+                            });
+            */
 
-
-
-
-            fetch(URL, {
-            })
-                .then(valasz => valasz.json())
-                .then(adatok => {
-
-
-                    videok = [];
-
-
-                    adat.items.forEach(item => {
-                        videok.push({
-                            videoId: item.id.videoId,
-                            title: item.snippet.title,
-                            img: item.snippet.thumbnails.medium.url
-                        });
-                    });
-
-                    console.log(videok);
-
-                });
-
-
+            
 
             //console.log(adat[0]);
 
-            eredmeny.innerHTML = "";
+            
 
-            if (!adat.items) {
-                eredmeny.innerHTML = "<p>Nincs találat vagy hiba történt.</p>";
-                return;
+              
+        function lekerVideok(vissza) {
+                fetch(URL)
+                    .then(valasz => valasz.json())
+                    .then(adatok => {
+
+                        const videok = [];
+
+                        adatok.items.forEach(item => {
+                            videok.push({
+                                videoId: item.id.videoId,
+                                title: item.snippet.title,
+                                img: item.snippet.thumbnails.medium.url
+                            });
+                        });
+
+                        vissza(videok);
+                    });
             }
 
-            linkList.innerHTML = "";
-            data.items.forEach(item => {
-                const videoId = item.id.videoId;
-                const title = item.snippet.title;
-                const thumb = item.snippet.thumbnails.medium.url;
+/*
+            lekerVideok(videok => {
+                console.log(videok);
+            });
+*/
 
-                linkList.innerHTML += `<p><a href=\"https://www.youtube.com/watch?v=${videoId}\" target=\"_blank\">${title}</a></p>`;
 
-                const div = document.createElement("div");
+            lekerVideok(function (videok) {
+                
+                eredmeny.innerHTML = "";
+
+                console.log(videok[0].title);
+
+                if (!videok.length) {
+                eredmeny.innerHTML = "<p>Nincs találat vagy hiba történt.</p>";
+                return;
+                }
+
+
+            let div = document.createElement("div");
                 div.className = "video";
                 div.innerHTML = `
-            <h3>${title}</h3>
-            <img src="${thumb}"><br>
+            <h3>${videok[0].title}</h3>
+            <img src="${videok[0].img}"><br>
             <span>Kattints a megnyitáshoz</span>
         `;
                 div.onclick = () => embedVideo(videoId);
 
-                resultsDiv.appendChild(div);
-            });
-        }
+                eredmeny.appendChild(div);
 
+
+            
+
+                
+            //linkList.innerHTML = "";
+
+
+                //linkList.innerHTML += `<p><a href=\"https://www.youtube.com/watch?v=${videoId}\" target=\"_blank\">${title}</a></p>`;
+
+
+            });
+           
+
+            
+
+        }
+/*
         function embedVideo(id) {
             document.getElementById("player").innerHTML = `
         <iframe id="ytFrame" width="600" height="340" src="https://www.youtube.com/embed/${id}?enablejsapi=1" frameborder="0" allow="autoplay"></iframe>
@@ -159,7 +201,7 @@
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);*/
     </script>
 </body>
 
