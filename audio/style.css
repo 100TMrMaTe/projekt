@@ -1,0 +1,18 @@
+.email {
+
+            border-color: rgb(50, 50, 50);
+        }
+
+        .email::placeholder {
+            color: black;
+        }
+
+        .email:focus {
+
+
+            box-shadow: none;
+            border-color: rgb(50, 50, 50);
+        }
+        body {
+            background-color: #f0f0f0;
+        }
