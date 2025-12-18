@@ -12,21 +12,36 @@
         crossorigin="anonymous"></script>
     <style>
         #doboz {
-            background-color: rgba(255, 255, 255, 1);
+            /*background-color: rgba(255, 255, 255, 1);*/
+            background: transparent;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         }
 
         html,
         body {
             height: 100%;
+            width: 100%;
         }
 
         body {
-            background: linear-gradient(to bottom right, blue, cyan);
+            /*background: linear-gradient(to bottom right, blue, cyan);*/
+
+            background-image: url("bg1.jpg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
         }
 
         .email {
+            /*
             background-color: rgb(50, 50, 50);
             border-color: white;
+            */
+            background: rgba(255, 255, 255, 0.075);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
         }
 
         .email::placeholder {
@@ -34,14 +49,26 @@
         }
 
         .email:focus {
+            /*
             background-color: rgb(50, 50, 50);
             box-shadow: none;
             border-color: white;
+            */
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
         .jelszo {
+            /*
             background-color: rgb(50, 50, 50);
             border-color: white;
+            */
+            background: rgba(255, 255, 255, 0.075);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
         }
 
         .jelszo::placeholder {
@@ -49,9 +76,15 @@
         }
 
         .jelszo:focus {
+            /*
             background-color: rgb(50, 50, 50);
             box-shadow: none;
             border-color: white;
+            */
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
         body {
@@ -59,12 +92,46 @@
         }
 
         #doboz {
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6)
+            /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); */
+            background: transparent;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         }
 
         .btn-link {
             text-decoration: none;
         }
+
+        #exampleCheck1 {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #exampleCheck1:checked {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+
 
         @media screen and (max-width: 842px) {
             #doboz {
@@ -88,13 +155,12 @@
 
             </div>
             <div class=" col-12 col-md-8 col-lg-4">
-                <div class="p-3 position-absolute top-50 start-50 translate-middle rounded-3"
-                    style="background-color: rgb(50, 50, 50);" id="doboz">
+                <div class="p-3 position-absolute top-50 start-50 translate-middle rounded-3" id="doboz">
                     <div class="mb-3 p-4">
                         <label for="text" class="form-label d-flex justify-content-center">
                             <h2 class=" text-white ">BEJELENTKEZÉS</h2>
                         </label>
-                        <label class="" style="color: rgb(165, 165, 165);">Kérjük, írja be az
+                        <label class="" style="color: white;">Kérjük, írja be az
                             email címet, illetve a jelszavát.</label>
                         <div class="pt-5">
                             <input type="email" class="form-control email" style="height: 45px; color: white"
@@ -106,18 +172,16 @@
                             style="height: 45px; color: white" id="password" name="password">
                     </div>
                     <div class=" ps-5 pb-5 form-check">
-                        <input type="checkbox" class="form-check-input" style="background-color: rgb(50, 50, 50);"
-                            id="exampleCheck1">
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
                         <label class="form-check-label  text-white">Maradj
                             bejelentkezve.</label>
                     </div>
                     <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary" onclick="belepes()"
-                            style="background-color: rgb(50, 50, 50); border: 2px solid white;">BELÉPÉS</button>
+                        <button type="submit" class="btn btn-primary" onclick="belepes()">BELÉPÉS</button>
                     </div>
                     <div class="mb-3 p-4">
-                        <label  class="" style="color: white">Nincs fiókod? <a href="../reg/reg.html"
-                                style="color: rgb(165, 165, 165); text-decoration:none">Regisztráció</a></label>
+                        <label class="" style="color: white">Nincs fiókod? <a href="../reg/reg.html"
+                                style="color: white; text-decoration:none">Regisztráció</a></label>
                     </div>
                 </div>
             </div>
