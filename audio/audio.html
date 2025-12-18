@@ -9,7 +9,7 @@
     <title></title>
     <link rel="stylesheet" href="style.css">
     <style>
-        
+
     </style>
 </head>
 
@@ -35,16 +35,17 @@
 
                 <div id="eredmeny" class="eredmeny"></div>
 
-                
+
 
                 <label>Hangerő:</label>
-                
+
 
             </div>
 
             <div class="col-6">
                 <div id="lejatszo" class="lejatszo"></div>
 
+            <button onclick="inditas()">Lejátszás</button>
 
 
             </div>
@@ -56,39 +57,56 @@
 
 
         let player;
+        let isPlaying = false;
 
-        function hangSzabalyzo(hangero) {   
-                if (player && player.setVolume) {
-                    player.setVolume(hangero);
-                }
-            }
-
-/*
-            function embedVideo(id) {
-                document.getElementById("lejatszo").innerHTML = `
-        <iframe id="ytFrame" width="600" height="340" src="https://www.youtube.com/embed/${id}?enablejsapi=1" frameborder="0" allow="autoplay"></iframe>
-    `;
-                setTimeout(() => {
-                    player = new YT.Player('ytFrame');
-                }, 500);
-            }
-*/
-function embedVideo(id) {
-    document.getElementById("lejatszo").innerHTML = `<div id="ytFrame"></div> <br> <input id="volumeSlider" type="range" min="0" max="100" value="50" oninput="hangSzabalyzo(this.value)">`;
-    ;
-    player = new YT.Player('ytFrame', {
-        width: 600,
-        height: 340,
-        videoId: id,
-        events: {
-            onReady: () => {
-                player.setVolume(
-                    document.getElementById("volumeSlider").value
-                );
+        function hangSzabalyzo(hangero) {
+            if (player && player.setVolume) {
+                player.setVolume(hangero);
             }
         }
-    });
-}
+
+        function inditas()
+        {
+            if (isPlaying)
+            {
+                player.pauseVideo();   
+            }
+            if (!isPlaying)
+            {
+                player.playVideo();
+            }
+
+            isPlaying = !isPlaying;
+        }
+
+        /*
+                    function embedVideo(id) {
+                        document.getElementById("lejatszo").innerHTML = `
+                <iframe id="ytFrame" width="600" height="340" src="https://www.youtube.com/embed/${id}?enablejsapi=1" frameborder="0" allow="autoplay"></iframe>
+            `;
+                        setTimeout(() => {
+                            player = new YT.Player('ytFrame');
+                        }, 500);
+                    }
+        */
+        function embedVideo(id) {
+            document.getElementById("lejatszo").innerHTML = `<div id="ytFrame"></div> <br> <input id="volumeSlider" type="range" min="0" max="100" value="50" oninput="hangSzabalyzo(this.value)">`;;
+            player = new YT.Player('ytFrame', {
+                width: 600,
+                height: 340,
+                videoId: id,
+                events: {
+                    onReady: () => {
+                        player.setVolume(
+                            document.getElementById("volumeSlider").value
+                        );
+                    }
+                }
+            });
+        }
+
+        
+
         function keres() {
             const kereso = document.getElementById("kereso").value;
             const eredmeny = document.getElementById("eredmeny");
@@ -102,15 +120,6 @@ function embedVideo(id) {
 
             const apikulcs = "AIzaSyAvqcZuWfXHENDGZOhjSKoKyaZe4xGtTVM";
             const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=3&q=${encodeURIComponent(kereso)}&key=${apikulcs}`;
-
-
-
-
-            
-
-
-            
-
 
             function lekerVideok(vissza) {
                 fetch(URL)
