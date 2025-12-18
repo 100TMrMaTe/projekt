@@ -12,7 +12,6 @@
 
     </style>
 </head>
-
 <body>
 
     <div class="container">
@@ -32,22 +31,13 @@
 
                 <button onclick="keres()">Keresés</button>
 
-
                 <div id="eredmeny" class="eredmeny"></div>
 
-
-
                 <label>Hangerő:</label>
-
-
             </div>
 
             <div class="col-6">
                 <div id="lejatszo" class="lejatszo"></div>
-
-            <button onclick="inditas()">Lejátszás</button>
-
-
             </div>
         </div>
     </div>
@@ -65,20 +55,16 @@
             }
         }
 
-        function inditas()
-        {
-            if (isPlaying)
-            {
-                player.pauseVideo();   
+        function inditas() {
+            if (isPlaying) {
+                player.pauseVideo();
             }
-            if (!isPlaying)
-            {
+            if (!isPlaying) {
                 player.playVideo();
             }
 
             isPlaying = !isPlaying;
         }
-
         /*
                     function embedVideo(id) {
                         document.getElementById("lejatszo").innerHTML = `
@@ -90,7 +76,10 @@
                     }
         */
         function embedVideo(id) {
-            document.getElementById("lejatszo").innerHTML = `<div id="ytFrame"></div> <br> <input id="volumeSlider" type="range" min="0" max="100" value="50" oninput="hangSzabalyzo(this.value)">`;;
+            document.getElementById("lejatszo").innerHTML = `<div id="ytFrame"></div> <br>
+                                                            <input id="volumeSlider" type="range" min="0" max="100" value="50" oninput="hangSzabalyzo(this.value)"><br>
+                                                            <input type="range" id="seekSlider" min="0" max="100" value="0"><br>
+                                                            <button onclick="inditas()">Lejátszás</button>`;
             player = new YT.Player('ytFrame', {
                 width: 600,
                 height: 340,
@@ -100,12 +89,25 @@
                         player.setVolume(
                             document.getElementById("volumeSlider").value
                         );
+                        let seekSlider = document.getElementById("seekSlider");
+
+                        addEventListener("input", () => {
+                            let seekto = player.getDuration() * (seekSlider.value / 100);
+                            player.seekTo(seekto, true);
+                        });
+
+                        setInterval(() => {
+                            if (player && player.getDuration) {
+                                let ujpozicio = player.getCurrentTime() * (100 / player.getDuration());
+                                seekSlider.value = ujpozicio;
+                            }
+                        }, 1000);
                     }
                 }
             });
         }
 
-        
+
 
         function keres() {
             const kereso = document.getElementById("kereso").value;
@@ -125,7 +127,7 @@
                 fetch(URL)
                     .then(valasz => valasz.json())
                     .then(adatok => {
-
+                        console.log(adatok);
                         const videok = [];
 
                         adatok.items.forEach(item => {
@@ -159,8 +161,7 @@
                 }
                 //console.log(videok);
 
-
-
+                
                 for (let i = 0; i < videok.length; i++) {
                     let div = document.createElement("div");
                     //console.log("asd");
