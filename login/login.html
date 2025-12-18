@@ -14,7 +14,7 @@
         #doboz {
             /*background-color: rgba(255, 255, 255, 1);*/
             background: transparent;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         }
 
@@ -31,6 +31,7 @@
             background-repeat: no-repeat;
             background-size: cover;
             background-position: center;
+
         }
 
         .email {
@@ -88,7 +89,13 @@
         }
 
         body {
+            /*
             font-family: 'Roboto', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            */
+
+            
+            
         }
 
         #doboz {
@@ -103,32 +110,19 @@
             text-decoration: none;
         }
 
-        #exampleCheck1 {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(5px);
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        }
-
-        #exampleCheck1:checked {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(5px);
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        }
 
         .btn {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.2);
             border: 2px solid rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(5px);
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
         }
 
         .btn:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.3);
             border: 2px solid rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(5px);
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
 
@@ -156,7 +150,7 @@
             </div>
             <div class=" col-12 col-md-8 col-lg-4">
                 <div class="p-3 position-absolute top-50 start-50 translate-middle rounded-3" id="doboz">
-                    <div class="mb-3 p-4">
+                    <div class="mb-2 p-4">
                         <label for="text" class="form-label d-flex justify-content-center">
                             <h2 class=" text-white ">BEJELENTKEZÉS</h2>
                         </label>
@@ -167,21 +161,32 @@
                                 placeholder="Email" id="email" aria-describedby="emailHelp" name="email">
                         </div>
                     </div>
-                    <div class="mb-3 ps-4 pe-4">
+                    <div class="mb-5 ps-4 pe-4">
                         <input type="password" class="form-control jelszo" placeholder="Jelszó"
                             style="height: 45px; color: white" id="password" name="password">
                     </div>
+                    <!--
                     <div class=" ps-5 pb-5 form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                        <label class="container">
+                            <input type="checkbox" id="exampleCheck1">
+                            <svg viewBox="0 0 64 64" height="2em" width="2em">
+                                <path
+                                    d="M 0 16 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 16 L 32 48 L 64 16 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 16"
+                                    pathLength="575.0541381835938" class="path"></path>
+                            </svg>
+                        </label>
+                        <input type="checkbox" class="form-check-input" >
                         <label class="form-check-label  text-white">Maradj
                             bejelentkezve.</label>
                     </div>
+                    -->
                     <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-primary" onclick="belepes()">BELÉPÉS</button>
+                        <button type="submit" class="btn btn-light text-white p-2 ps-3 pe-3"
+                            onclick="belepes()">BELÉPÉS</button>
                     </div>
                     <div class="mb-3 p-4">
                         <label class="" style="color: white">Nincs fiókod? <a href="../reg/reg.html"
-                                style="color: white; text-decoration:none">Regisztráció</a></label>
+                                style="color: white; text-decoration:none"> <i>Regisztráció</i> </a></label>
                     </div>
                 </div>
             </div>
