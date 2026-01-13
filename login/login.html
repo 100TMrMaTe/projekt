@@ -37,21 +37,6 @@
                         <input type="password" class="form-control jelszo" placeholder="Jelszó"
                             style="height: 45px; color: white" id="password" name="password">
                     </div>
-                    <!--
-                    <div class=" ps-5 pb-5 form-check">
-                        <label class="container">
-                            <input type="checkbox" id="exampleCheck1">
-                            <svg viewBox="0 0 64 64" height="2em" width="2em">
-                                <path
-                                    d="M 0 16 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 16 L 32 48 L 64 16 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 16"
-                                    pathLength="575.0541381835938" class="path"></path>
-                            </svg>
-                        </label>
-                        <input type="checkbox" class="form-check-input" >
-                        <label class="form-check-label  text-white">Maradj
-                            bejelentkezve.</label>
-                    </div>
-                    -->
                     <div class="d-flex justify-content-center">
                         <button type="submit" class="btn btn-light text-white p-2 ps-3 pe-3"
                             onclick="belepes()">BELÉPÉS</button>
@@ -68,6 +53,29 @@
         </div>
     </div>
     <script src="../index.js"></script>
+    <script>
+        //background kép változtatása másodpercenként
+        function bgChange() {
+            const bgImages = [
+                'bg1.jpg',
+                'bg2.jpg',
+                'bg3.png',
+                'bg4.jpg',
+                'bg5.jpg',
+                'bg6.jpg',
+                '7.jpg',
+                '8.jpg',
+                '9.jpg',
+                '10.jpg',
+                '11.jpg',
+                '12.jpg'
+            ];
+            const index = Math.floor(Math.random() * bgImages.length);
+            document.body.style.backgroundImage = `url(${bgImages[index]})`;
+            console.log("Background changed to: " + bgImages[index]);
+        }
+        //setInterval(bgChange, 3000);
+    </script>
 </body>
 
 </html>

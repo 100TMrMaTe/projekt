@@ -1,0 +1,223 @@
+
+#doboz {
+    background: transparent;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    user-select: none;
+}
+
+body {
+    background-image: url("9.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.email {
+    background: rgba(255, 255, 255, 0.075);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.email::placeholder {
+    color: white;
+}
+
+.email:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.jelszo {
+    background: rgba(255, 255, 255, 0.075);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.jelszo::placeholder {
+    color: white;
+}
+
+.jelszo:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.nev {
+    background: rgba(255, 255, 255, 0.075);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.nev::placeholder {
+    color: white;
+}
+
+.nev:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.osztaly {
+    background: rgba(255, 255, 255, 0.075);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.osztaly::placeholder {
+    color: white;
+}
+
+.osztaly:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+body {
+    font-family: Verdana;
+}
+
+#doboz {
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-link {
+    text-decoration: none;
+}
+
+
+.btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+
+
+@media screen and (max-width: 842px) {
+    #doboz {
+        width: 420.58px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    #doboz {
+        width: 90%;
+    }
+}
+
+
+/*
+.email {
+    background-color: rgb(50, 50, 50);
+    border-color: white;
+}
+
+.email::placeholder {
+    color: white;
+}
+
+.email:focus {
+    background-color: rgb(50, 50, 50);
+    box-shadow: none;
+    border-color: white;
+}
+
+.jelszo {
+    background-color: rgb(50, 50, 50);
+    border-color: white;
+}
+
+.jelszo::placeholder {
+    color: white;
+}
+
+.jelszo:focus {
+    background-color: rgb(50, 50, 50);
+    box-shadow: none;
+    border-color: white;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+#doboz {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6)
+}
+
+.btn-link {
+    text-decoration: none;
+}
+
+.nev {
+    background-color: rgb(50, 50, 50);
+    border-color: white;
+}
+
+.nev::placeholder {
+    color: white;
+}
+
+.nev:focus {
+    background-color: rgb(50, 50, 50);
+    box-shadow: none;
+    border-color: white;
+}
+
+.osztaly {
+    background-color: rgb(50, 50, 50);
+    border-color: white;
+}
+
+.osztaly::placeholder {
+    color: white;
+}
+
+.osztaly:focus {
+    background-color: rgb(50, 50, 50);
+    box-shadow: none;
+    border-color: white;
+}
+
+@media screen and (max-width: 842px) {
+    #doboz {
+        width: 420.58px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    #doboz {
+        width: 90%;
+    }
+}
+*/
