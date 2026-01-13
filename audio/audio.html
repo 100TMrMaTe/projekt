@@ -9,7 +9,7 @@
     <title></title>
     <link rel="stylesheet" href="style.css">
     <style>
-        body{background-color: aqua;}
+        body{background-color: gray;}
     </style>
 </head>
 
@@ -26,13 +26,11 @@
 
                 <nav class="navbar">
                     
-                        <!-- Hamburger gomb -->
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                             data-bs-target="#navbarMenu">
                             <span class="navbar-toggler-icon"></span>
                         </button>
 
-                        <!-- Lenullázható menü -->
                         <div class="collapse navbar-collapse" id="navbarMenu">
                             <ul class="navbar-nav mt-3">
                                 <li class="nav-item">
@@ -124,8 +122,6 @@
                         
         }
 
-
-
         function embedVideo(id) {
             document.getElementById("lejatszo").innerHTML = `<div id="ytFrame"></div> <br>
                                                             <label>Hangerő: </label>
@@ -141,15 +137,11 @@
                         player.setVolume(
                             document.getElementById("volumeSlider").value
                         );
-
-                        slider();
-                        
+                        slider();   
                     }
                 }
             });
         }
-
-
 
         function keres() {
             const kereso = document.getElementById("kereso").value;
@@ -164,8 +156,6 @@
 
             const apikulcs = "AIzaSyAvqcZuWfXHENDGZOhjSKoKyaZe4xGtTVM";
             const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=3&q=${encodeURIComponent(kereso)}&key=${apikulcs}`;
-
-
 
             function lekerVideok(vissza) {
                 fetch(URL)
@@ -192,7 +182,6 @@
                         });
             */
 
-
             lekerVideok(function (videok) {
 
                 eredmeny.innerHTML = "";
@@ -207,20 +196,31 @@
 
 
                 for (let i = 0; i < videok.length; i++) {
-                    let div = document.createElement("div");
+                    let keret = document.createElement("div");
                     //console.log("asd");
-                    div.className = "video";
-                    div.innerHTML = `
-            <h3>${videok[i].title}</h3>
-            <img src="${videok[i].img}"><br>
-            <span>Kattints a megnyitáshoz</span>
-        `;
+                    keret.classList.add("container");
+                    
+                    let talalat = document.createElement("div");
 
+                    //talalat.className = "video";
+                    
+                    talalat.innerHTML = `
+                    <div class="row">
+                        <div class="col-4">
+                            <img src="${videok[i].img}" class="img-fluid"/>
+                        </div>
+                        <div class="col-8">
+                            <h3>${videok[i].title}</h3>
+                        </div>
+                    </div>
+                    `;
+                    
                     //console.log(videok[i].videoId);
                     //console.log(typeof videok[i].videoId);
-                    div.onclick = () => embedVideo(videok[i].videoId);
+                    talalat.onclick = () => embedVideo(videok[i].videoId);
 
-                    eredmeny.appendChild(div);
+                    keret.appendChild(talalat);
+                    eredmeny.appendChild(keret);
                 }
                 //linkList.innerHTML = "";
                 //linkList.innerHTML += `<p><a href=\"https://www.youtube.com/watch?v=${videoId}\" target=\"_blank\">${title}</a></p>`;
