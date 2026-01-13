@@ -81,9 +81,6 @@
         let player;
         let isPlaying = false;
 
-
-
-
         function hangSzabalyzo(hangero) {
             if (player && player.setVolume) {
                 player.setVolume(hangero);
@@ -110,11 +107,30 @@
                         }, 500);
                     }
         */
+        function slider()
+        {
+            let seekSlider = document.getElementById("seekSlider");
+            seekSlider.addEventListener("input", () => {
+                            let seekto = player.getDuration() * (seekSlider.value / 1000);
+                            player.seekTo(seekto, true);
+                        });
+
+                            if (player && player.getDuration) {
+                                let ujpozicio = player.getCurrentTime() * (1000 / player.getDuration());
+                                seekSlider.value = ujpozicio;
+                            };
+
+                            requestAnimationFrame(slider);
+                        
+        }
+
+
+
         function embedVideo(id) {
             document.getElementById("lejatszo").innerHTML = `<div id="ytFrame"></div> <br>
                                                             <label>Hangerő: </label>
                                                             <input id="volumeSlider" type="range" min="0" max="100" value="50" oninput="hangSzabalyzo(this.value)"><br>
-                                                            <input type="range" id="seekSlider" min="0" max="100" value="0"><br>
+                                                            <input type="range" id="seekSlider" min="0" max="1000" value="0" style="width: 100%;"><br>
                                                             <button onclick="inditas()">Lejátszás</button>`;
             player = new YT.Player('ytFrame', {
                 width: 600,
@@ -125,19 +141,9 @@
                         player.setVolume(
                             document.getElementById("volumeSlider").value
                         );
-                        let seekSlider = document.getElementById("seekSlider");
 
-                        addEventListener("input", () => {
-                            let seekto = player.getDuration() * (seekSlider.value / 100);
-                            player.seekTo(seekto, true);
-                        });
-
-                        setInterval(() => {
-                            if (player && player.getDuration) {
-                                let ujpozicio = player.getCurrentTime() * (100 / player.getDuration());
-                                seekSlider.value = ujpozicio;
-                            }
-                        }, 1000);
+                        slider();
+                        
                     }
                 }
             });
@@ -158,6 +164,8 @@
 
             const apikulcs = "AIzaSyAvqcZuWfXHENDGZOhjSKoKyaZe4xGtTVM";
             const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=3&q=${encodeURIComponent(kereso)}&key=${apikulcs}`;
+
+
 
             function lekerVideok(vissza) {
                 fetch(URL)
