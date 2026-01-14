@@ -17,12 +17,21 @@ function Connect_to_server()
 }
 function registration($conn, $username, $password, $email, $class)
 {
+  $usersql = "SELECT * FROM users WHERE email='$email'";
+
+
   $password = password_hash($password, PASSWORD_BCRYPT);
   $username = mysqli_real_escape_string($conn, $username);
   $email = mysqli_real_escape_string($conn, $email);
   if(str_ends_with($email, "@ady-nagyatad.hu") == false){
     $vissza["status"] = "error";
     $vissza["message"] = "Csak sulis email cimmel lehet regisztralni!"; 
+    echo json_encode($vissza);
+    return;
+  }else if(mysqli_query($conn, $usersql)->num_rows > 0){
+    $vissza["status"] = "error";
+    $vissza["message"] = "Az email mar foglalt!"; 
+    $vissza["longmessage"] = "Amennyiben nem te regisztraltal, kerlek vedd fel a kapcsolatot a rendszergazdaval!";
     echo json_encode($vissza);
     return;
   }
