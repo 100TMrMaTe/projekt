@@ -1,149 +1,38 @@
 function kuldes() {
-    let nev = document.getElementById("nev").value;
-    let osztaly = document.getElementById("osztaly").value;
+    let user_name = document.getElementById("nev").value;
     let email = document.getElementById("email").value;
-    let password = document.getElementById("password").value;
+    let user_password = document.getElementById("password").value;
+    let user_class = document.getElementById("osztaly").value;
 
-    fetch("reg", {
+    fetch("index.php", {
         method: "POST",
-        body: JSON.stringify({
-            nev: nev,
-            osztaly: osztaly,
-            email: email,
-            password: password,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: user_name, password: password, email: email, class: user_class}),
     })
-        .then((x) => x.json())
-        .then((valasz) => {
-            document.getElementById("nev").value = "";
-            document.getElementById("osztaly").value = "";
-            document.getElementById("email").value = "";
-            document.getElementById("password").value = "";
-            console.log(valasz)
-            if (valasz.sulisemail) {
-                alert(valasz.sulisemail);
-            } else if (valasz.success) {
-                alert("Sikeres regisztráció! Várj az admin jóváhagyására.");
-            }
+        .then((r) => r.json())
+        .then((d) => {
+            console.log(d);
         });
 }
 
-function belepes() {
-    let email = document.getElementById("email").value;
-    let password = document.getElementById("password").value;
-
-    fetch("login", {
-        method: "POST",
-        body: JSON.stringify({
-            email: email,
-            password: password,
-        }),
-    })
-        .then((x) => x.json())
-        .then((valasz) => {
-            console.log(valasz);
-            document.getElementById("email").value = "";
-            document.getElementById("password").value = "";
-            if (valasz.status == "success") {
-                window.location.href = "../audio/audio.html";
-            }
-            else {
-                alert(valasz.message);
-            }
-        });
-}
-
-function adminget() {
-    fetch("adminpage")
-        .then(x => x.json())
-        .then(y => {
-            //console.log(y);
-            document.getElementById("reg").innerHTML = "";
-            document.getElementById("log").innerHTML = "";
-            document.getElementById("users").innerHTML = "";
-            y.reg.forEach(elem => {
-                document.getElementById("reg").innerHTML += regtabla(elem.id, elem.user_name, elem.user_class);
-            });
-            y.users.forEach(elem => {
-                document.getElementById("users").innerHTML += userstabla(elem.id, elem.user_name, elem.user_class);
-            });
-            y.log.forEach(elem => {
-                document.getElementById("log").innerHTML += logtabla(elem.user_name, elem.user_class, elem.datum);
-            });
-        })
-}
-
-function regtabla(id, nev, osztaly) {
-    return `<li class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
-                <div class="d-flex flex-column">
-                    <strong>${nev}</strong>
-                    <span>${osztaly}</span>
-                </div>
-                <div class="d-flex gap-2">
-                    <button class="btn btn-danger btn-sm" onclick="removereg(${id})">Elutasít</button>
-                    <button class="btn btn-success btn-sm" onclick="approvereg(${id})">Jóváhagy</button>
-                </div>
-            </li>`;
-}
-
-function userstabla(id, nev, osztaly) {
-
-    return `<li class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
-                <div class="d-flex flex-column">
-                    <strong>${nev}</strong>
-                    <span>${osztaly}</span>
-                </div>
-                <div class="d-flex gap-2">
-                    <button class="btn btn-danger btn-sm text-white" onclick="removeusers(${id})">Törlés</button>
-                </div>
-            </li>`;
-}
-
-function logtabla(nev, osztaly, datum) {
-    return `<li class="list-group-item bg-dark text-white">
-                <div class="d-flex flex-column">
-                    <strong>${nev} / ${osztaly}</strong>
-                    <span>${datum}</span>
-                </div>
-            </li>`;
-}
-
-function removereg(id) {
-    fetch("removereg", {
-        method: "DELETE",
-        body: JSON.stringify({
-            id: id
-        }),
-    })
-        .then((x) => x.json())
-        .then((valasz) => {
-            //console.log(valasz);
-            adminget();
-        });
-}
-
-function removeusers(id) {
-    fetch("removeusers", {
-        method: "DELETE",
-        body: JSON.stringify({
-            id: id
-        }),
-    })
-        .then((x) => x.json())
-        .then((valasz) => {
-            adminget();
-        });
-}
-
-function approvereg(id) {
-    fetch("approveuser", {
-        method: "POST",
-        body: JSON.stringify({
-            id: id
-        }),
-    })
-        .then((x) => x.json())
-        .then((valasz) => {
-            adminget();
-        });
-}
+ function bgChange() {
+            const bgImages = [
+                'bg1.jpg',
+                'bg2.jpg',
+                'bg3.png',
+                'bg4.jpg',
+                'bg5.jpg',
+                'bg6.jpg',
+                '7.jpg',
+                '8.jpg',
+                '9.jpg',
+                '10.jpg',
+                '11.jpg',
+                '12.jpg',
+                '13.jpg',
+                '14.jpg'
+            ];
+            const randomIndex = Math.floor(Math.random() * bgImages.length);
+            document.body.style.backgroundImage = `url(${bgImages[randomIndex]})`;
+            console.log("Background changed to: " + bgImages[randomIndex]);
+        }
