@@ -1,8 +1,18 @@
 function kuldes() {
-    let nev = document.getElementById("nev").value;
+    let user_name = document.getElementById("nev").value;
     let email = document.getElementById("email").value;
-    let = password = document.getElementById("password").value;
-    let class = document.getElementById("class").value;
+    let user_password = document.getElementById("password").value;
+    let user_class = document.getElementById("osztaly").value;
+
+    fetch("index.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: user_name, password: password, email: email, class: user_class}),
+    })
+        .then((r) => r.json())
+        .then((d) => {
+            console.log(d);
+        });
 }
 
  function bgChange() {
