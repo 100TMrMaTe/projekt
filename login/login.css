@@ -3,6 +3,7 @@
     background: transparent;
     backdrop-filter: blur(10px);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    max-width: 450px;
 }
 
 html,
@@ -15,7 +16,7 @@ body {
 body {
     /*background: linear-gradient(to bottom right, blue, cyan);*/
 
-    background-image: url("11.jpg");
+    background-image: url("7.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
