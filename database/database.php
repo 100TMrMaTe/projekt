@@ -17,23 +17,27 @@ function Connect_to_server()
 }
 function registration($conn, $username, $password, $email, $class)
 {
-  $password = mysqli_real_escape_string($conn, $password);
   $password = password_hash($password, PASSWORD_BCRYPT);
   $username = mysqli_real_escape_string($conn, $username);
   $email = mysqli_real_escape_string($conn, $email);
+  if(str_ends_with($email, "@ady-nagyatad.hu") == false){
+    $vissza["status"] = "error";
+    $vissza["message"] = "Csak sulis email cimmel lehet regisztralni!"; 
+    echo json_encode($vissza);
+    return;
+  }
   $class = mysqli_real_escape_string($conn, $class);
 
 
 
-  $sql = "INSERT INTO users (user_name, email, user_class, user_password) VALUES ('$username', '$password', '$email', '$class')";
+  $sql = "INSERT INTO users (user_name, email, user_class, user_password) VALUES ('$username', '$email', '$class', '$password')";
   if (mysqli_query($conn, $sql)) {
     $vissza["status"] = "success";
-    $vissza["message"] = "Sikeres regisztráció";
-    return true;
+    $vissza["message"] = "Sikeres regisztracio!";
   } else {
     $vissza["status"] = "error";
-    $vissza["message"] = "Hiba a regisztráció során probáld újra!";
+    $vissza["message"] = "Hiba a regisztracio soran probald ujra!";
     $vissza["errormessage"] = mysqli_error($conn);
-    return false;
   }
+  echo json_encode($vissza);
 }
