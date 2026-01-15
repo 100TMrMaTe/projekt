@@ -37,13 +37,12 @@ function registration($conn, $username, $password, $email, $class)
 
   $sql = "INSERT INTO users (user_name, email, user_class, user_password,verification_token) VALUES ('$username', '$email', '$class', '$password', '$token')";
   if (mysqli_query($conn, $sql)) {
-    $vissza["status"] = "success";
-    $vissza["message"] = "Sikeres regisztracio!";
-    $vissza["longmessage"] = "Kerlek ellenorizd az emailed a megerosito linkert!";
+    $vissza["status"] = "success_registration";
+    $vissza["message"] = "Kerlek ellenorizd az emailed a megerosito linkert!";
     echo json_encode($vissza);
     sendVerificationEmail($email, $token);
   } else {
-    $vissza["status"] = "error";
+    $vissza["status"] = "error_registration";
     $vissza["message"] = "Az email mar foglalt!";
     //link forgot message
     //$vissza["errormessage"] = mysqli_error($conn);

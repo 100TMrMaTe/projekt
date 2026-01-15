@@ -18,9 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
         $token = $_GET["email_token"];
         $sql = "UPDATE users SET email_verified = 1 WHERE verification_token = '$token'";
         if (mysqli_query($conn, $sql)) {
-            echo "Az email címed sikeresen megerősítve!";
+            header("Location: http://localhost/suliscucc/projekt/suc_reg/suc_reg.html?status=success_verified&message=Az email sikeresen megerősítve!");
         } else {
-            echo "Hiba történt az email cím megerősítése során."; 
+            header("Location: http://localhost/suliscucc/projekt/suc_reg/suc_reg.html?status=error_verified&message=Hiba történt az email megerősítése során.");
         }
     }
 }
