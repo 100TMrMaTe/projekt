@@ -3,9 +3,9 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-require_once __DIR__ . "/../../PHPMailer-master/src/PHPMailer.php";
-require_once __DIR__ . "/../../PHPMailer-master/src/SMTP.php";
-require_once __DIR__ . "/../../PHPMailer-master/src/Exception.php";
+require_once __DIR__ . "/../PHPMailer-master/src/PHPMailer.php";
+require_once __DIR__ . "/../PHPMailer-master/src/SMTP.php";
+require_once __DIR__ . "/../PHPMailer-master/src/Exception.php";
 
 function sendVerificationEmail($toEmail, $token)
 {

@@ -17,7 +17,12 @@ function kuldes() {
   })
     .then((r) => r.json())
     .then((d) => {
-      console.log(d);
+      if (d.status === "success_registration") {
+        window.location.href = "http://localhost/suliscucc/projekt/suc_reg/suc_reg.html?status=success_registration&message="+d.message;
+      }
+      else if (d.status === "error_registration") {
+        window.location.href = "http://localhost/suliscucc/projekt/suc_reg/suc_reg.html?status=error_registration&message="+d.message;
+      }
     });
 }
 
@@ -41,4 +46,18 @@ function bgChange() {
   const randomIndex = Math.floor(Math.random() * bgImages.length);
   document.body.style.backgroundImage = `url(${bgImages[randomIndex]})`;
   console.log("Background changed to: " + bgImages[randomIndex]);
+}
+
+function suc_reg() {
+  const searchParams = new URLSearchParams(window.location.search);
+  const status = searchParams.get("status");
+  if (status === "success_verified") {
+    document.getElementById("uzenet").innerText = searchParams.get("message");
+  } else if (status === "error_verified") {
+    document.getElementById("uzenet").innerText = searchParams.get("message");
+  } else if (status == "success_registration") {
+    document.getElementById("uzenet").innerText = searchParams.get("message");
+  } else if (status == "error_registration") {
+    document.getElementById("uzenet").innerText = searchParams.get("message");
+  }
 }

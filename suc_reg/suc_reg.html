@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="suc_reg.css">
 </head>
 
-<body>
+<body onload="suc_reg()">
 
     <div class="container-md h-100">
         <div class="row">
@@ -24,7 +24,7 @@
                 <div class="p-3 position-absolute top-50 start-50 translate-middle rounded-3" id="doboz">
                     <div class=" p-4 pb-2">
                         <label for="text" class="form-label d-flex justify-content-center">
-                            <h2 class=" text-white ">
+                            <h2 class=" text-white " id="uzenet">
                                 Sikeres regisztráció
                             </h2>
                     </div>
@@ -36,31 +36,6 @@
         </div>
     </div>
     <script src="../index.js"></script>
-    <script>
-        //background kép változtatása másodpercenként
-        function bgChange() {
-            const bgImages = [
-                'bg1.jpg',
-                'bg2.jpg',
-                'bg3.png',
-                'bg4.jpg',
-                'bg5.jpg',
-                'bg6.jpg',
-                '7.jpg',
-                '8.jpg',
-                '9.jpg',
-                '10.jpg',
-                '11.jpg',
-                '12.jpg',
-                '13.jpg',
-                '14.jpg'
-            ];
-            const index = Math.floor(Math.random() * bgImages.length);
-            document.body.style.backgroundImage = `url(${bgImages[index]})`;
-            console.log("Background changed to: " + bgImages[index]);
-        }
-        //setInterval(bgChange, 3000);
-    </script>
 </body>
 
 </html>
