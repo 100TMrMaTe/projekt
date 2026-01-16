@@ -20,7 +20,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12 bg-secondary rounded d-flex align-items-center justify-content-between p-2">
-                
+
                 <div class="float-end">
                     <span class="me-3">Felhasználó neve</span>
                     <span>Belépve (30:20)</span>
@@ -31,7 +31,8 @@
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
-                    <div class="collapse navbar-collapse position-absolute top-100 end-0 bg-secondary rounded p-3" id="navbarMenu">
+                    <div class="collapse navbar-collapse position-absolute top-100 end-0 bg-secondary rounded p-3"
+                        id="navbarMenu">
                         <ul class="navbar-nav">
                             <li class="nav-item">
                                 <a class="nav-link text-white" href="#">Főoldal</a>
@@ -53,7 +54,7 @@
 
 
                 <div class="pt-5">
-                    <input type="text" oninput="//KeresesKezdese()" class="form-control email"
+                    <input type="text" oninput="//KeresesKezdese()" class="form-control"
                         style="height: 45px; color: black;" placeholder="Keresés..." id="kereso" name="kereso">
                 </div>
 
@@ -86,9 +87,11 @@
         function inditas() {
             if (isPlaying) {
                 player.pauseVideo();
+                ido();
             }
             if (!isPlaying) {
                 player.playVideo();
+                setInterval(ido, 1000);
             }
 
             isPlaying = !isPlaying;
@@ -104,33 +107,53 @@
                     }
         */
         function slider() {
-            let seekSlider = document.getElementById("seekSlider");
+
+
+            const seekSlider = document.getElementById("seekSlider");
+
             seekSlider.addEventListener("input", () => {
-                let seekto = player.getDuration() * (seekSlider.value / 1000);
-                player.seekTo(seekto, true);
+                if (!player || !player.getDuration) return;
+
+                const hova = player.getDuration() * (seekSlider.value / 1000);
+                player.seekTo(hova, true);
             });
 
-            if (player && player.getDuration) {
-                let ujpozicio = player.getCurrentTime() * (1000 / player.getDuration());
-                //console.log(player.getCurrentTime());
-                
+            // minden frame frissites
+            function current() {
+                if (!player || !player.getDuration) return;
 
+                const ujpozicio = player.getCurrentTime() * (1000 / player.getDuration());
                 seekSlider.value = ujpozicio;
-            };
 
-            requestAnimationFrame(slider);
+                requestAnimationFrame(current);
+            }
+            current();
+
+            // Idő kiírása (külön, opcionális)
+
+
+            // Például 1 másodpercenként hívhatod
 
         }
 
+        
 
-        function ido()
-                {
-                    let ido = player.getCurrentTime();
-                    return ido;
-                    console.log(ido);
-                }
+        function ido() {
+            if (!player || !player.getDuration) return;
 
-    console.log(player.getCurrentTime());
+
+            let jelenlegi = Math.floor(player.getCurrentTime());
+            let teljes = player.getDuration();
+
+            let perc = Math.floor(jelenlegi / 60);
+            let masodperc = jelenlegi % 60;
+
+            document.getElementById("jelenlegiIdo").innerText = perc + ":" + masodperc;
+            document.getElementById("egeszIdo").innerText = Math.floor(teljes / 60) + ":" + Math.floor(teljes % 60);
+
+        }
+
+        //console.log(player.getCurrentTime());
 
         function embedVideo(id) {
             document.getElementById("lejatszo").innerHTML = `<div id="ytFrame"></div> <br>
@@ -139,8 +162,8 @@
                                                             
                                                             <input type="range" id="seekSlider" min="0" max="1000" value="0" style="width: 100%;">
                                                             <div class="d-flex justify-content-between">
-                                                                <span></span>
-                                                                <span></span>
+                                                                <span id="jelenlegiIdo"></span>
+                                                                <span id="egeszIdo"></span>
 
                                                             </div>
                                                             <button onclick="inditas()">Lejátszás</button>`;
@@ -154,7 +177,8 @@
                             document.getElementById("volumeSlider").value
                         );
                         slider();
-                        
+
+
                     }
                 }
             });
@@ -245,9 +269,10 @@
             });
         }
 
-        document.addEventListener('keypress', function (e) {
+        document.getElementById("kereso").addEventListener('keydown', function (e) {
             if (e.key === 'Enter') {
                 keres();
+                console.log("asdasd");
             }
         });
 
