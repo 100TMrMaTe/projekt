@@ -17,11 +17,21 @@ function kuldes() {
   })
     .then((r) => r.json())
     .then((d) => {
-      if (d.status === "success_registration") {
-        window.location.href = "http://localhost/suliscucc/projekt/suc_reg/suc_reg.html?status=success_registration&message="+d.message;
-      }
-      else if (d.status === "error_registration") {
-        window.location.href = "http://localhost/suliscucc/projekt/suc_reg/suc_reg.html?status=error_registration&message="+d.message;
+      if (d.status == "success_registration") {
+        document.getElementById("reg").classList.add("d-none");
+        document.getElementById("suc_reg").classList.remove("d-none");
+        document.getElementById("uzenet").innerText = d.message;
+        document.getElementById("hosszuuzenet").innerText = d.long_message;
+      } else if (d.status == "error_registration") {
+        document.getElementById("reg").classList.add("d-none");
+        document.getElementById("suc_reg").classList.remove("d-none");
+        document.getElementById("uzenet").innerText = d.message;
+        document.getElementById("hosszuuzenet").innerText = d.long_message;
+      } else if (d.status == "error_sulisemail") {
+        document.getElementById("reg").classList.add("d-none");
+        document.getElementById("suc_reg").classList.remove("d-none");
+        document.getElementById("uzenet").innerText = d.message;
+        document.getElementById("hosszuuzenet").innerText = d.long_message;
       }
     });
 }
@@ -50,14 +60,27 @@ function bgChange() {
 
 function suc_reg() {
   const searchParams = new URLSearchParams(window.location.search);
-  const status = searchParams.get("status");
-  if (status === "success_verified") {
-    document.getElementById("uzenet").innerText = searchParams.get("message");
-  } else if (status === "error_verified") {
-    document.getElementById("uzenet").innerText = searchParams.get("message");
-  } else if (status == "success_registration") {
-    document.getElementById("uzenet").innerText = searchParams.get("message");
-  } else if (status == "error_registration") {
-    document.getElementById("uzenet").innerText = searchParams.get("message");
-  }
+  const emailToken = searchParams.get("email_token");
+
+  fetch("../index.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      muvelet: "verified",
+      email_token: emailToken,
+    }),
+  })
+    .then((r) => r.json())
+    .then((d) => {
+      if (d.status === "success_verified") {
+        document.getElementById("uzenet").innerText = "Sikeres regisztráció!";
+        document.getElementById("hosszu_uzenet").innerText =
+          "Köszönjük szépen!";
+      } else if (d.status === "error_verified") {
+        document.getElementById("uzenet").innerText =
+          "Sikertelen regisztráció!";
+        document.getElementById("hosszu_uzenet").innerText =
+          "Valami nem volt jo!";
+      }
+    });
 }

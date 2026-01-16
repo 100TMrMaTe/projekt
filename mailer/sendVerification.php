@@ -10,7 +10,7 @@ require_once __DIR__ . "/../PHPMailer-master/src/Exception.php";
 function sendVerificationEmail($toEmail, $token)
 {
 
-    $verifyLink = "http://localhost/suliscucc/projekt/index.php?email_token=$token";
+    $verifyLink = "http://localhost/suliscucc/projekt/suc_reg/suc_reg.html?email_token=$token";
 
     $mail = new PHPMailer(true);
 
