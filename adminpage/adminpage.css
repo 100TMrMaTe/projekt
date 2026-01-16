@@ -14,7 +14,7 @@ body {
 }
 
 body {
-    background-image: url("7.jpg");
+    background-image: url("../backgounds/14.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -46,19 +46,11 @@ ul.list-group {
 }
 
 #doboz {
-    /*background-color: rgba(255, 255, 255, 1);*/
     background: transparent;
     backdrop-filter: blur(10px);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     max-width: 450px;
-}
-
-#doboz {
-    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); */
-    background: transparent;
     border: 2px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(5px);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    color: white;
 }
-
 
