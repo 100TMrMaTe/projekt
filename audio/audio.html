@@ -92,6 +92,7 @@
             if (!isPlaying) {
                 player.playVideo();
                 setInterval(ido, 1000);
+                //vane();
             }
 
             isPlaying = !isPlaying;
@@ -131,7 +132,7 @@
 
         }
 
-        
+
 
         function ido() {
             if (!player || !player.getDuration) return;
@@ -145,9 +146,43 @@
             document.getElementById("jelenlegiIdo").innerText = perc + ":" + masodperc;
             document.getElementById("egeszIdo").innerText = Math.floor(teljes / 60) + ":" + Math.floor(teljes % 60);
 
+            //math.floor ataliitasa (round-ra)
+
         }
 
-        //console.log(player.getCurrentTime());
+
+        function keresettVideoIdo(seconds) {
+            let perc = Math.floor(seconds / 60);
+            let masodperc = Math.floor(seconds % 60);
+            let ora = Math.floor(perc / 60);
+            if (ora > 0) {
+                perc = perc % 60;
+            }
+
+            //console.log(seconds);
+
+            //console.log(`${mins}:${secs < 10 ? '0' : ''}${secs}`);
+
+            if (ora === 0) {
+                return `${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
+            }
+            
+            return `${ora}:${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
+        }
+
+        function videoHosszAtAlakit(alakito) {
+            const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
+            const illik = alakito.match(regex);
+
+            const ora = parseInt(illik[1]) || 0;
+            const perc = parseInt(illik[2]) || 0;
+            const masodperc = parseInt(illik[3]) || 0;
+            //console.log(ora, perc, masodperc);
+            return ora * 3600 + perc * 60 + masodperc;
+        }
+
+
+        ////console.log(player.getCurrentTime());
 
         function embedVideo(id) {
             document.getElementById("lejatszo").innerHTML = `<div id="ytFrame"></div> <br>
@@ -178,6 +213,18 @@
             });
         }
 
+
+
+        function vane() {
+            if (!player || !player.getDuration) return;
+
+            let hello = player.getDuration();
+            //console.log(hello);
+            //console.log(typeof hello);
+            return hello;
+        }
+
+
         function keres() {
             const kereso = document.getElementById("kereso").value;
             const eredmeny = document.getElementById("eredmeny");
@@ -190,30 +237,51 @@
             eredmeny.innerHTML = "<p>Keresés folyamatban...</p>";
 
             const apikulcs = "AIzaSyAvqcZuWfXHENDGZOhjSKoKyaZe4xGtTVM";
-            const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=3&q=${encodeURIComponent(kereso)}&key=${apikulcs}`;
+
+            const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&3maxResults=&q=${encodeURIComponent(kereso)}&key=${apikulcs}`;
+
+
+
 
             function lekerVideok(vissza) {
+
                 fetch(URL)
                     .then(valasz => valasz.json())
                     .then(adatok => {
-                        console.log(adatok);
-                        const videok = [];
 
-                        adatok.items.forEach(item => {
-                            videok.push({
-                                videoId: item.id.videoId,
-                                title: item.snippet.title,
-                                img: item.snippet.thumbnails.medium.url
+                        const videoIds = adatok.items
+                            .map(item => item.id.videoId)
+                            .join(",");
+
+                        const detailsURL =
+                            `https://www.googleapis.com/youtube/v3/videos` +
+                            `?part=contentDetails` +
+                            `&id=${videoIds}` +
+                            `&key=${apikulcs}`;
+
+                        fetch(detailsURL)
+                            .then(v => v.json())
+                            .then(details => {
+
+                                const videok = adatok.items.map((item, i) => ({
+                                    videoId: item.id.videoId,
+                                    title: item.snippet.title,
+                                    img: item.snippet.thumbnails.medium.url,
+                                    duration: videoHosszAtAlakit(
+                                        details.items[i].contentDetails.duration
+                                    )
+                                    
+                                }));
+                                //console.log(details.items[0].contentDetails.duration);
+
+                                vissza(videok);
                             });
-                        });
-
-                        vissza(videok);
                     });
             }
 
             /*
                         lekerVideok(videok => {
-                            console.log(videok);
+                            //console.log(videok);
                         });
             */
 
@@ -221,22 +289,23 @@
 
                 eredmeny.innerHTML = "";
 
-                console.log(videok[0].title);
+                //console.log(videok[0].title);
 
                 if (!videok.length) {
                     eredmeny.innerHTML = "<p>Nincs találat vagy hiba történt.</p>";
                     return;
                 }
-                //console.log(videok);
+                ////console.log(videok);
 
 
                 for (let i = 0; i < videok.length; i++) {
                     let keret = document.createElement("div");
-                    //console.log("asd");
+                    ////console.log("asd");
                     keret.classList.add("container");
 
                     let talalat = document.createElement("div");
 
+                    //vane();
                     //talalat.className = "video";
 
                     talalat.innerHTML = `
@@ -245,14 +314,14 @@
                             <img src="${videok[i].img}"  class="img-fluid"/>
                         </div>
                         <div class="col-8">
-                            <h3>${videok[i].title}</h3>
-                            <h4></h4>
+                            <h3>${videok[i].title} </h3>
+                            <h4>${keresettVideoIdo(videok[i].duration)}</h4>
                         </div>
                     </div>
                     `;
 
-                    //console.log(videok[i].videoId);
-                    //console.log(typeof videok[i].videoId);
+                    ////console.log(videok[i].videoId);
+                    ////console.log(typeof videok[i].videoId);
                     talalat.onclick = () => embedVideo(videok[i].videoId);
 
                     keret.appendChild(talalat);
@@ -267,7 +336,8 @@
         document.getElementById("kereso").addEventListener('keydown', function (e) {
             if (e.key === 'Enter') {
                 keres();
-                console.log("asdasd");
+                //console.log("asdasd");
+
             }
         });
 
