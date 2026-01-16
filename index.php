@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 if($_SERVER['REQUEST_METHOD'] == "GET"){
     switch ($_GET["muvelet"]) {
         case "adminpage":
-            
+            adminpage($conn);
             break;
         default:
             echo json_encode(array("status" => "error", "message" => "Ismeretlen muvelet"));
