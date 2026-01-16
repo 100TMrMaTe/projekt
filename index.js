@@ -4,7 +4,7 @@ function kuldes() {
   let user_password = document.getElementById("password").value;
   let user_class = document.getElementById("osztaly").value;
 
-  fetch("index.php", {
+  fetch("../index.php", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
