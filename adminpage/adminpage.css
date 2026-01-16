@@ -31,12 +31,19 @@ body {
 }
 
 
-.card-item {
+.list-group-item {
     background: transparent;
     backdrop-filter: blur(10px);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     border: 2px solid rgba(255, 255, 255, 0.2);
     color: white;
+}
+
+.card-header {
+    background: rgba(255, 255, 255, 0.075);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
 /*
@@ -57,4 +64,3 @@ ul.list-group {
     max-height: 400px;
     overflow-y: auto;
 }
-
