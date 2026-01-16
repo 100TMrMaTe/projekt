@@ -1,0 +1,16 @@
+RewriteEngine On
+
+# Ha a kért fájl vagy könyvtár létezik, ne írd át
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Minden más kérést az index.php-nek továbbítunk
+RewriteRule ^(.*)$ index.php?path=$1 [L,QSA]
+
+# Alapértelmezett fájlok betöltése
+DirectoryIndex login.html login.css
+
+# XAMPP alatt engedélyezzük a hozzáférést
+<IfModule mod_authz_core.c>
+    Require all granted
+</IfModule>
