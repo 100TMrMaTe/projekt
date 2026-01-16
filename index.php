@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             break;
     }
 }
-
+ 
 if ($_SERVER['REQUEST_METHOD'] == "GET") {
     if (isset($_GET["email_token"])) {
         $token = $_GET["email_token"];
@@ -25,3 +25,5 @@ if ($_SERVER['REQUEST_METHOD'] == "GET") {
     }
 }
 mysqli_close($conn);
+
+//nezd meg 1 e es akkor fetchel kuld is vissza jsonban
