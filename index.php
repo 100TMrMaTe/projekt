@@ -7,23 +7,24 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         case "registration":
             registration($conn, $data["username"], $data["password"], $data["email"], $data["class"]);
             break;
+        case "verified":
+            verifyEmail($conn, $data["email_token"]);
+            break;
         default:
             echo json_encode(array("status" => "error", "message" => "Ismeretlen muvelet"));
             break;
     }
 }
- 
-if ($_SERVER['REQUEST_METHOD'] == "GET") {
-    if (isset($_GET["email_token"])) {
-        $token = $_GET["email_token"];
-        $sql = "UPDATE users SET email_verified = 1 WHERE verification_token = '$token'";
-        if (mysqli_query($conn, $sql)) {
-            header("Location: http://localhost/suliscucc/projekt/suc_reg/suc_reg.html?status=success_verified&message=Az email sikeresen megerősítve!");
-        } else {
-            header("Location: http://localhost/suliscucc/projekt/suc_reg/suc_reg.html?status=error_verified&message=Hiba történt az email megerősítése során.");
-        }
+if($_SERVER['REQUEST_METHOD'] == "GET"){
+    switch ($_GET["muvelet"]) {
+        case "adminpage":
+            
+            break;
+        default:
+            echo json_encode(array("status" => "error", "message" => "Ismeretlen muvelet"));
+            break;
     }
 }
-mysqli_close($conn);
 
-//nezd meg 1 e es akkor fetchel kuld is vissza jsonban
+mysqli_close($conn);
+?>

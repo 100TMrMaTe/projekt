@@ -26,8 +26,9 @@ function registration($conn, $username, $password, $email, $class)
   $token = bin2hex(random_bytes(32));
 
   if (str_ends_with($email, "@ady-nagyatad.hu") == false) {
-    $vissza["status"] = "error";
-    $vissza["message"] = "Csak sulis email cimmel lehet regisztralni!";
+    $vissza["status"] = "error_sulisemail";
+    $vissza["long_message"] = "Csak sulis email cimmel lehet regisztralni!";
+    $vissza["message"] = "Hibas email cimmel probalsz regisztralni!";
     echo json_encode($vissza);
     return;
   }
@@ -38,12 +39,14 @@ function registration($conn, $username, $password, $email, $class)
   $sql = "INSERT INTO users (user_name, email, user_class, user_password,verification_token) VALUES ('$username', '$email', '$class', '$password', '$token')";
   if (mysqli_query($conn, $sql)) {
     $vissza["status"] = "success_registration";
-    $vissza["message"] = "Kerlek ellenorizd az emailed a megerosito linkert!";
+    $vissza["message"] = "aktiváld az emailed!";
+    $vissza["long_message"] = "Kerlek ellenorizd az emailed a megerosito linkert!";
     echo json_encode($vissza);
     sendVerificationEmail($email, $token);
   } else {
     $vissza["status"] = "error_registration";
     $vissza["message"] = "Az email mar foglalt!";
+    $vissza["long_message"] = "Amennyiben te még nem regisztrátál vedd fel a kapcsolatot a rendszer gazdával!";
     //link forgot message
     //$vissza["errormessage"] = mysqli_error($conn);
     echo json_encode($vissza);
@@ -51,3 +54,17 @@ function registration($conn, $username, $password, $email, $class)
   }
   mysqli_report(MYSQLI_REPORT_ALL); 
 }
+
+function verifyEmail($conn, $token)
+{
+ $token = mysqli_real_escape_string($conn, $token);
+  $sql = "UPDATE users SET email_verified = 1 WHERE verification_token = '$token'";
+  if (mysqli_query($conn, $sql)) {
+      echo json_encode(array("status" => "success_verified"));
+      return;
+  } else {
+      echo json_encode(array("status" => "error_verified"));
+      return;
+  }
+}
+
