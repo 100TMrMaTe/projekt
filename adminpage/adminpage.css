@@ -46,6 +46,48 @@ body {
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
+.btn-link {
+    text-decoration: none;
+}
+
+.btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.btn.red {
+    background: rgba(255, 50, 50, 0.2);
+    border: 2px solid rgba(255, 50, 50, 0.2);
+    box-shadow: 0 0 10px rgba(255, 50, 50, 0.1);
+}
+
+.btn.red:hover {
+    background: rgba(255, 0, 0, 0.3);
+    border: 2px solid rgba(255, 0, 0, 0.3);
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+}
+
+.btn.green {
+    background: rgba(50, 255, 50, 0.2);
+    border: 2px solid rgba(50, 255, 50, 0.2);
+    box-shadow: 0 0 10px rgba(50, 255, 50, 0.1);
+}
+
+.btn.green:hover {
+    background: rgba(0, 255, 0, 0.3);
+    border: 2px solid rgba(0, 255, 0, 0.3);
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
 /*
 .card-header {
     background-color: black;
@@ -54,11 +96,13 @@ body {
 }
 */
 
+/*
 .btn {
     border: 1px solid black;
     box-shadow: 0 0 2px white;
     border-radius: 8px;
 }
+*/
 
 ul.list-group {
     max-height: 400px;
