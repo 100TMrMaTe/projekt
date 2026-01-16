@@ -136,7 +136,6 @@
         function ido() {
             if (!player || !player.getDuration) return;
 
-
             let jelenlegi = Math.floor(player.getCurrentTime());
             let teljes = player.getDuration();
 
@@ -243,10 +242,11 @@
                     talalat.innerHTML = `
                     <div class="row mb-3 p-2 bg-light rounded video">
                         <div class="col-4">
-                            <img src="${videok[i].img}" class=" img-fluid"/>
+                            <img src="${videok[i].img}"  class="img-fluid"/>
                         </div>
                         <div class="col-8">
                             <h3>${videok[i].title}</h3>
+                            <h4></h4>
                         </div>
                     </div>
                     `;
