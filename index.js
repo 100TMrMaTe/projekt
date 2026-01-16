@@ -84,3 +84,14 @@ function suc_reg() {
       }
     });
 }
+
+function adminpageLog() {
+  fetch("../index.php/adminpage", {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  })
+    .then((r) => r.json())
+    .then((d) => {
+      console.log(d);
+    });
+}

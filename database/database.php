@@ -52,19 +52,62 @@ function registration($conn, $username, $password, $email, $class)
     echo json_encode($vissza);
     return;
   }
-  mysqli_report(MYSQLI_REPORT_ALL); 
+  mysqli_report(MYSQLI_REPORT_ALL);
 }
 
 function verifyEmail($conn, $token)
 {
- $token = mysqli_real_escape_string($conn, $token);
+  $token = mysqli_real_escape_string($conn, $token);
   $sql = "UPDATE users SET email_verified = 1 WHERE verification_token = '$token'";
   if (mysqli_query($conn, $sql)) {
-      echo json_encode(array("status" => "success_verified"));
-      return;
+    echo json_encode(array("status" => "success_verified"));
+    return;
   } else {
-      echo json_encode(array("status" => "error_verified"));
-      return;
+    echo json_encode(array("status" => "error_verified"));
+    return;
   }
 }
 
+function adminpage($conn)
+{
+  $sql = "SELECT email,user_class,approved,isadmin,email_verified FROM users";
+  $userlist = [];
+
+  $approvedusers = [];
+  $waitinglist = [];
+  $log = [];
+  if ($result = mysqli_query($conn, $sql)) {
+    while ($row = mysqli_fetch_assoc($result)) {
+      $userlist[] = $row;
+    }
+  } else {
+    echo json_encode(array("status" => "error_adminpage"));
+    return;
+  }
+
+  foreach ($userlist as $user) {
+    if ($user['email_verified'] == 1) {
+      if ($user['approved'] == 1) {
+        $approvedusers[] = $user;
+      } else {
+        $waitinglist[] = $user;
+      }
+    }
+  }
+
+  $sql_log = "SELECT users.email, users.user_class, user_handler.date, user_handler.title FROM user_handler,users WHERE users.id=user_handler.user_id";
+  if ($result = mysqli_query($conn, $sql_log)) {
+    while ($row = mysqli_fetch_assoc($result)) {
+      $log[] = $row;
+    }
+  } else {
+    echo json_encode(array("status" => "error_adminpage"));
+    return;
+  }
+
+  $vissza["status"] = "success_adminpage";
+  $vissza["approvedusers"] = $approvedusers;
+  $vissza["waitinglist"] = $waitinglist;
+  $vissza["log"] = $log;
+  echo json_encode($vissza);
+}
