@@ -7,13 +7,21 @@
     color: white;
 }
 
+#email {
 
-span,
-strong {
-    word-break: break-word;
-    overflow-wrap: break-word;
-    max-width: 100%;
-    display: block;
+
+    white-space: nowrap;
+    /* ne törjön sort */
+    overflow: hidden;
+    /* vágja le */
+}
+
+.min-w-0 {
+    min-width: 0 !important;
+}
+
+.info-pair {
+    white-space: nowrap;
 }
 
 html,
