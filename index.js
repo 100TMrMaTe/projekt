@@ -86,7 +86,7 @@ function suc_reg() {
 }
 
 function adminpageLog() {
-  fetch("../index.php/adminpage", {
+  fetch("adminpage", {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   })
