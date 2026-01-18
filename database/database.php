@@ -112,10 +112,10 @@ function adminpage($conn)
   echo json_encode($vissza);
 }
 
-function approveUser($conn, $email)
+function approveUser($conn, $id)
 {
-  $email = mysqli_real_escape_string($conn, $email);
-  $sql = "UPDATE users SET approved = 1 WHERE email = '$email'";
+  $id = mysqli_real_escape_string($conn, $id);
+  $sql = "UPDATE users SET approved = 1 WHERE id = '$id' AND approved = 0";
   if (mysqli_query($conn, $sql)) {
     echo json_encode(array("status" => "success_approveuser"));
     //email kuldese
@@ -126,10 +126,10 @@ function approveUser($conn, $email)
   }
 }
 
-function denyUser($conn, $email)
+function denyUser($conn, $id)
 {
-  $email = mysqli_real_escape_string($conn, $email);
-  $sql = "DELETE FROM users WHERE email = '$email' AND approved = 0";
+  $id = mysqli_real_escape_string($conn, $id);
+  $sql = "DELETE FROM users WHERE id = '$id' AND approved = 0";
   if (mysqli_query($conn, $sql)) {
     echo json_encode(array("status" => "success_denyuser"));
     //email kuldese
@@ -140,11 +140,11 @@ function denyUser($conn, $email)
   }
 }
 
-function deleteUser($conn, $email)
+function deleteUser($conn, $id)
 {
-  $email = mysqli_real_escape_string($conn, $email);
-  $sql_log = "DELETE FROM user_handler WHERE user_id = (SELECT id FROM users WHERE email = '$email')";
-  $sql = "DELETE FROM users WHERE email = '$email' AND approved = 1";
+  $id = mysqli_real_escape_string($conn, $id);
+  $sql_log = "DELETE FROM user_handler WHERE user_id = '$id'";
+  $sql = "DELETE FROM users WHERE id = '$id' AND approved = 1";
   if (mysqli_query($conn, $sql_log) && mysqli_query($conn, $sql)) {
     echo json_encode(array("status" => "success_deleteuser"));
     //email kuldese
