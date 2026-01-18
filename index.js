@@ -93,5 +93,63 @@ function adminpageLog() {
     .then((r) => r.json())
     .then((d) => {
       console.log(d);
+      //irj ki mindent jo sorba mindent id alapjan adj meg foleg gombnak az id je legyen jo es ajanlom hogy innen irasd ki javascriptbol hozd letre oket a tablazatot
     });
 }
+
+function approveUser($id) {
+  $id = document.getElementById($id).value;
+
+  fetch("../index.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      muvelet: "approve_user",
+      id: $id,
+    }),
+  })
+    .then((r) => r.json())
+    .then((d) => {
+      console.log(d);
+      //toltse be ujra az egesz oszlopot
+    });
+}
+
+function denyUser($id) {
+  $id = document.getElementById($id).value;
+
+  fetch("../index.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      muvelet: "deny_user",
+      id: $id,
+    }),
+  })
+    .then((r) => r.json())
+    .then((d) => {
+      console.log(d);
+      //toltse be ujra az egesz oszlopot
+    });
+}
+
+function deleteUser($id) {
+  $id = document.getElementById($id).value;
+
+  fetch("../index.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      muvelet: "delete_user",
+      id: $id,
+    }),
+  })
+    .then((r) => r.json())
+    .then((d) => {
+      console.log(d);
+      //toltse be ujra az egesz oszlopot
+    });
+}
+
+
+
