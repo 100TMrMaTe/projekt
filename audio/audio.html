@@ -58,7 +58,7 @@
                         style="height: 45px; color: black;" placeholder="Keresés..." id="kereso" name="kereso">
                 </div>
 
-                <button onclick="keres()">Keresés</button>
+                <button onclick="keres(),eredmenyVisszahoz()">Keresés</button>
 
                 <div id="eredmeny" class="eredmeny"></div>
 
@@ -139,12 +139,76 @@
 
             let jelenlegi = Math.floor(player.getCurrentTime());
             let teljes = player.getDuration();
-
+            //console.log(teljes);
             let perc = Math.floor(jelenlegi / 60);
-            let masodperc = jelenlegi % 60;
+            let masodperc = Math.floor(jelenlegi % 60);
+            let ora = Math.floor(perc / 60);
 
-            document.getElementById("jelenlegiIdo").innerText = perc + ":" + masodperc;
-            document.getElementById("egeszIdo").innerText = Math.floor(teljes / 60) + ":" + Math.floor(teljes % 60);
+
+            let teljesPerc = Math.floor(teljes / 60);
+            let teljesMasodperc = Math.floor(teljes % 60);
+            let teljesOra = Math.floor(teljesPerc / 60);
+
+
+            let jelenlegiIdo = document.getElementById("jelenlegiIdo");
+            let egeszIdo = document.getElementById("egeszIdo");
+
+
+
+            if (teljesOra > 0) {
+                teljesPerc = teljesPerc % 60;
+            }
+            // document.getElementById("jelenlegiIdo").innerText = perc + ":" + masodperc;
+            console.log(teljesOra + ":" + teljesPerc + ":" + teljesMasodperc);
+
+            if (teljesOra === 0) {
+                egeszIdo.innerText = `${teljesPerc}:${teljesMasodperc < 10 ? '0' : ''}${teljesMasodperc}`;
+            }
+            //console.log(ora);
+
+            if (teljesOra != 0) {
+                if (teljesPerc < 10) {
+                    egeszIdo.innerText = `${teljesOra}:` + `0` + `${teljesPerc}:${teljesMasodperc < 10 ? '0' : ''}${teljesMasodperc}`;
+                    console.log("cadsd");
+                }
+                egeszIdo.innerText = `${teljesOra}:${teljesPerc}:${teljesMasodperc < 10 ? '0' : ''}${teljesMasodperc}`;
+            }
+
+
+
+
+
+
+            if (ora > 0) {
+                perc = perc % 60;
+            }
+            // document.getElementById("jelenlegiIdo").innerText = perc + ":" + masodperc;
+
+
+            if (ora === 0) {
+                jelenlegiIdo.innerText = `${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
+                //egeszIdo.innerText = `${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
+
+                console.log(ora);
+            }
+            if (ora != 0) {
+                if (perc < 10) {
+                    jelenlegiIdo.innerText = `${ora}:` + `0` + `${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
+                    //egeszIdo.innerText = `${ora}:` + `0` + `${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
+
+                }
+                else {
+                    jelenlegiIdo.innerText = `${ora}:${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
+                    //egeszIdo.innerText = `${ora}:${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
+                }
+
+            }
+
+
+
+
+
+            //document.getElementById("egeszIdo").innerText = Math.floor(teljes / 60) + ":" + Math.floor(teljes % 60);
 
             //math.floor ataliitasa (round-ra)
 
@@ -166,7 +230,10 @@
             if (ora === 0) {
                 return `${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
             }
-            
+
+            if (ora != 0 && perc < 10) {
+                return `${ora}:` + `0` + `${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
+            }
             return `${ora}:${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
         }
 
@@ -182,10 +249,23 @@
         }
 
 
+
+
+        function eredmenyTorol() {
+            console.log("dasdas");
+            document.getElementById("eredmeny").classList.add("d-none");
+        }
+
+        function eredmenyVisszahoz()
+        {
+            document.getElementById("eredmeny").classList.remove("d-none"); 
+        }
         ////console.log(player.getCurrentTime());
 
-        function embedVideo(id) {
+        function embedVideo(id, kep) {
             document.getElementById("lejatszo").innerHTML = `<div id="ytFrame"></div> <br>
+                                                        <div>
+                                                            <div id="kep"><img src="${kep}" class="rounded border border-dark"></div><br>
                                                             <label>Hangerő: </label>
                                                             <input id="volumeSlider" type="range" min="0" max="100" value="50" oninput="hangSzabalyzo(this.value)"><br>
                                                             
@@ -195,10 +275,10 @@
                                                                 <span id="egeszIdo"></span>
 
                                                             </div>
-                                                            <button onclick="inditas()">Lejátszás</button>`;
+                                                            <button onclick="inditas()">Lejátszás</button></div>`;
             player = new YT.Player('ytFrame', {
-                width: 600,
-                height: 340,
+                width: 0.1,
+                height: 0.1,
                 videoId: id,
                 events: {
                     onReady: () => {
@@ -206,7 +286,6 @@
                             document.getElementById("volumeSlider").value
                         );
                         slider();
-
 
                     }
                 }
@@ -248,7 +327,7 @@
                 fetch(URL)
                     .then(valasz => valasz.json())
                     .then(adatok => {
-
+                        console.log(adatok);
                         const videoIds = adatok.items
                             .map(item => item.id.videoId)
                             .join(",");
@@ -262,15 +341,16 @@
                         fetch(detailsURL)
                             .then(v => v.json())
                             .then(details => {
-
+                                console.log(details);
                                 const videok = adatok.items.map((item, i) => ({
                                     videoId: item.id.videoId,
                                     title: item.snippet.title,
                                     img: item.snippet.thumbnails.medium.url,
+                                    nagyobbImg: item.snippet.thumbnails.high.url,
                                     duration: videoHosszAtAlakit(
                                         details.items[i].contentDetails.duration
                                     )
-                                    
+
                                 }));
                                 //console.log(details.items[0].contentDetails.duration);
 
@@ -322,7 +402,10 @@
 
                     ////console.log(videok[i].videoId);
                     ////console.log(typeof videok[i].videoId);
-                    talalat.onclick = () => embedVideo(videok[i].videoId);
+                    talalat.onclick = () => {
+                        eredmenyTorol();
+                        embedVideo(videok[i].videoId, videok[i].nagyobbImg);
+                    };
 
                     keret.appendChild(talalat);
                     eredmeny.appendChild(keret);
@@ -336,6 +419,7 @@
         document.getElementById("kereso").addEventListener('keydown', function (e) {
             if (e.key === 'Enter') {
                 keres();
+                eredmenyVisszahoz();
                 //console.log("asdasd");
 
             }
@@ -347,5 +431,4 @@
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
 </body>
-
 </html>
