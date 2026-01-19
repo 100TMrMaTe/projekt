@@ -93,12 +93,11 @@ function adminpageLog() {
     .then((r) => r.json())
     .then((d) => {
       console.log(d);
-      //irj ki mindent jo sorba mindent id alapjan adj meg foleg gombnak az id je legyen jo es ajanlom hogy innen irasd ki javascriptbol hozd letre oket a tablazatot
+      //ugy irasd ki hogy a gombnak oncliknek meghivod ezeket a fugvenyeket es az id-t atadod parameterkent
     });
 }
 
 function approveUser($id) {
-  $id = document.getElementById($id).value;
 
   fetch("../index.php", {
     method: "POST",
@@ -116,7 +115,6 @@ function approveUser($id) {
 }
 
 function denyUser($id) {
-  $id = document.getElementById($id).value;
 
   fetch("../index.php", {
     method: "POST",
@@ -134,7 +132,6 @@ function denyUser($id) {
 }
 
 function deleteUser($id) {
-  $id = document.getElementById($id).value;
 
   fetch("../index.php", {
     method: "POST",
