@@ -42,3 +42,38 @@ function sendVerificationEmail($toEmail, $token)
         return false;
     }
 }
+
+function sendPasswordResetEmail($toEmail, $token)
+{
+    $verifyLink = "http://localhost/suliscucc/projekt/suc_reg/suc_reg.html?password_token=$token";
+
+    $mail = new PHPMailer(true);
+
+    try {
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'konyhasimatemail@gmail.com';
+        $mail->Password   = 'repa qaey hhhy zxnw';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = 587;
+
+        $mail->setFrom('konyhasimatemail@gmail.com', 'regisztaracio');
+        $mail->addAddress($toEmail);
+
+        $mail->isHTML(true);
+        $mail->Subject = "Jelszo visszaallitasa";
+
+        $mail->Body = "
+            <p>A jelszavad visszaállításához kattints az alábbi linkre:</p>
+            <p><a href='$verifyLink'>Jelszó visszaállítása</a></p>
+            <p>Ha nem te Kértél új jelszot, hagyd figyelmen kívül.</p>
+            <p>Köszönjük!</p>";
+
+
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        return false;
+    }
+}
