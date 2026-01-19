@@ -78,6 +78,8 @@
         let player;
         let isPlaying = false;
 
+
+
         function hangSzabalyzo(hangero) {
             if (player && player.setVolume) {
                 player.setVolume(hangero);
@@ -256,16 +258,16 @@
             document.getElementById("eredmeny").classList.add("d-none");
         }
 
-        function eredmenyVisszahoz()
-        {
-            document.getElementById("eredmeny").classList.remove("d-none"); 
+        function eredmenyVisszahoz() {
+            document.getElementById("eredmeny").classList.remove("d-none");
         }
         ////console.log(player.getCurrentTime());
 
-        function embedVideo(id, kep) {
+        function embedVideo(id, kep, cim) {
             document.getElementById("lejatszo").innerHTML = `<div id="ytFrame"></div> <br>
                                                         <div>
-                                                            <div id="kep"><img src="${kep}" class="rounded border border-dark"></div><br>
+                                                            <div id="kep"><img src="${kep}" class="rounded border border-dark"></div>
+                                                            <div id="cim" class="p-2"><b>${cim}</b></div>
                                                             <label>Hangerő: </label>
                                                             <input id="volumeSlider" type="range" min="0" max="100" value="50" oninput="hangSzabalyzo(this.value)"><br>
                                                             
@@ -294,6 +296,9 @@
 
 
 
+
+
+
         function vane() {
             if (!player || !player.getDuration) return;
 
@@ -319,9 +324,7 @@
 
             const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&3maxResults=&q=${encodeURIComponent(kereso)}&key=${apikulcs}`;
 
-
-
-
+            
             function lekerVideok(vissza) {
 
                 fetch(URL)
@@ -404,7 +407,7 @@
                     ////console.log(typeof videok[i].videoId);
                     talalat.onclick = () => {
                         eredmenyTorol();
-                        embedVideo(videok[i].videoId, videok[i].nagyobbImg);
+                        embedVideo(videok[i].videoId, videok[i].nagyobbImg, videok[i].title);
                     };
 
                     keret.appendChild(talalat);
@@ -431,4 +434,5 @@
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
 </body>
+
 </html>
