@@ -23,7 +23,11 @@ function registration($conn, $username, $password, $email, $class)
   $username = mysqli_real_escape_string($conn, $username);
   $email = mysqli_real_escape_string($conn, $email);
   $class = mysqli_real_escape_string($conn, $class);
-  $token = bin2hex(random_bytes(64));
+  
+  do {
+    $token = bin2hex(random_bytes(64));
+    $check = mysqli_query($conn, "SELECT id FROM users WHERE verification_token = '$token' LIMIT 1");
+  } while (mysqli_num_rows($check) > 0);
 
   if (str_ends_with($email, "@ady-nagyatad.hu") == false) {
     $vissza["status"] = "error_sulisemail";
