@@ -86,7 +86,7 @@ function suc_reg() {
 }
 
 function adminpageLog() {
-  fetch("adminpage", {
+  fetch("../index.php?muvelet=adminpage", {
     method: "GET",
     headers: { "Content-Type": "application/json" },
   })
@@ -94,6 +94,11 @@ function adminpageLog() {
     .then((d) => {
       console.log(d);
       //ugy irasd ki hogy a gombnak oncliknek meghivod ezeket a fugvenyeket es az id-t atadod parameterkent
+      if (d.status === "success_adminpage") {
+        d.waitinglist.forEach(element => {
+          document.getElementById("reg").innerHTML += waitingApproval(element.id, element.email, element.user_class);
+        });
+      }
     });
 }
 
@@ -146,6 +151,40 @@ function deleteUser($id) {
       console.log(d);
       //toltse be ujra az egesz oszlopot
     });
+}
+
+
+
+function waitingApproval(id, email, user_class) {
+
+  return `                        <li class="list-group-item">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12 col-sm-6 col-md-12 col-xxl-6 min-w-0">
+                                        <span id="email" class="d-block text-truncate">
+                                            ${email}
+                                        </span>
+                                        osztály:
+                                        <span id="osztaly">
+                                            <b>
+                                                ${user_class}
+                                            </b>
+                                        </span>
+                                    </div>
+                                    <div class="col-6 col-sm-3 col-md-6 col-xxl-3">
+                                        <button class="btn btn-light text-white green float-end h-100" onclick="approveUser(${id})">
+                                            elfogad
+                                        </button>
+                                    </div>
+                                    <div class="col-6 col-sm-3 col-md-6 col-xxl-3">
+                                        <button class="btn btn-light text-white red float-start h-100" onclick="denyUser(${id})">
+                                            elutasít
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>`
+
 }
 
 
