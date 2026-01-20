@@ -99,6 +99,9 @@ function adminpageLog() {
       console.log(d);
       //ugy irasd ki hogy a gombnak oncliknek meghivod ezeket a fugvenyeket es az id-t atadod parameterkent
       if (d.status === "success_adminpage") {
+        document.getElementById("reg").innerHTML = "";
+        document.getElementById("users").innerHTML = "";
+        document.getElementById("log").innerHTML = "";
         d.waitinglist.forEach((element) => {
           document.getElementById("reg").innerHTML += waitingApproval(
             element.id,
@@ -146,6 +149,7 @@ function approveUser($id) {
     .then((r) => r.json())
     .then((d) => {
       console.log(d);
+      init();
       //toltse be ujra az egesz oszlopot
     });
 }
@@ -162,6 +166,7 @@ function denyUser($id) {
     .then((r) => r.json())
     .then((d) => {
       console.log(d);
+      init();
       //toltse be ujra az egesz oszlopot
     });
 }
@@ -178,6 +183,7 @@ function deleteUser($id) {
     .then((r) => r.json())
     .then((d) => {
       console.log(d);
+      init();
       //toltse be ujra az egesz oszlopot
     });
 }
@@ -193,6 +199,7 @@ function makeAdmin($id) {
     .then((r) => r.json())
     .then((d) => {
       console.log(d);
+      init();
       //toltse be ujra az egesz oszlopot
     });
 }
@@ -323,7 +330,7 @@ function songlog(id, email, user_class, date, title) {
                                     </div>
                                 </div>
                             </div>
-                        </li>`
+                        </li>`;
 
 }
 
