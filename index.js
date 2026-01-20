@@ -197,7 +197,7 @@ function waitingApproval(id, email, user_class) {
                                         </span>
                                     </div>
                                     <div class="col-6 col-sm-3 col-md-6 col-xxl-3">
-                                        <button class="btn btn-light text-white green float-end h-100" onclick="makeAdmin(${id})">
+                                        <button class="btn btn-light text-white green float-end h-100" onclick="approveUser(${id})">
                                             elfogad
                                         </button>
                                     </div>
@@ -236,7 +236,7 @@ function users(id, email, user_class, isadmin) {
                                     <div class="col-6 col-sm-3 col-md-6 col-xxl-3">
                                         <button class="btn btn-light text-white green float-end h-100 ${
                                           isadmin ? "" : "d-none"
-                                        }" onclick="approveUser(${id})">
+                                        }" onclick="makeAdmin(${id})">
                                             admin
                                         </button>
                                     </div>
