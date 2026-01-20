@@ -19,6 +19,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         case "delete_user":
             deleteUser($conn, $data["id"]);
             break;
+        case "useradmin":
+            useradmin($conn, $data["email"]);
+            break;
         default:
             echo json_encode(array("status" => "error", "message" => "Ismeretlen muvelet"));
             break;
