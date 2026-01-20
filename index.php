@@ -10,6 +10,15 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         case "verified":
             verifyEmail($conn, $data["email_token"]);
             break;
+        case "approve_user":
+            approveUser($conn, $data["id"]);
+            break;
+        case "deny_user":
+            denyUser($conn, $data["id"]);
+            break;
+        case "delete_user":
+            deleteUser($conn, $data["id"]);
+            break;
         default:
             echo json_encode(array("status" => "error", "message" => "Ismeretlen muvelet"));
             break;
