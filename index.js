@@ -1,3 +1,10 @@
+
+function init() {
+  adminpageLog();
+}
+
+
+
 function kuldes() {
   let user_name = document.getElementById("nev").value;
   let email = document.getElementById("email").value;
@@ -98,6 +105,9 @@ function adminpageLog() {
         d.waitinglist.forEach(element => {
           document.getElementById("reg").innerHTML += waitingApproval(element.id, element.email, element.user_class);
         });
+        d.approvedusers.forEach(element => {
+          document.getElementById("users").innerHTML += users(element.id, element.email, element.user_class, element.isadmin);
+        });
       }
     });
 }
@@ -187,5 +197,38 @@ function waitingApproval(id, email, user_class) {
 
 }
 
+function users(id, email, user_class, isadmin) {
+  return `                        <li class="list-group-item">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12 col-sm-6 col-md-12 col-xxl-6 min-w-0">
+                                        <span id="email" class="d-block text-truncate">
+                                            ${email}
+                                        </span>
+                                        <div class="d-flex flex-wrap column-gap-3">
+                                            <div class="info-pair">
+                                                osztály:
+                                                <span id="osztaly"><b>${user_class}</b></span>
+                                            </div>
 
+                                            <div class="info-pair">
+                                                admin:
+                                                <span id="ido"><b>${isadmin ? "nem" : "igen"}</b></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-sm-3 col-md-6 col-xxl-3">
+                                        <button class="btn btn-light text-white green float-end h-100 ${isadmin ? "" : "d-none"}" onclick="approveUser(${id})">
+                                            admin
+                                        </button>
+                                    </div>
+                                    <div class="col-6 col-sm-3 col-md-6 col-xxl-3">
+                                        <button class="btn btn-light text-white red float-start h-100" onclick="deleteUser(${id})">
+                                            törlés
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>`
+}
 
