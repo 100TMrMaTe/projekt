@@ -121,6 +121,15 @@ function adminpageLog() {
             );
           }
         });
+        d.log.forEach((element) => {
+          document.getElementById("log").innerHTML += songlog(
+            element.id,
+            element.email,
+            element.user_class,
+            element.date,
+            element.title
+          );
+        });
       }
     });
 }
@@ -273,7 +282,7 @@ function usersNotAdmin(id, email, user_class, isadmin) {
                                     </div>
                                     <div class="col-6 col-sm-3 col-md-6 col-xxl-3">
                                         <button class="btn btn-light text-white green float-end h-100" onclick="makeAdmin(${id})">
-                                            admin
+                                            admin jog
                                         </button>
                                     </div>
                                     <div class="col-6 col-sm-3 col-md-6 col-xxl-3">
@@ -285,3 +294,36 @@ function usersNotAdmin(id, email, user_class, isadmin) {
                             </div>
                         </li>`;
 }
+
+function songlog(id, email, user_class, date, title) {
+
+  return `                        <li class="list-group-item">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <span id="cim">
+                                            ${title}
+                                        </span>
+                                    </div>
+                                    <div class="col-12 min-w-0">
+                                        <span id="email" class="d-block text-truncate">
+                                            ${email}
+                                        </span>
+                                        <div class="d-flex flex-wrap column-gap-3">
+                                            <div class="info-pair">
+                                                osztály:
+                                                <span id="osztaly"><b>${user_class}</b></span>
+                                            </div>
+
+                                            <div class="info-pair">
+                                                idő:
+                                                <span id="ido"><b>${date}</b></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>`
+
+}
+
