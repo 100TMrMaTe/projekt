@@ -74,7 +74,7 @@ function verifyEmail($conn, $token)
 
 function adminpage($conn)
 {
-  $sql = "SELECT email,user_class,approved,isadmin,email_verified FROM users";
+  $sql = "SELECT id,email,user_class,approved,isadmin,email_verified FROM users";
   $userlist = [];
 
   $approvedusers = [];
@@ -99,7 +99,7 @@ function adminpage($conn)
     }
   }
 
-  $sql_log = "SELECT users.email, users.user_class, user_handler.date, user_handler.title FROM user_handler,users WHERE users.id=user_handler.user_id";
+  $sql_log = "SELECT users.id,users.email, users.user_class, user_handler.date, user_handler.title FROM user_handler,users WHERE users.id=user_handler.user_id";
   if ($result = mysqli_query($conn, $sql_log)) {
     while ($row = mysqli_fetch_assoc($result)) {
       $log[] = $row;
