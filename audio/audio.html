@@ -79,6 +79,17 @@
         let isPlaying = false;
 
 
+        const query = "kiscica";
+
+        fetch(`https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=${encodeURIComponent(query)}`)
+            .then(res => res.json())
+            .then(data => {
+                const suggestions = data[1]; // itt vannak a javaslatok
+                console.log("Javaslatok:", suggestions);
+            })
+            .catch(err => console.error("Hiba:", err));
+
+
 
         function hangSzabalyzo(hangero) {
             if (player && player.setVolume) {
@@ -324,7 +335,7 @@
 
             const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&3maxResults=&q=${encodeURIComponent(kereso)}&key=${apikulcs}`;
 
-            
+
             function lekerVideok(vissza) {
 
                 fetch(URL)
