@@ -36,7 +36,7 @@ felhasználói naplók:
 
 -->
 
-<body onload="adminpageLog()">
+<body onload="init()">
     <div class="container py-3">
         <div class="row g-3">
             <div class="col-12 col-md-4">
@@ -54,62 +54,6 @@ felhasználói naplók:
                                     <div class="col-12 col-sm-6 col-md-12 col-xxl-6 min-w-0">
                                         <span id="email" class="d-block text-truncate">
                                             holczer.matyas.21@ady-nagyatad.hu
-                                        </span>
-                                        osztály:
-                                        <span id="osztaly">
-                                            <b>
-                                                13
-                                            </b>
-                                        </span>
-                                    </div>
-                                    <div class="col-6 col-sm-3 col-md-6 col-xxl-3">
-                                        <button class="btn btn-light text-white green float-end h-100">
-                                            elfogad
-                                        </button>
-                                    </div>
-                                    <div class="col-6 col-sm-3 col-md-6 col-xxl-3">
-                                        <button class="btn btn-light text-white red float-start h-100">
-                                            elutasít
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="list-group-item">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-12 col-sm-6 col-md-12 col-xxl-6 min-w-0">
-                                        <span id="email" class="d-block text-truncate">
-                                            konyhasi.mate.21@ady-nagyatad.hu
-                                        </span>
-                                        osztály:
-                                        <span id="osztaly">
-                                            <b>
-                                                13
-                                            </b>
-                                        </span>
-                                    </div>
-                                    <div class="col-6 col-sm-3 col-md-6 col-xxl-3">
-                                        <button class="btn btn-light text-white green float-end h-100">
-                                            elfogad
-                                        </button>
-                                    </div>
-                                    <div class="col-6 col-sm-3 col-md-6 col-xxl-3">
-                                        <button class="btn btn-light text-white red float-start h-100">
-                                            elutasít
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="list-group-item">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-12 col-sm-6 col-md-12 col-xxl-6 min-w-0">
-                                        <span id="email" class="d-block text-truncate">
-                                            jankovics.peter.21@ady-nagyatad.hu
                                         </span>
                                         osztály:
                                         <span id="osztaly">
@@ -176,72 +120,6 @@ felhasználói naplók:
                                 </div>
                             </div>
                         </li>
-
-                        <li class="list-group-item">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-12 col-sm-6 col-md-12 col-xxl-6 min-w-0">
-                                        <span id="email" class="d-block text-truncate">
-                                            konyhasi.mate.21@ady-nagyatad.hu
-                                        </span>
-                                        <div class="d-flex flex-wrap column-gap-3">
-                                            <div class="info-pair">
-                                                osztály:
-                                                <span id="osztaly"><b>13</b></span>
-                                            </div>
-
-                                            <div class="info-pair">
-                                                admin:
-                                                <span id="ido"><b>igen</b></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 col-sm-3 col-md-6 col-xxl-3">
-                                        <button class="btn btn-light text-white green float-end h-100">
-                                            admin
-                                        </button>
-                                    </div>
-                                    <div class="col-6 col-sm-3 col-md-6 col-xxl-3">
-                                        <button class="btn btn-light text-white red float-start h-100">
-                                            törlés
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="list-group-item">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-12 col-sm-6 col-md-12 col-xxl-6 min-w-0">
-                                        <span id="email" class="d-block text-truncate">
-                                            jankovics.peter.21@ady-nagyatad.hu
-                                        </span>
-                                        <div class="d-flex flex-wrap column-gap-3">
-                                            <div class="info-pair">
-                                                osztály:
-                                                <span id="osztaly"><b>13</b></span>
-                                            </div>
-
-                                            <div class="info-pair">
-                                                admin:
-                                                <span id="ido"><b>nem</b></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 col-sm-3 col-md-6 col-xxl-3">
-                                        <button class="btn btn-light text-white green float-end h-100">
-                                            admin
-                                        </button>
-                                    </div>
-                                    <div class="col-6 col-sm-3 col-md-6 col-xxl-3">
-                                        <button class="btn btn-light text-white red float-start h-100">
-                                            törlés
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
                         -->
 
                     </ul>
@@ -282,62 +160,6 @@ felhasználói naplók:
                                 </div>
                             </div>
                         </li>
-
-                        <li class="list-group-item">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <span id="cim">
-                                            BSW - Hello
-                                        </span>
-                                    </div>
-                                    <div class="col-12 min-w-0">
-                                        <span id="email" class="d-block text-truncate">
-                                            konyhasi.mate.21@ady-nagyatad.hu
-                                        </span>
-                                        <div class="d-flex flex-wrap column-gap-3">
-                                            <div class="info-pair">
-                                                osztály:
-                                                <span id="osztaly"><b>13</b></span>
-                                            </div>
-
-                                            <div class="info-pair">
-                                                idő:
-                                                <span id="ido"><b>2024-06-01 12:30:45</b></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="list-group-item">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <span id="cim">
-                                            BSW - Hello
-                                        </span>
-                                    </div>
-                                    <div class="col-12 min-w-0">
-                                        <span id="email" class="d-block text-truncate">
-                                            jankovics.peter.21@ady-nagyatad.hu
-                                        </span>
-                                        <div class="d-flex flex-wrap column-gap-3">
-                                            <div class="info-pair">
-                                                osztály:
-                                                <span id="osztaly"><b>13</b></span>
-                                            </div>
-
-                                            <div class="info-pair">
-                                                idő:
-                                                <span id="ido"><b>2024-06-01 12:30:45</b></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
                         -->
 
                     </ul>
@@ -346,6 +168,9 @@ felhasználói naplók:
         </div>
     </div>
     <script src="../index.js"></script>
+    <script>
+        setInterval(init, 5000);
+    </script>
 </body>
 
 </html>
