@@ -8,11 +8,6 @@
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <title></title>
     <link rel="stylesheet" href="style.css">
-    <style>
-        body {
-            background-color: gray;
-        }
-    </style>
 </head>
 
 <body>
@@ -78,16 +73,6 @@
         let player;
         let isPlaying = false;
 
-
-        const query = "kiscica";
-
-        fetch(`https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=${encodeURIComponent(query)}`)
-            .then(res => res.json())
-            .then(data => {
-                const suggestions = data[1]; // itt vannak a javaslatok
-                console.log("Javaslatok:", suggestions);
-            })
-            .catch(err => console.error("Hiba:", err));
 
 
 
