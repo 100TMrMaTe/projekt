@@ -107,12 +107,19 @@ function adminpageLog() {
           );
         });
         d.approvedusers.forEach((element) => {
-          document.getElementById("users").innerHTML += users(
-            element.id,
-            element.email,
-            element.user_class,
-            element.isadmin
-          );
+          if (element.isadmin == 1) {
+            document.getElementById("users").innerHTML += usersAdmin(
+              element.id,
+              element.email,
+              element.user_class
+            );
+          } else {
+            document.getElementById("users").innerHTML += usersNotAdmin(
+              element.id,
+              element.email,
+              element.user_class
+            );
+          }
         });
       }
     });
@@ -211,7 +218,7 @@ function waitingApproval(id, email, user_class) {
                         </li>`;
 }
 
-function users(id, email, user_class, isadmin) {
+function usersAdmin(id, email, user_class, isadmin) {
   return `                        <li class="list-group-item">
                             <div class="container">
                                 <div class="row">
@@ -227,16 +234,45 @@ function users(id, email, user_class, isadmin) {
 
                                             <div class="info-pair">
                                                 admin:
-                                                <span id="ido"><b>${
-                                                  isadmin ? "nem" : "igen"
-                                                }</b></span>
+                                                <span id="ido"><b>igen</b></span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-6 col-sm-3 col-md-6 col-xxl-3">
-                                        <button class="btn btn-light text-white green float-end h-100 ${
-                                          isadmin ? "" : "d-none"
-                                        }" onclick="makeAdmin(${id})">
+
+                                    </div>
+                                    <div class="col-6 col-sm-3 col-md-6 col-xxl-3">
+                                        <button class="btn btn-light text-white red float-start h-100" onclick="deleteUser(${id})">
+                                            törlés
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>`;
+}
+
+function usersNotAdmin(id, email, user_class, isadmin) {
+  return `                        <li class="list-group-item">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12 col-sm-6 col-md-12 col-xxl-6 min-w-0">
+                                        <span id="email" class="d-block text-truncate">
+                                            ${email}
+                                        </span>
+                                        <div class="d-flex flex-wrap column-gap-3">
+                                            <div class="info-pair">
+                                                osztály:
+                                                <span id="osztaly"><b>${user_class}</b></span>
+                                            </div>
+
+                                            <div class="info-pair">
+                                                admin:
+                                                <span id="ido"><b>nem</b></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 col-sm-3 col-md-6 col-xxl-3">
+                                        <button class="btn btn-light text-white green float-end h-100" onclick="makeAdmin(${id})">
                                             admin
                                         </button>
                                     </div>
