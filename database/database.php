@@ -158,3 +158,16 @@ function deleteUser($conn, $id)
     return;
   }
 }
+
+function useradmin($conn, $id){
+  $id = mysqli_real_escape_string($conn, $id);
+  $sql = "UPDATE users SET isadmin = 1 WHERE id = '$id' AND isadmin = 0";
+  if (mysqli_query($conn, $sql)) {
+    echo json_encode(array("status" => "success_useradmin"));
+    //email kuldese
+    return;
+  } else {
+    echo json_encode(array("status" => "error_useradmin"));
+    return;
+  }
+}
