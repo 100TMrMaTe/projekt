@@ -120,9 +120,15 @@ function approveUser($conn, $id)
 {
   $id = mysqli_real_escape_string($conn, $id);
   $sql = "UPDATE users SET approved = 1 WHERE id = '$id' AND approved = 0";
+
+  $user_email_sql = "SELECT email FROM users WHERE id = '$id' LIMIT 1";
+  $user_email_result = mysqli_query($conn, $user_email_sql);
   if (mysqli_query($conn, $sql)) {
     echo json_encode(array("status" => "success_approveuser"));
     //email kuldese
+    $user_email_row = mysqli_fetch_assoc($user_email_result);
+    $user_email = $user_email_row['email'];
+    confirmReg($user_email);
     return;
   } else {
     echo json_encode(array("status" => "error_approveuser"));

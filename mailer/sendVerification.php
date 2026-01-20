@@ -43,6 +43,36 @@ function sendVerificationEmail($toEmail, $token)
     }
 }
 
+function confirmReg($toEmail)
+{
+    $mail = new PHPMailer(true);
+
+    try {
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'konyhasimatemail@gmail.com';
+        $mail->Password   = 'repa qaey hhhy zxnw';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = 587;
+
+        $mail->setFrom('konyhasimatemail@gmail.com', 'regisztraciod elfogadva');
+        $mail->addAddress($toEmail);
+
+        $mail->isHTML(true);
+        $mail->Subject = "Regisztraciod elfogadasara kerult";
+
+        $mail->Body = "<p>Regisztrációd elfogadásra került. Most már bejelentkezhetsz az oldalunkra.</p>
+                       <p>Köszönjük, hogy csatlakoztál hozzánk!</p>";
+
+
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        return false;
+    }
+}
+
 function sendPasswordResetEmail($toEmail, $token)
 {
     $verifyLink = "http://localhost/suliscucc/projekt/suc_reg/suc_reg.html?password_token=$token";
