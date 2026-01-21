@@ -22,69 +22,107 @@
             </div>
             <div class="col-12 col-sm-8 col-md-6 col-lg-4">
                 <div class="p-3 position-absolute top-50 start-50 translate-middle rounded-3" id="doboz">
-                    <div class="mb-2 p-4">
-                        <label for="text" class="form-label d-flex justify-content-center">
-                            <h2 class="">
-                                BEJELENTKEZÉS
-                            </h2>
-                        </label>
-                        <label class="">
-                            Kérjük, írja be az email címet, illetve a jelszavát.
-                        </label>
+
+                    <div id="login" class="d-none">
+                        <div class="mb-2 p-4">
+                            <label for="text" class="form-label d-flex justify-content-center">
+                                <h2 class="">
+                                    BEJELENTKEZÉS
+                                </h2>
+                            </label>
+                            <label class="">
+                                Kérjük, írja be az email címét, illetve a jelszavát.
+                            </label>
+                        </div>
+                        <div class="mb-4 ps-4 pe-4">
+                            <input type="email" class="form-control email text-light" style="height: 45px;"
+                                placeholder="Email" id="email" name="email">
+                        </div>
+                        <div class="ps-4 pe-4">
+                            <input type="password" class="form-control jelszo text-light" placeholder="Jelszó"
+                                style="height: 45px;" id="password" name="password">
+                        </div>
+                        <div class="p-4 pt-2">
+                            <label class=""> <a href="../forgot/forgot/html" style="color:white; text-decoration: none">
+                                    <i>
+                                        <b>Elfelejtetted a jelszavadat?</b> </i> </a></label>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-light text-white p-2 ps-3 pe-3"
+                                onclick="belepes()">BELÉPÉS</button>
+                        </div>
+                        <div class="mb-3 p-4">
+                            <label class="">Nincs fiókod? <a href="../reg/reg.html"
+                                    style="color:white; text-decoration:none"> <i> <b>Regisztráció</b> </i> </a></label>
+                        </div>
                     </div>
-                    <div class="mb-4 ps-4 pe-4">
-                        <input type="email" class="form-control email text-light" style="height: 45px;"
-                            placeholder="Email" id="email" name="email">
+
+                    <div id="forgot_email" class="">
+                        <div class="mb-2 p-4">
+                            <label for="text" class="form-label d-flex justify-content-center">
+                                <h2 class="">
+                                    ELFELEJTETT JELSZÓ
+                                </h2>
+                            </label>
+                            <label class="">
+                                Kérjük, írja be az email címét.
+                            </label>
+                        </div>
+                        <div class="mb-4 ps-4 pe-4">
+                            <input type="email" class="form-control email text-light" style="height: 45px;"
+                                placeholder="Email" id="email" name="email">
+                        </div>
+                        <div class="d-flex justify-content-center mb-3">
+                            <button type="submit" class="btn btn-light text-white p-2 ps-3 pe-3"
+                                onclick="">KÜLDÉS</button>
+                        </div>
                     </div>
-                    <div class="ps-4 pe-4">
-                        <input type="password" class="form-control jelszo text-light" placeholder="Jelszó"
-                            style="height: 45px;" id="password" name="password">
+
+                    <div id="forgot_sent" class="d-none">
+                        <div class="p-4 pb-2">
+                            <label for="text" class="form-label d-flex justify-content-center">
+                                <h2 class="">
+                                    Sikeres kérelem
+                                </h2>
+                            </label>
+                            <label class="form-label d-flex justify-content-center">
+                                Várd az emailt a jelszó visszaállításáról!
+                            </label>
+                        </div>
                     </div>
-                    <div class="p-4 pt-2">
-                        <label class=""> <a href="../forgot/forgot/html" style="color:white; text-decoration: none"> <i>
-                                    <b>Elfelejtetted a jelszavadat?</b> </i> </a></label>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-light text-white p-2 ps-3 pe-3"
-                            onclick="belepes()">BELÉPÉS</button>
-                    </div>
-                    <div class="mb-3 p-4">
-                        <label class="">Nincs fiókod? <a href="../reg/reg.html"
-                                style="color:white; text-decoration:none"> <i> <b>Regisztráció</b> </i> </a></label>
-                    </div>
+
+                </div>
+                <div class="col col-md-2 col-md-3 col-lg-4 d-sm-block d-none">
+
                 </div>
             </div>
-            <div class="col col-md-2 col-md-3 col-lg-4 d-sm-block d-none">
-
-            </div>
         </div>
-    </div>
-    <script src="../index.js"></script>
-    <script>
-        //background kép változtatása másodpercenként
-        function bgChange() {
-            const bgImages = [
-                'bg1.jpg',
-                'bg2.jpg',
-                'bg3.png',
-                'bg4.jpg',
-                'bg5.jpg',
-                'bg6.jpg',
-                '7.jpg',
-                '8.jpg',
-                '9.jpg',
-                '10.jpg',
-                '11.jpg',
-                '12.jpg',
-                '13.jpg',
-                '14.jpg'
-            ];
-            const index = Math.floor(Math.random() * bgImages.length);
-            document.body.style.backgroundImage = `url(${bgImages[index]})`;
-            console.log("Background changed to: " + bgImages[index]);
-        }
-        //setInterval(bgChange, 3000);
-    </script>
+        <script src="../index.js"></script>
+        <script>
+            //background kép változtatása másodpercenként
+            function bgChange() {
+                const bgImages = [
+                    'bg1.jpg',
+                    'bg2.jpg',
+                    'bg3.png',
+                    'bg4.jpg',
+                    'bg5.jpg',
+                    'bg6.jpg',
+                    '7.jpg',
+                    '8.jpg',
+                    '9.jpg',
+                    '10.jpg',
+                    '11.jpg',
+                    '12.jpg',
+                    '13.jpg',
+                    '14.jpg'
+                ];
+                const index = Math.floor(Math.random() * bgImages.length);
+                document.body.style.backgroundImage = `url(${bgImages[index]})`;
+                console.log("Background changed to: " + bgImages[index]);
+            }
+            //setInterval(bgChange, 3000);
+        </script>
 </body>
 
 </html>
