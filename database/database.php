@@ -177,3 +177,34 @@ function useradmin($conn, $id){
     return;
   }
 }
+
+function checkEmail($conn, $email){
+  $email = mysqli_real_escape_string($conn, $email);
+  $sql = "SELECT id FROM users WHERE email = '$email' and approved = 1";
+  $result = mysqli_query($conn, $sql);
+  if(mysqli_num_rows($result) > 0){
+    echo json_encode(array("status" => "email_exists"));
+    $token = bin2hex(random_bytes(64));
+    $update_token_sql = "UPDATE users SET verification_token = '$token' WHERE email = '$email' LIMIT 1";
+    mysqli_query($conn, $update_token_sql);
+    sendPasswordResetEmail($email, $token);
+    return;
+  }else{
+    echo json_encode(array("status" => "email_not_exists"));
+    return;
+  }
+
+}
+
+function resetPassword($conn, $token, $new_password){
+  $token = mysqli_real_escape_string($conn, $token);
+  $new_password_hashed = password_hash($new_password, PASSWORD_BCRYPT);
+  $sql = "UPDATE users SET user_password = '$new_password_hashed' WHERE verification_token = '$token' LIMIT 1";
+  if(mysqli_query($conn, $sql)){
+    echo json_encode(array("status" => "success_reset_password"));
+    return;
+  }else{
+    echo json_encode(array("status" => "error_reset_password"));
+    return;
+  }
+}

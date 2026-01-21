@@ -106,7 +106,7 @@ function adminpageLog() {
           document.getElementById("reg").innerHTML += waitingApproval(
             element.id,
             element.email,
-            element.user_class
+            element.user_class,
           );
         });
         d.approvedusers.forEach((element) => {
@@ -114,13 +114,13 @@ function adminpageLog() {
             document.getElementById("users").innerHTML += usersAdmin(
               element.id,
               element.email,
-              element.user_class
+              element.user_class,
             );
           } else {
             document.getElementById("users").innerHTML += usersNotAdmin(
               element.id,
               element.email,
-              element.user_class
+              element.user_class,
             );
           }
         });
@@ -130,7 +130,7 @@ function adminpageLog() {
             element.email,
             element.user_class,
             element.date,
-            element.title
+            element.title,
           );
         });
       }
@@ -303,7 +303,6 @@ function usersNotAdmin(id, email, user_class, isadmin) {
 }
 
 function songlog(id, email, user_class, date, title) {
-
   return `                        <li class="list-group-item">
                             <div class="container">
                                 <div class="row">
@@ -331,6 +330,51 @@ function songlog(id, email, user_class, date, title) {
                                 </div>
                             </div>
                         </li>`;
-
 }
 
+function sendEmail() {
+  let email = document.getElementById("email1").value;
+
+  fetch("../index.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      muvelet: "reset_password_request",
+      email: email,
+    }),
+  })
+    .then((r) => r.json())
+    .then((d) => {
+      if (d.status == "email_exists") {
+        document.getElementById("forgot_email").classList.add("d-none");
+        document.getElementById("forgot_sent").classList.remove("d-none");
+      }
+    });
+}
+
+function atiranyitas() {
+  document.getElementById("login").classList.add("d-none");
+  document.getElementById("forgot_email").classList.remove("d-none");
+}
+
+
+function newpassword() {
+  let password = document.getElementById("password").value;
+  const searchParams = new URLSearchParams(window.location.search);
+  const token = searchParams.get("token");
+  fetch("../index.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      muvelet: "reset_password",
+      token: token,
+      new_password: password,
+    }),
+  })
+    .then((r) => r.json())
+    .then((d) => {
+      if (d.status == "success_reset_password") {
+        window.location.href = "../login/login.html";
+      }
+    });
+}

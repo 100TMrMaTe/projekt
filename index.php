@@ -22,12 +22,18 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         case "useradmin":
             useradmin($conn, $data["id"]);
             break;
+        case "reset_password_request":
+            checkEmail($conn, $data["email"]);
+            break;
+        case "reset_password":
+            resetPassword($conn, $data["token"], $data["new_password"]);
+            break;
         default:
             echo json_encode(array("status" => "error", "message" => "Ismeretlen muvelet"));
             break;
     }
 }
-if($_SERVER['REQUEST_METHOD'] == "GET"){
+if ($_SERVER['REQUEST_METHOD'] == "GET") {
     switch ($_GET["muvelet"]) {
         case "adminpage":
             adminpage($conn);
@@ -39,4 +45,3 @@ if($_SERVER['REQUEST_METHOD'] == "GET"){
 }
 
 mysqli_close($conn);
-?>
