@@ -75,7 +75,7 @@ function confirmReg($toEmail)
 
 function sendPasswordResetEmail($toEmail, $token)
 {
-    $verifyLink = "http://localhost/suliscucc/projekt/suc_reg/suc_reg.html?password_token=$token";
+    $verifyLink = "http://localhost/suliscucc/projekt/forgot/forgot.html?token=$token";
 
     $mail = new PHPMailer(true);
 
@@ -88,7 +88,7 @@ function sendPasswordResetEmail($toEmail, $token)
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
 
-        $mail->setFrom('konyhasimatemail@gmail.com', 'regisztaracio');
+        $mail->setFrom('konyhasimatemail@gmail.com', 'elfelejtett jelszo');
         $mail->addAddress($toEmail);
 
         $mail->isHTML(true);
