@@ -238,7 +238,7 @@ function generateSessionToken($conn)
 function login($conn, $email, $password)
 {
   $email = mysqli_real_escape_string($conn, $email);
-  $sql = "SELECT id, user_password, approved, isadmin, email_verified FROM users WHERE email = '$email' LIMIT 1";
+  $sql = "SELECT id, user_password, approved, isadmin, email_verified, user_class FROM users WHERE email = '$email' LIMIT 1";
   $result = mysqli_query($conn, $sql);
   if (mysqli_num_rows($result) == 0) {
     echo json_encode(array("status" => "error_login_no_user"));
@@ -265,7 +265,7 @@ function login($conn, $email, $password)
       $sql_new_token = "UPDATE active_users SET token = '$new_token', expire = '" . expire() . "' WHERE user_id = '" . $row['id'] . "'";
       mysqli_query($conn, $sql_new_token);
     }
-    echo json_encode(array("status" => "success_login", "isadmin" => $row['isadmin'], "token" => $new_token, "email" => $email));
+    echo json_encode(array("status" => "success_login", "isadmin" => $row['isadmin'], "token" => $new_token, "email" => $email, "user_class" => $row['user_class']));
   } else {
     echo json_encode(array("status" => "error_login_wrong_password"));
     return;
