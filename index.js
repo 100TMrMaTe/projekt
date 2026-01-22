@@ -407,6 +407,7 @@ function login(){
         localStorage.setItem("token", d.token);
         localStorage.setItem("isadmin", d.isadmin);
         localStorage.setItem("email", d.email);
+        localStorage.setItem("user_class", d.user_class);
         window.location.href = "../audio/audio.html";
       }
     });
