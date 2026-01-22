@@ -404,7 +404,10 @@ function login(){
       } else if (d.status == "error_login_wrong_password") {
         //rossz jelszo
       } else if (d.status == "success_login") {
-        //majd en megirom!!!
+        localStorage.setItem("token", d.token);
+        localStorage.setItem("isadmin", d.isadmin);
+        localStorage.setItem("email", d.email);
+        window.location.href = "../audio/audio.html";
       }
     });
 
