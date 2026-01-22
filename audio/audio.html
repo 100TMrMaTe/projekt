@@ -253,6 +253,10 @@
         }
 
         function videoHosszAtAlakit(alakito) {
+            
+            if (alakito === null) {
+                return 0;
+            }
             const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
             const illik = alakito.match(regex);
 
@@ -261,9 +265,6 @@
             const masodperc = parseInt(illik[3]) || 0;
             //console.log(ora, perc, masodperc);
             return ora * 3600 + perc * 60 + masodperc;
-            if (alakito === null) {
-                return 0;
-            }
         }
 
 
@@ -281,7 +282,7 @@
 
         function embedVideo(id, kep, cim) {
             document.getElementById("lejatszo").innerHTML = `
-<div class="talalat">
+<div class="talalat" class="rounded">
     <div id="ytFrame"></div> <br>
     <div class="p-3 text-light">
 
@@ -384,8 +385,8 @@
             eredmeny.innerHTML = "<p>Keresés folyamatban...</p>";
 
             const apikulcs = "AIzaSyAvqcZuWfXHENDGZOhjSKoKyaZe4xGtTVM";
-
-            const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&3maxResults=&q=${encodeURIComponent(kereso)}&key=${apikulcs}`;
+            const apikulcs2 = "AIzaSyAjhNmbvJwzwac3JK-UxQFId23xWsn10-E";
+           const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=3&q=${encodeURIComponent(kereso)}&key=${apikulcs2}`;
 
 
             function lekerVideok(vissza) {
@@ -412,13 +413,9 @@
                             .then(details => {
                                 //console.log(details);
                                 //console.log(details.items[0].contentDetails.duration);
-                                function videoe() {
-                                    
-                                    if () {
-
-                                    }
-                                }
-                                let van = details.items[0].contentDetails.duration;
+                                
+                                //let van = details.items.contentDetails.duration;
+                                console.log(van);
                                 if (van === undefined) {
                                     van = 0;
                                 }
@@ -428,10 +425,10 @@
                                     title: item.snippet.title,
                                     img: item.snippet.thumbnails.medium.url,
                                     nagyobbImg: item.snippet.thumbnails.high.url,
-                                    duration: videoHosszAtAlakit(
-                                        //details.items[i].contentDetails.duration
-                                        van
-                                    )
+                                    /*duration: videoHosszAtAlakit(
+                                        //details.items[i].contentDetails.duration,
+                                        //van
+                                    )*/
 
                                 }));
                                 //console.log(details.items[0].contentDetails.duration);
@@ -477,7 +474,7 @@
                         </div>
                         <div class="col-8 text-light">
                             <h3 class="text-truncate">${videok[i].title} </h3>
-                            <h4>${keresettVideoIdo(videok[i].duration)}</h4>
+                            <h4>$//{keresettVideoIdo(videok[i].duration)}</h4>
                         </div>
                     </div>
                     `;
