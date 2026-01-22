@@ -395,9 +395,16 @@ function login(){
   })
     .then((r) => r.json())
     .then((d) => {
-      if (d.status == "seccess_login") {
-        //local strogae-ba elmented a user adatokat
-        window.location.href = "../login/login.html";
+      if (d.status == "error_login_no_user") {
+        //registraljal ||| vagy elirtad az email cimed
+      } else if (d.status == "error_login_email_not_verified") {
+        //email nem lett megerositve
+      } else if (d.status == "error_login_not_approved") {
+        //meg nincs elfogadva az admin altal
+      } else if (d.status == "error_login_wrong_password") {
+        //rossz jelszo
+      } else if (d.status == "success_login") {
+        //majd en megirom!!!
       }
     });
 
