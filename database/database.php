@@ -23,11 +23,8 @@ function registration($conn, $username, $password, $email, $class)
   $username = mysqli_real_escape_string($conn, $username);
   $email = mysqli_real_escape_string($conn, $email);
   $class = mysqli_real_escape_string($conn, $class);
-  
-  do {
-    $token = bin2hex(random_bytes(64));
-    $check = mysqli_query($conn, "SELECT id FROM users WHERE verification_token = '$token' LIMIT 1");
-  } while (mysqli_num_rows($check) > 0);
+
+  $token = generateToken($conn);
 
   if (str_ends_with($email, "@ady-nagyatad.hu") == false) {
     $vissza["status"] = "error_sulisemail";
@@ -165,7 +162,8 @@ function deleteUser($conn, $id)
   }
 }
 
-function useradmin($conn, $id){
+function useradmin($conn, $id)
+{
   $id = mysqli_real_escape_string($conn, $id);
   $sql = "UPDATE users SET isadmin = 1 WHERE id = '$id' AND isadmin = 0";
   if (mysqli_query($conn, $sql)) {
@@ -178,33 +176,98 @@ function useradmin($conn, $id){
   }
 }
 
-function checkEmail($conn, $email){
+function checkEmail($conn, $email)
+{
   $email = mysqli_real_escape_string($conn, $email);
   $sql = "SELECT id FROM users WHERE email = '$email' and approved = 1";
   $result = mysqli_query($conn, $sql);
-  if(mysqli_num_rows($result) > 0){
+  if (mysqli_num_rows($result) > 0) {
     echo json_encode(array("status" => "email_exists"));
     $token = bin2hex(random_bytes(64));
     $update_token_sql = "UPDATE users SET verification_token = '$token' WHERE email = '$email' LIMIT 1";
     mysqli_query($conn, $update_token_sql);
     sendPasswordResetEmail($email, $token);
     return;
-  }else{
+  } else {
     echo json_encode(array("status" => "email_not_exists"));
     return;
   }
-
 }
 
-function resetPassword($conn, $token, $new_password){
+function resetPassword($conn, $token, $new_password)
+{
   $token = mysqli_real_escape_string($conn, $token);
   $new_password_hashed = password_hash($new_password, PASSWORD_BCRYPT);
   $sql = "UPDATE users SET user_password = '$new_password_hashed' WHERE verification_token = '$token' LIMIT 1";
-  if(mysqli_query($conn, $sql)){
+  if (mysqli_query($conn, $sql)) {
     echo json_encode(array("status" => "success_reset_password"));
     return;
-  }else{
+  } else {
     echo json_encode(array("status" => "error_reset_password"));
+    return;
+  }
+}
+function generateToken($conn)
+{
+  do {
+    $token = bin2hex(random_bytes(64));
+    $check = mysqli_query($conn, "SELECT id FROM users WHERE verification_token = '$token' LIMIT 1");
+  } while (mysqli_num_rows($check) > 0);
+
+  return $token;
+}
+
+function expire()
+{
+  $lejarat = date("Y-m-d H:i:s", strtotime("+30 minutes"));
+  return $lejarat;
+}
+
+function generateSessionToken($conn)
+{
+  do {
+    $token = bin2hex(random_bytes(64));
+    $check = mysqli_query($conn, "SELECT user_id FROM active_users WHERE token = '$token' LIMIT 1");
+  } while (mysqli_num_rows($check) > 0);
+
+  return $token;
+}
+
+
+
+function login($conn, $email, $password)
+{
+  $email = mysqli_real_escape_string($conn, $email);
+  $sql = "SELECT id, user_password, approved, isadmin, email_verified FROM users WHERE email = '$email' LIMIT 1";
+  $result = mysqli_query($conn, $sql);
+  if (mysqli_num_rows($result) == 0) {
+    echo json_encode(array("status" => "error_login_no_user"));
+    return;
+  }
+  $row = mysqli_fetch_assoc($result);
+  if (password_verify($password, $row['user_password'])) {
+    if ($row['email_verified'] == 0) {
+      echo json_encode(array("status" => "error_login_email_not_verified"));
+      return;
+    }
+    if ($row['approved'] == 0) {
+      echo json_encode(array("status" => "error_login_not_approved"));
+      return;
+    }
+    $sql_token = "SELECT token FROM active_users WHERE user_id = '" . $row['id'] . "' LIMIT 1";
+    $result_token = mysqli_query($conn, $sql_token);
+    if (mysqli_num_rows($result_token) == 0) {
+      $new_token = generateSessionToken($conn);
+      $insert_token_sql = "INSERT INTO active_users (user_id, token, expire) VALUES ('" . $row['id'] . "', '$new_token', '" . expire() . "')";
+      mysqli_query($conn, $insert_token_sql);
+    } else {
+      $new_token = generateSessionToken($conn);
+      $sql_new_token = "UPDATE active_users SET token = '$new_token', expire = '" . expire() . "' WHERE user_id = '" . $row['id'] . "'";
+      mysqli_query($conn, $sql_new_token);
+    }
+    echo json_encode(array("status" => "success_login", "isadmin" => $row['isadmin'], "token" => $new_token, "email" => $email));
+  } else {
+    echo json_encode(array("status" => "error_login_wrong_password"));
     return;
   }
 }

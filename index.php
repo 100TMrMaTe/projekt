@@ -28,6 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         case "reset_password":
             resetPassword($conn, $data["token"], $data["new_password"]);
             break;
+        case "login":
+            login($conn, $data["email"], $data["password"]);
+            break;
         default:
             echo json_encode(array("status" => "error", "message" => "Ismeretlen muvelet"));
             break;

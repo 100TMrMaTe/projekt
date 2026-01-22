@@ -362,6 +362,7 @@ function newpassword() {
   let password = document.getElementById("password").value;
   const searchParams = new URLSearchParams(window.location.search);
   const token = searchParams.get("token");
+
   fetch("../index.php", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -377,4 +378,28 @@ function newpassword() {
         window.location.href = "../login/login.html";
       }
     });
+}
+
+function login(){
+  password=document.getElementById("password").value;
+  email=document.getElementById("email").value;
+
+  fetch("../index.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      muvelet: "login",
+      password: password,
+      email: email,
+    }),
+  })
+    .then((r) => r.json())
+    .then((d) => {
+      if (d.status == "seccess_login") {
+        //local strogae-ba elmented a user adatokat
+        window.location.href = "../login/login.html";
+      }
+    });
+
+
 }
