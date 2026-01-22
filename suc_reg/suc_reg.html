@@ -25,11 +25,11 @@
                     <div class=" p-4 pb-2">
                         <label for="text" class="form-label d-flex justify-content-center">
                             <h2 class="" id="uzenet">
-                                
+
                             </h2>
                         </label>
                         <label class="form-label d-flex justify-content-center" id="hosszu_uzenet">
-                            
+
                         </label>
                     </div>
                 </div>
@@ -40,6 +40,31 @@
         </div>
     </div>
     <script src="../index.js"></script>
+    <script>
+        //background kép változtatása másodpercenként
+        function bgChange() {
+            const bgImages = [
+                'bg1.jpg',
+                'bg2.jpg',
+                'bg3.png',
+                'bg4.jpg',
+                'bg5.jpg',
+                'bg6.jpg',
+                '7.jpg',
+                '8.jpg',
+                '9.jpg',
+                '10.jpg',
+                '11.jpg',
+                '12.jpg',
+                '13.jpg',
+                '14.jpg'
+            ];
+            const index = Math.floor(Math.random() * bgImages.length);
+            document.body.style.backgroundImage = `url(../backgrounds/${bgImages[index]})`;
+            console.log("Background changed to: " + bgImages[index]);
+        }
+        //setInterval(bgChange, 3000);
+    </script>
 </body>
 
 </html>
