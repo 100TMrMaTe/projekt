@@ -423,8 +423,9 @@
                                 if (van === undefined) {
                                     van = 0;
                                 }
+                                
                                 const videok = adatok.items.map((item, i) => ({
-                                    
+                                    csatorna: item.kind.channelId,
                                     videoId: item.id.videoId,
                                     title: item.snippet.title,
                                     img: item.snippet.thumbnails.medium.url,
@@ -487,6 +488,10 @@
                     ////console.log(typeof videok[i].videoId);
                     talalat.onclick = () => {
                         eredmenyTorol();
+                        if (videok[i].csatorna == 'youtube#channel')
+                    {
+                        
+                    }
                         embedVideo(videok[i].videoId, videok[i].nagyobbImg, videok[i].title);
                     };
 
