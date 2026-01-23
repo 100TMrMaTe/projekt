@@ -18,7 +18,7 @@ body {
 body {
     /*background: linear-gradient(to bottom right, blue, cyan);*/
 
-    background-image: url("../backgrounds/14.jpg");
+    background-image: url("../backgrounds/11.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -102,6 +102,17 @@ body {
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
+.red {
+    background: transparent;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background-image: radial-gradient(black 1px, transparent 0);
+}
+
+.error-icon {
+    fill: rgba(255, 0, 0, 0.6);
+}
 
 
 @media screen and (max-width: 842px) {
