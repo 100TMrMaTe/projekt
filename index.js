@@ -381,8 +381,13 @@ function newpassword() {
 }
 
 function errorTimer() {
+
   setTimeout(() => {
-    document.getElementById("error").classList.add("d-none");
+    //document.getElementById("error").classList.add("d-none");
+
+    const collapseElementList = document.querySelectorAll('.collapse')
+    const collapseList = [...collapseElementList].map(collapseEl => new bootstrap.Collapse(collapseEl))
+
   }, 5000);
 }
 
@@ -405,23 +410,27 @@ function login() {
       if (d.status == "error_login_no_user") {
         //registraljal ||| vagy elirtad az email cimed
         document.getElementById("error-message").innerText = "Hibás email cím vagy még nem regisztráltál.";
-        document.getElementById("error").classList.remove("d-none");
+        const collapseElementList = document.querySelectorAll('.collapse')
+        const collapseList = [...collapseElementList].map(collapseEl => new bootstrap.Collapse(collapseEl))
         errorTimer();
       } else if (d.status == "error_login_email_not_verified") {
         //email nem lett megerositve
         document.getElementById("error-message").innerText = "Az email címed nincs megerősítve.";
-        document.getElementById("error").classList.remove("d-none");
+        const collapseElementList = document.querySelectorAll('.collapse')
+        const collapseList = [...collapseElementList].map(collapseEl => new bootstrap.Collapse(collapseEl))
         errorTimer();
       } else if (d.status == "error_login_not_approved") {
         //meg nincs elfogadva az admin altal
         document.getElementById("error-message").innerText = "A regisztrációdat még nem fogadta el egy adminisztrátor.";
-        document.getElementById("error").classList.remove("d-none");
+        const collapseElementList = document.querySelectorAll('.collapse')
+        const collapseList = [...collapseElementList].map(collapseEl => new bootstrap.Collapse(collapseEl))
         errorTimer();
       } else if (d.status == "error_login_wrong_password") {
         console.log("rossz jelszo");
         //rossz jelszo
-        document.getElementById("error").classList.remove("d-none");
         document.getElementById("error-message").innerText = "Hibás jelszó.";
+        const collapseElementList = document.querySelectorAll('.collapse')
+        const collapseList = [...collapseElementList].map(collapseEl => new bootstrap.Collapse(collapseEl))
         errorTimer();
       } else if (d.status == "success_login") {
         localStorage.setItem("token", d.token);
