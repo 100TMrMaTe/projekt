@@ -6,24 +6,21 @@ body {
 }
 
 body {
-    background-image: url("../backgrounds/10.jpg");
+    background-image: url("../backgrounds/14.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
 }
 
 #navbar {
-    background: rgba(255, 255, 255, 0.1);
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(5px);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
 }
 
-#navbarMenu {
-    background: rgba(255, 255, 255, 0.1);
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(5px);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+#navbar .btn {
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .kereso {
@@ -35,6 +32,7 @@ body {
     border: 2px solid rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(5px);
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
 }
 
 .kereso::placeholder {
@@ -58,6 +56,7 @@ body {
     border: 2px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(5px);
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
 }
 
 .btn:hover {
@@ -148,7 +147,7 @@ body {
     object-fit: cover;
 }
 
-#seekSlider{
+#seekSlider {
     width: 100%;
     appearance: none;
     height: 6px;
@@ -164,10 +163,76 @@ body {
     height: 0;
     box-shadow: -2000px 0 0 2000px rgba(220, 220, 220, 1);
 }
+
 #seekSlider::-moz-range-thumb {
     -moz-appearance: none;
     width: 0;
     height: 0;
     box-shadow: -2000px 0 0 2000px rgba(220, 220, 220, 1);
 }
+
+li {
+    list-style: none;
+}
+
+ul {
+    padding-left: 0;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+html,
+body {
+    margin: 0;
+    height: 100%;
+}
+
+body {
+    background:
+        radial-gradient(circle at 15% 25%, #6ff2c2 0%, transparent 45%),
+        radial-gradient(circle at 85% 20%, #7af0d1 0%, transparent 45%),
+        radial-gradient(circle at 70% 75%, #4fd1c5 0%, transparent 50%),
+        linear-gradient(135deg, #2ed3a4, #1fbfa2);
+    font-family: system-ui, sans-serif;
+    color: white;
+}
+
+.stripe {
+    position: fixed;
+    top: 0;
+    right: 12%;
+    width: 2px;
+    height: 100vh;
+    background: linear-gradient(to bottom,
+            transparent,
+            rgba(255, 255, 255, 0.6),
+            transparent);
+    opacity: 0.7;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(150, 150, 150, 0.07);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 999px;
+}
+
+.background {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background:
+        radial-gradient(circle at 15% 25%, #6ff2c2 0%, transparent 45%),
+        radial-gradient(circle at 85% 20%, #7af0d1 0%, transparent 45%),
+        radial-gradient(circle at 70% 75%, #4fd1c5 0%, transparent 50%),
+        linear-gradient(135deg, #2ed3a4, #1fbfa2);
+}
+
+
 
