@@ -199,10 +199,10 @@ body {
 
 .stripe {
     position: fixed;
-    top: 0;
-    right: 12%;
-    width: 2px;
-    height: 100vh;
+    top: 20vh;
+    right: 50%;
+    width: 3px;
+    height: 70vh;
     background: linear-gradient(to bottom,
             transparent,
             rgba(255, 255, 255, 0.6),
@@ -227,12 +227,19 @@ body {
     position: fixed;
     inset: 0;
     z-index: -2;
+    /*
     background:
-        radial-gradient(circle at 15% 25%, #6ff2c2 0%, transparent 45%),
-        radial-gradient(circle at 85% 20%, #7af0d1 0%, transparent 45%),
+        radial-gradient(circle at 15% 25%, #77c6a9 0%, transparent 45%),
+        radial-gradient(circle at 85% 20%, #36d2bb 0%, transparent 45%),
         radial-gradient(circle at 70% 75%, #4fd1c5 0%, transparent 50%),
         linear-gradient(135deg, #2ed3a4, #1fbfa2);
+    */
+    
+    background:
+        radial-gradient(circle at 15% 25%, #7858a3 0%, transparent 45%),
+        radial-gradient(circle at 85% 20%, #4d9dc5 0%, transparent 45%),
+        radial-gradient(circle at 70% 75%, #51c17c 0%, transparent 50%),
+        linear-gradient(135deg, #8849cf, #1fbf6c);
+    
+
 }
-
-
-
