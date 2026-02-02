@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <title>Music Player</title>
+    <link rel="stylesheet" href="music_player.css">
+</head>
+
+<body>
+    <!-- Background -->
+    <div class="background"></div>
+    <div class="background-overlay"></div>
+
+    <!-- Animated Particles -->
+    <div class="particles-container" id="particles"></div>
+
+    <div class="container-fluid px-4 py-3">
+        <!-- Top Bar -->
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="glass-card p-3">
+                    <div class="row align-items-center">
+                        <div class="col-md-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="user-avatar">
+                                    <i class="bi bi-person-circle"></i>
+                                </div>
+                                <div>
+                                    <div class="user-name" id="userName">Felhasználó</div>
+                                    <div class="user-info" id="sessionTime">
+                                        <i class="bi bi-clock me-1"></i>
+                                        <span id="timer">00:00</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 text-center">
+                            <div class="now-playing-indicator">
+                                <i class="bi bi-music-note-beamed me-2"></i>
+                                <span id="nowPlayingText">Music Player</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 text-end">
+                            <button class="btn-icon" id="themeToggle" title="Téma váltás">
+                                <i class="bi bi-moon-stars-fill"></i>
+                            </button>
+                            <button class="btn-icon" title="Beállítások">
+                                <i class="bi bi-gear-fill"></i>
+                            </button>
+                            <button class="btn-icon" title="Kilépés">
+                                <i class="bi bi-box-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="row g-3">
+            <!-- Left Column - Search & Results -->
+            <div class="col-lg-5">
+                <!-- Search Box -->
+                <div class="glass-card p-4 mb-3">
+                    <h5 class="section-title mb-3">
+                        <i class="bi bi-search me-2"></i>Keresés
+                    </h5>
+                    <div class="search-container">
+                        <div class="input-group">
+                            <span class="input-group-text glass-input-addon">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            <input type="text" 
+                                   class="form-control glass-input" 
+                                   placeholder="Keress zenét, előadót..." 
+                                   id="kereso">
+                            <button class="btn btn-primary-glass" onclick="keres(); eredmenyVisszahoz()">
+                                <i class="bi bi-search me-2"></i>Keresés
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Search Results -->
+                <div class="glass-card search-results-container">
+                    <div class="p-3 border-bottom border-light border-opacity-10">
+                        <h5 class="section-title mb-0">
+                            <i class="bi bi-music-note-list me-2"></i>Találatok
+                        </h5>
+                    </div>
+                    <div id="eredmeny" class="search-results">
+                        <div class="empty-state">
+                            <i class="bi bi-search"></i>
+                            <p>Kezdj el keresni zenét...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Player & Queue -->
+            <div class="col-lg-7">
+                <!-- Player -->
+                <div class="glass-card player-container mb-3" id="lejatszo">
+                    <div class="player-placeholder">
+                        <div class="player-placeholder-content">
+                            <i class="bi bi-disc"></i>
+                            <p>Válassz egy zenét a lejátszáshoz</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Queue/Playlist -->
+                <div class="glass-card">
+                    <div class="p-3 border-bottom border-light border-opacity-10">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="section-title mb-0">
+                                <i class="bi bi-music-note-list me-2"></i>Lejátszási lista
+                            </h5>
+                            <span class="badge bg-primary-glass" id="queueCount">0</span>
+                        </div>
+                    </div>
+                    <div id="kovetkezo" class="playlist-container">
+                        <div class="empty-state">
+                            <i class="bi bi-file-music"></i>
+                            <p>A lejátszási lista üres</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999">
+        <div id="notification-toast" class="toast glass-toast" role="alert">
+            <div class="toast-body d-flex align-items-center gap-2">
+                <i class="bi bi-check-circle-fill text-success" id="toast-icon"></i>
+                <span id="toast-message"></span>
+                <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="music_player.js"></script>
+</body>
+
+</html>
