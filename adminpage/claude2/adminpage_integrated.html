@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="adminpage_improved.css">
+</head>
+
+<body onload="init()">
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 11">
+        <div id="notification-toast" class="toast align-items-center border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body" id="toast-message"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg mb-4 glass-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white fw-bold" href="#">
+                <i class="bi bi-shield-check me-2"></i>Admin Panel
+            </a>
+            <div class="d-flex align-items-center gap-3">
+                <!-- Theme Toggle -->
+                <button class="btn btn-glass" id="theme-toggle" onclick="toggleTheme()">
+                    <i class="bi bi-moon-stars-fill" id="theme-icon"></i>
+                </button>
+                <!-- Refresh Button -->
+                <button class="btn btn-glass" onclick="init()" title="Frissítés">
+                    <i class="bi bi-arrow-clockwise"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Statistics Cards -->
+    <div class="container mb-4">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <div class="stat-card glass-card">
+                    <div class="stat-icon bg-warning">
+                        <i class="bi bi-hourglass-split"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-label">Függőben lévő kérelmek</div>
+                        <div class="stat-value" id="pending-count">0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card glass-card">
+                    <div class="stat-icon bg-success">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-label">Aktív felhasználók</div>
+                        <div class="stat-value" id="users-count">0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card glass-card">
+                    <div class="stat-icon bg-info">
+                        <i class="bi bi-journal-text"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-label">Naplóbejegyzések</div>
+                        <div class="stat-value" id="logs-count">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container py-3">
+        <div class="row g-3">
+            <!-- Kérelmek -->
+            <div class="col-12 col-lg-4">
+                <div class="card glass-card">
+                    <div class="card-header glass-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold">
+                                <i class="bi bi-inbox-fill me-2"></i>Kérelmek
+                            </span>
+                            <span class="badge bg-warning" id="reg-badge">0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body p-0">
+                        <!-- Search -->
+                        <div class="p-3 border-bottom border-light border-opacity-25">
+                            <div class="search-box">
+                                <i class="bi bi-search"></i>
+                                <input type="text" class="form-control form-control-sm" 
+                                       placeholder="Keresés email alapján..." 
+                                       id="search-reg"
+                                       oninput="filterList('reg', this.value)">
+                            </div>
+                        </div>
+
+                        <ul class="list-group list-group-flush custom-scrollbar" id="reg" name="reg">
+                            <li class="list-group-item glass-item text-center py-5">
+                                <div class="spinner-border text-white" role="status">
+                                    <span class="visually-hidden">Betöltés...</span>
+                                </div>
+                                <p class="mt-2 mb-0 text-white-50">Adatok betöltése...</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Felhasználók -->
+            <div class="col-12 col-lg-4">
+                <div class="card glass-card">
+                    <div class="card-header glass-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold">
+                                <i class="bi bi-people-fill me-2"></i>Felhasználók
+                            </span>
+                            <span class="badge bg-success" id="users-badge">0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body p-0">
+                        <!-- Search -->
+                        <div class="p-3 border-bottom border-light border-opacity-25">
+                            <div class="search-box">
+                                <i class="bi bi-search"></i>
+                                <input type="text" class="form-control form-control-sm" 
+                                       placeholder="Keresés email alapján..." 
+                                       id="search-users"
+                                       oninput="filterList('users', this.value)">
+                            </div>
+                        </div>
+
+                        <ul class="list-group list-group-flush custom-scrollbar" id="users" name="users">
+                            <li class="list-group-item glass-item text-center py-5">
+                                <div class="spinner-border text-white" role="status">
+                                    <span class="visually-hidden">Betöltés...</span>
+                                </div>
+                                <p class="mt-2 mb-0 text-white-50">Adatok betöltése...</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Naplók -->
+            <div class="col-12 col-lg-4">
+                <div class="card glass-card">
+                    <div class="card-header glass-header">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold">
+                                <i class="bi bi-journal-text me-2"></i>Felhasználói Naplók
+                            </span>
+                            <span class="badge bg-info" id="log-badge">0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body p-0">
+                        <!-- Search -->
+                        <div class="p-3 border-bottom border-light border-opacity-25">
+                            <div class="search-box">
+                                <i class="bi bi-search"></i>
+                                <input type="text" class="form-control form-control-sm" 
+                                       placeholder="Keresés..." 
+                                       id="search-log"
+                                       oninput="filterList('log', this.value)">
+                            </div>
+                        </div>
+
+                        <ul class="list-group list-group-flush custom-scrollbar" id="log" name="log">
+                            <li class="list-group-item glass-item text-center py-5">
+                                <div class="spinner-border text-white" role="status">
+                                    <span class="visually-hidden">Betöltés...</span>
+                                </div>
+                                <p class="mt-2 mb-0 text-white-50">Adatok betöltése...</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <script src="../index.js"></script>
+    <script src="adminpage_integrated.js"></script>
+</body>
+
+</html>
