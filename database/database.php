@@ -14,6 +14,7 @@ function Connect_to_server()
   if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
   }
+  
   mysqli_set_charset($conn, "utf8mb4");
   return $conn;
 }

@@ -7,10 +7,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <title></title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="music_player.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
+    <link rel="stylesheet" href="../style.css">
 </head>
 
 <body>
@@ -19,45 +16,56 @@
     <div class="container">
         <div class="row text-light">
             <div class="col-12 p-3">
-                <div class="row mb-3">
-            <div class="col-12">
-                <div class="glass-card p-3">
-                    <div class="row align-items-center">
-                        <div class="col-md-3">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="user-avatar">
-                                    <i class="bi bi-person-circle"></i>
-                                </div>
-                                <div>
-                                    <div class="user-name" id="userName">Felhasználó</div>
-                                    <div class="user-info" id="sessionTime">
-                                        <i class="bi bi-clock me-1"></i>
-                                        <span id="timer">00:00</span>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="p-2 rounded-3" id="navbar">
+                    <div class="row p-2 h-100">
+                        <div class="col-2 text-center align-middle">
+                            <span>Felhasználó neve</span>
                         </div>
-                        <div class="col-md-6 text-center">
-                            <div class="now-playing-indicator">
-                                <i class="bi bi-music-note-beamed me-2"></i>
-                                <span id="nowPlayingText">Music Player</span>
-                            </div>
+                        <div class="col-2 text-center">
+                            <span>Belépve (32:15)</span>
                         </div>
-                        <div class="col-md-3 text-end">
-                            <button class="btn-icon" id="themeToggle" title="Téma váltás">
-                                <i class="bi bi-moon-stars-fill"></i>
+                        <div class="col-8 text-end">
+                            <button class="btn text-white me-4">
+                                ez egy gomb
                             </button>
-                            <button class="btn-icon" title="Beállítások">
-                                <i class="bi bi-gear-fill"></i>
+                            <button class="btn text-white me-4">
+                                ez egy gomb
                             </button>
-                            <button class="btn-icon" title="Kilépés">
-                                <i class="bi bi-box-arrow-right"></i>
+                            <button class="btn  text-white me-2">
+                                ez egy gomb
                             </button>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+
+
+                <nav class="navbar navbar-expand-lg p-2 rounded-3 mt-4" id="navbar">
+                    <div class="container-fluid text-light">
+                        <a class="navbar-brand" href="#">Navbar</a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Features</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Pricing</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+
 
 
             </div>
@@ -81,6 +89,74 @@
                 <div id="lejatszo" class="lejatszo"></div>
 
                 <div id="kovetkezo" class="kovetkezo">
+
+                    <ul>
+
+                        <li>
+                            <div class="row m-2 mb-3 p-2 rounded video talalat">
+                                <div class="col-4">
+                                    <img src="https://i.ytimg.com/vi/CyKm41o6WXQ/hqdefault.jpg"
+                                        class="img-fluid rounded" />
+                                </div>
+                                <div class="col-8 text-light">
+                                    <h3 class="text-truncate">BSW - Hello </h3>
+                                    <h4>3:21</h4>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="row m-2 mb-3 p-2 rounded video talalat">
+                                <div class="col-4">
+                                    <img src="https://i.ytimg.com/vi/CyKm41o6WXQ/hqdefault.jpg"
+                                        class="img-fluid rounded" />
+                                </div>
+                                <div class="col-8 text-light">
+                                    <h3 class="text-truncate">BSW - Hello </h3>
+                                    <h4>3:21</h4>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="row m-2 mb-3 p-2 rounded video talalat">
+                                <div class="col-4">
+                                    <img src="https://i.ytimg.com/vi/CyKm41o6WXQ/hqdefault.jpg"
+                                        class="img-fluid rounded" />
+                                </div>
+                                <div class="col-8 text-light">
+                                    <h3 class="text-truncate">BSW - Hello </h3>
+                                    <h4>3:21</h4>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="row m-2 mb-3 p-2 rounded video talalat">
+                                <div class="col-4">
+                                    <img src="https://i.ytimg.com/vi/CyKm41o6WXQ/hqdefault.jpg"
+                                        class="img-fluid rounded" />
+                                </div>
+                                <div class="col-8 text-light">
+                                    <h3 class="text-truncate">BSW - Hello </h3>
+                                    <h4>3:21</h4>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="row m-2 mb-3 p-2 rounded video talalat">
+                                <div class="col-4">
+                                    <img src="https://i.ytimg.com/vi/CyKm41o6WXQ/hqdefault.jpg"
+                                        class="img-fluid rounded" />
+                                </div>
+                                <div class="col-8 text-light">
+                                    <h3 class="text-truncate">BSW - Hello </h3>
+                                    <h4>3:21</h4>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
 
                 </div>
             </div>
@@ -252,7 +328,6 @@
             if (seconds === "LIVE") {
                 return "LIVE";
             }
-
             let perc = Math.floor(seconds / 60);
             let masodperc = Math.floor(seconds % 60);
             let ora = Math.floor(perc / 60);
@@ -279,13 +354,17 @@
             if (alakito === null) {
                 return 0;
             }
+
+           
             const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
             const illik = alakito.match(regex);
 
-            if (!illik) {
+
+             if (!illik)
+            {
                 return 0;
             }
-
+        
             const ora = parseInt(illik[1]) || 0;
             const perc = parseInt(illik[2]) || 0;
             const masodperc = parseInt(illik[3]) || 0;
@@ -460,13 +539,13 @@
                                         title: item.snippet.title,
                                         img: item.snippet.thumbnails.medium.url,
                                         nagyobbImg: item.snippet.thumbnails.high.url,
-                                        duration: videoHosszAtAlakit(
-                                            details.items[i].contentDetails.duration,
-
-                                        ) == 0 ? "LIVE" : videoHosszAtAlakit(details.items[i].contentDetails.duration),
-                                    })).slice(0, 100);
-                                //console.log(details.items[0].contentDetails.duration);
-
+                                       duration: videoHosszAtAlakit(details.items[i].contentDetails.duration) == 0 ? "LIVE" : videoHosszAtAlakit(details.items[i].contentDetails.duration),
+                                       durationRaw: details.items[i].contentDetails.duration
+                                    })).slice(0, 5);
+                                    for (let j = 0; j < videok.length; j++) {
+                                        console.log(videok[j].durationRaw);
+                                    }
+                                //console.log(details.items.contentDetails.durationRaw);
                                 vissza(videok);
                             });
                     });
