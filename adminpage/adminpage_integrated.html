@@ -192,99 +192,11 @@
         </div>
     </div>
 
-    <!-- Templates for dynamic content -->
-    <template id="reg-item-template">
-        <li class="list-group-item glass-item">
-            <div class="container-fluid px-2">
-                <div class="row g-2 align-items-center">
-                    <div class="col-12">
-                        <div class="d-flex align-items-center mb-2">
-                            <i class="bi bi-person-circle me-2 text-white-50"></i>
-                            <span class="email-text text-truncate"></span>
-                        </div>
-                        <div class="info-badge">
-                            <i class="bi bi-bookmark-fill me-1"></i>
-                            Osztály: <strong class="osztaly-text"></strong>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <button class="btn btn-success w-100 action-btn" onclick="acceptRequest(this)">
-                            <i class="bi bi-check-lg me-1"></i>Elfogad
-                        </button>
-                    </div>
-                    <div class="col-6">
-                        <button class="btn btn-danger w-100 action-btn" onclick="rejectRequest(this)">
-                            <i class="bi bi-x-lg me-1"></i>Elutasít
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </li>
-    </template>
-
-    <template id="user-item-template">
-        <li class="list-group-item glass-item">
-            <div class="container-fluid px-2">
-                <div class="row g-2 align-items-center">
-                    <div class="col-12">
-                        <div class="d-flex align-items-center mb-2">
-                            <i class="bi bi-person-fill me-2 text-white-50"></i>
-                            <span class="email-text text-truncate"></span>
-                            <span class="admin-badge ms-auto"></span>
-                        </div>
-                        <div class="info-badge">
-                            <i class="bi bi-bookmark-fill me-1"></i>
-                            Osztály: <strong class="osztaly-text"></strong>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <button class="btn btn-warning w-100 action-btn" onclick="toggleAdmin(this)">
-                            <i class="bi bi-shield-fill-check me-1"></i>
-                            <span class="admin-btn-text">Admin</span>
-                        </button>
-                    </div>
-                    <div class="col-6">
-                        <button class="btn btn-danger w-100 action-btn" onclick="deleteUser(this)">
-                            <i class="bi bi-trash-fill me-1"></i>Törlés
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </li>
-    </template>
-
-    <template id="log-item-template">
-        <li class="list-group-item glass-item">
-            <div class="container-fluid px-2">
-                <div class="d-flex align-items-start mb-2">
-                    <i class="bi bi-music-note-beamed me-2 text-white-50 mt-1"></i>
-                    <div class="flex-grow-1 min-w-0">
-                        <div class="song-title mb-1"></div>
-                        <div class="d-flex align-items-center mb-2">
-                            <i class="bi bi-person-circle me-1 text-white-50" style="font-size: 0.9rem;"></i>
-                            <span class="email-text text-truncate small"></span>
-                        </div>
-                        <div class="d-flex flex-wrap gap-2">
-                            <div class="info-badge small">
-                                <i class="bi bi-bookmark-fill me-1"></i>
-                                <span class="osztaly-text"></span>
-                            </div>
-                            <div class="info-badge small">
-                                <i class="bi bi-clock-fill me-1"></i>
-                                <span class="time-text"></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-    </template>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
     <script src="../index.js"></script>
-    <script src="adminpage_improved.js"></script>
+    <script src="adminpage_integrated.js"></script>
 </body>
 
 </html>
