@@ -20,44 +20,44 @@
         <div class="row text-light">
             <div class="col-12 p-3">
                 <div class="row mb-3">
-            <div class="col-12">
-                <div class="glass-card p-3">
-                    <div class="row align-items-center">
-                        <div class="col-md-3">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="user-avatar">
-                                    <i class="bi bi-person-circle"></i>
-                                </div>
-                                <div>
-                                    <div class="user-name" id="userName">Felhasználó</div>
-                                    <div class="user-info" id="sessionTime">
-                                        <i class="bi bi-clock me-1"></i>
-                                        <span id="timer">00:00</span>
+                    <div class="col-12">
+                        <div class="glass-card p-3">
+                            <div class="row align-items-center">
+                                <div class="col-md-3">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="user-avatar">
+                                            <i class="bi bi-person-circle"></i>
+                                        </div>
+                                        <div>
+                                            <div class="user-name" id="userName">Felhasználó</div>
+                                            <div class="user-info" id="sessionTime">
+                                                <i class="bi bi-clock me-1"></i>
+                                                <span id="timer">00:00</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="col-md-6 text-center">
+                                    <div class="now-playing-indicator">
+                                        <i class="bi bi-music-note-beamed me-2"></i>
+                                        <span id="nowPlayingText">Music Player</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 text-end">
+                                    <button class="btn-icon" id="themeToggle" title="Téma váltás">
+                                        <i class="bi bi-moon-stars-fill"></i>
+                                    </button>
+                                    <button class="btn-icon" title="Beállítások">
+                                        <i class="bi bi-gear-fill"></i>
+                                    </button>
+                                    <button class="btn-icon" title="Kilépés">
+                                        <i class="bi bi-box-arrow-right"></i>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-6 text-center">
-                            <div class="now-playing-indicator">
-                                <i class="bi bi-music-note-beamed me-2"></i>
-                                <span id="nowPlayingText">Music Player</span>
-                            </div>
-                        </div>
-                        <div class="col-md-3 text-end">
-                            <button class="btn-icon" id="themeToggle" title="Téma váltás">
-                                <i class="bi bi-moon-stars-fill"></i>
-                            </button>
-                            <button class="btn-icon" title="Beállítások">
-                                <i class="bi bi-gear-fill"></i>
-                            </button>
-                            <button class="btn-icon" title="Kilépés">
-                                <i class="bi bi-box-arrow-right"></i>
-                            </button>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
 
             </div>
@@ -65,26 +65,48 @@
 
         <div class="row">
             <div class="col-6">
-                <div class="row pt-2 pb-5">
-                    <div class="col-10">
-                        <input type="text" oninput="//KeresesKezdese()" class="form-control text-light kereso"
-                            style="height: 45px;" placeholder="Keresés..." id="kereso" name="kereso">
-                    </div>
-                    <div class="col-2">
-                        <button onclick="keres(),eredmenyVisszahoz()"
-                            class="btn  text-white h-100">Keresés</button>
+                <div class="glass-card p-4 mb-3">
+                    <h5 class="section-title mb-3">
+                        <i class="bi bi-search me-2"></i>Keresés
+                    </h5>
+                    <div class="search-container">
+                        <div class="input-group">
+                            <span class="input-group-text glass-input-addon">
+                                <i class="bi bi-search"></i>
+                            </span>
+                            <input type="text" class="form-control glass-input" placeholder="Keress zenét..."
+                                id="kereso">
+                            <button class="btn btn-primary-glass" onclick="keres(); eredmenyVisszahoz()">
+                                <i class="bi bi-search me-2"></i>Keresés
+                            </button>
+                        </div>
+
                     </div>
                 </div>
-                <div id="eredmeny" class="eredmeny text-light"></div>
+                <div class="glass-card search-results-container">
+                <div class="p-3 border-bottom border-light border-opacity-10">
+                    <h5 class="section-title mb-0">
+                        <i class="bi bi-music-note-list me-2"></i>Találatok
+                    </h5>
+                </div>
+                <div id="eredmeny" class="search-results">
+                    <div class="empty-state">
+                        <i class="bi bi-search"></i>
+                        <p>Kezdj el keresni zenét...</p>
+                    </div>
+                </div>
             </div>
-            <div class="col-6">
-                <div id="lejatszo" class="lejatszo"></div>
-
-                <div id="kovetkezo" class="kovetkezo">
-
-                </div>
             </div>
         </div>
+        <div class="col-6">
+            
+            <div id="lejatszo" class="lejatszo"></div>
+
+            <div id="kovetkezo" class="kovetkezo">
+
+            </div>
+        </div>
+    </div>
     </div>
 
 
