@@ -31,6 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         case "login":
             login($conn, $data["email"], $data["password"]);
             break;
+        case "test1":
+            test1($conn);
+            break;
         default:
             echo json_encode(array("status" => "error", "message" => "Ismeretlen muvelet"));
             break;
