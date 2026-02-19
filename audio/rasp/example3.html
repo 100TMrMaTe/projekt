@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<div id="player"></div>
+
+<script>
+let videoFromDB = null;
+let player;
+
+
+fetch("../../otthoniindex.php", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        muvelet: "test2"
+    })
+})
+.then(response => response.json())
+.then(data => {
+    console.log("DB adat:", data);
+    if (!data.error) {
+        videoFromDB = data.id; 
+        loadYouTubeAPI();
+    } else {
+        console.log("Hiba:", data.error);
+    }
+})
+.catch(error => console.error("Fetch hiba:", error));
+
+function loadYouTubeAPI() {
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.body.appendChild(tag);
+}
+
+function onYouTubeIframeAPIReady() {
+    if (!videoFromDB) return;
+
+    player = new YT.Player('player', {
+        height: '390',
+        width: '640',
+        videoId: videoFromDB, // DB-ből jön
+        playerVars: {
+            'playsinline': 1
+        },
+        events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+        }
+    });
+}
+
+
+function onPlayerReady(event) {
+    event.target.playVideo();
+}
+
+
+function onPlayerStateChange(event) {
+    console.log("Player state:", event.data);
+}
+
+</script>
+
+</body>
+</html>
