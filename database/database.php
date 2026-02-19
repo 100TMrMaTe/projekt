@@ -272,3 +272,11 @@ function login($conn, $email, $password)
     return;
   }
 }
+
+function test1($conn): void{
+  $sql = "SELECT video_id from test1";
+  mysqli_query($conn, $sql);
+  $result = mysqli_query($conn, $sql);
+  $row = mysqli_fetch_assoc($result);
+  echo json_encode($row['video_id']);
+}
