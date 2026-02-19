@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>rasp</title>
+</head>
+<body>
+        <div><iframe id="video" width="420" height="345" src="">
+</iframe></div>
+
+
+<script>
+    fetch('../../index.php', {
+        method: 'POST',
+        body: JSON.stringify({
+            muvelet: 'test1'
+        }),
+    }
+    )
+    .then(response => response.text())
+    .then(data => 
+    {
+        console.log(data);
+        let video = document.getElementById('video');
+        const videoId = JSON.parse(data);
+        video.src = "https://www.youtube.com/embed/" + videoId;
+
+    }
+    )
+    
+        
+
+
+</script>
+
+</body>
+</html>
