@@ -1,5 +1,6 @@
 <?php
 include_once "database/database.php";
+include_once "database/otthon.php";
 $conn = Connect_to_server();
 $data = (json_decode(file_get_contents("php://input"), true));
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -33,6 +34,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             break;
         case "test1":
             test1($conn);
+            break;
+        case "test2":
+            test2($conn);
             break;
         default:
             echo json_encode(array("status" => "error", "message" => "Ismeretlen muvelet"));
