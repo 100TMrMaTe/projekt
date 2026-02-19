@@ -1,0 +1,37 @@
+
+böngésző
+chromium \
+  --kiosk \
+  --autoplay-policy=no-user-gesture-required \
+  --disable-infobars \
+  --disable-session-crashed-bubble \
+  --noerrdialogs \
+localhost/projekt/audio/rasp/index.html
+
+chromium
+    --kiosk
+    --autoplay-policy=no-user-gesture-required
+    --disable-infobars
+    --disable-session-crashed-bubble
+    --noerrdialogs
+    --no-first-run
+    --disable-translate
+    http://localhost/projekt/audio/rasp/index.html
+
+chromium
+    --kiosk
+    --autoplay-policy=no-user-gesture-required
+    --disable-infobars
+    --disable-session-crashed-bubble
+    --noerrdialogs
+    --no-first-run
+    --disable-translate
+    http://localhost/projekt/audio/rasp/index.html
+
+hang
+  alsamixer
+
+
+böngésző megölése
+pkill chromium
+
