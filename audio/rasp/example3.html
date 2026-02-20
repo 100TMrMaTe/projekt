@@ -1,69 +1,74 @@
 <!DOCTYPE html>
 <html>
+
 <body>
 
-<div id="player"></div>
+    <div id="player"></div>
 
-<script>
-let videoFromDB = null;
-let player;
+    <script>
+        let videoFromDB = null;
+        let player;
 
+        function loadYouTubeAPI() {
+            var tag = document.createElement('script');
+            tag.src = "https://www.youtube.com/iframe_api";
+            document.body.appendChild(tag);
 
-fetch("../../otthoniindex.php", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-        muvelet: "test2"
-    })
-})
-.then(response => response.json())
-.then(data => {
-    console.log("DB adat:", data);
-    if (!data.error) {
-        videoFromDB = data.id; 
-        loadYouTubeAPI();
-    } else {
-        console.log("Hiba:", data.error);
-    }
-})
-.catch(error => console.error("Fetch hiba:", error));
-
-function loadYouTubeAPI() {
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    document.body.appendChild(tag);
-}
-
-function onYouTubeIframeAPIReady() {
-    if (!videoFromDB) return;
-
-    player = new YT.Player('player', {
-        height: '390',
-        width: '640',
-        videoId: videoFromDB, // DB-ből jön
-        playerVars: {
-            'playsinline': 1
-        },
-        events: {
-            'onReady': onPlayerReady,
-            'onStateChange': onPlayerStateChange
+            // Call the onYouTubeIframeAPIReady function when the script is loaded
+            tag.onload = onYouTubeIframeAPIReady;
+            console.log("YouTube API betöltve");
         }
-    });
-}
 
+        function onYouTubeIframeAPIReady() {
+            console.log("YouTube API ready, videoFromDB:", videoFromDB);
+            if (!videoFromDB) return;
 
-function onPlayerReady(event) {
-    event.target.playVideo();
-}
+            player = new YT.Player('player', {
+                height: '390',
+                width: '640',
+                videoId: videoFromDB, // DB-ből jön
+                playerVars: {
+                    'playsinline': 1
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
 
+        fetch("../../index.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                muvelet: "test1"
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("DB adat:", data);
+                if (!data.error) {
+                    console.log(data);
+                    videoFromDB = data.video_id;
+                    loadYouTubeAPI();
+                } else {
+                    console.log("Hiba:", data.error);
+                }
+            })
+            .catch(error => console.error("Fetch hiba:", error));
 
-function onPlayerStateChange(event) {
-    console.log("Player state:", event.data);
-}
+        function onPlayerReady(event) {
+            event.target.playVideo();
+        }
 
-</script>
+        function onPlayerStateChange(event) {
+            console.log("Player state:", event.data);
+        }
+
+    </script>
 
 </body>
+
 </html>
