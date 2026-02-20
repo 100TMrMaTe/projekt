@@ -40,6 +40,10 @@ chromium \
   --disable-software-rasterizer \
   http://localhost/projekt/audio/rasp/example.html
 
+
+chromium http://localhost/projekt/audio/rasp/example3.html
+
+
 hang
   alsamixer
 

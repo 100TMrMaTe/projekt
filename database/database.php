@@ -274,7 +274,7 @@ function login($conn, $email, $password)
 }
 
 function test1($conn): void{
-  $sql = "SELECT video_id,status from test1";
+  $sql = "SELECT video_id, status from test1";
   mysqli_query($conn, $sql);
   $result = mysqli_query($conn, $sql);
   $row = mysqli_fetch_assoc($result);
