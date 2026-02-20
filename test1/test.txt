@@ -28,6 +28,18 @@ chromium
     --disable-translate
     http://localhost/projekt/audio/rasp/index.html
 
+chromium \
+  --kiosk \
+  --autoplay-policy=no-user-gesture-required \
+  --disable-infobars \
+  --disable-session-crashed-bubble \
+  --noerrdialogs \
+  --no-first-run \
+  --disable-translate \
+  --disable-gpu \
+  --disable-software-rasterizer \
+  http://localhost/projekt/audio/rasp/example.html
+
 hang
   alsamixer
 
