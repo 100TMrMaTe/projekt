@@ -22,6 +22,7 @@ function sendVerificationEmail($toEmail, $token)
         $mail->Password   = 'repa qaey hhhy zxnw';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
+        $mail->CharSet = 'UTF-8_hungarian_ci';
 
         $mail->setFrom('konyhasimatemail@gmail.com', 'regisztaracio');
         $mail->addAddress($toEmail);
@@ -55,6 +56,7 @@ function confirmReg($toEmail)
         $mail->Password   = 'repa qaey hhhy zxnw';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
+        $mail->CharSet = 'UTF-8_hungarian_ci';
 
         $mail->setFrom('konyhasimatemail@gmail.com', 'regisztraciod elfogadva');
         $mail->addAddress($toEmail);
@@ -87,6 +89,7 @@ function sendPasswordResetEmail($toEmail, $token)
         $mail->Password   = 'repa qaey hhhy zxnw';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
+        $mail->CharSet = 'UTF-8_hungarian_ci';
 
         $mail->setFrom('konyhasimatemail@gmail.com', 'elfelejtett jelszo');
         $mail->addAddress($toEmail);
