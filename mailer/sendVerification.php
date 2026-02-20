@@ -28,7 +28,7 @@ function sendVerificationEmail($toEmail, $token)
         $mail->addAddress($toEmail);
 
         $mail->isHTML(true);
-        $mail->Subject = "Email megerosites Sulis rendszer";
+        $mail->Subject = "Email megerősites Sulis rendszer";
 
         $mail->Body = "
             <p>Kérlek erősítsd meg az emailed az alábbi linken:</p>
