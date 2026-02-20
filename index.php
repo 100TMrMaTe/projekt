@@ -38,6 +38,27 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         case "test2":
             test2($conn);
             break;
+        case "kapcsolo":
+            kapcsolo($conn);
+            break;
+        case "seek";
+            seek($conn, $data["ido"]);
+            break;
+        case "volume";
+            volume($conn, $data["hangero"]);
+            break;
+        case "length";
+            length($conn);
+            break;
+        case "setLength";
+            setLength($conn, $data["hossz"]);
+            break;
+        case "setCurrentTime";
+            setCurrentTime($conn, $data["ido"]);
+            break;
+        case "current_time";
+            current_time($conn);
+            break;
         default:
             echo json_encode(array("status" => "error", "message" => "Ismeretlen muvelet"));
             break;

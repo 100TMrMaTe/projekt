@@ -171,6 +171,7 @@
                 if (!player || !player.getDuration) return;
 
                 const hova = player.getDuration() * (seekSlider.value / 1000);
+                
                 player.seekTo(hova, true);
             });
 

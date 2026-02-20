@@ -1,26 +1,140 @@
 <!DOCTYPE html>
 <html>
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raspberry Pi YouTube vezérlés</title>
+</head>
+
 <body>
 
     <div id="player"></div>
 
     <script>
+        //változok deklarálása
         let videoFromDB = null;
         let player;
+        let statusFromDB = null;
+        let lengthFromDB = null;
+        let current_timeFromDB = null;
+        let volumeFromDB = null;
+        let length = null;
+        let current_time = null;
 
+        //adatok lekérdezése adatbázisbol
+        fetchVideoData();
+
+
+
+        //adatok lekérdezése adatbázisbol
+        function fetchVideoData() {
+            fetch("../../index.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    muvelet: "test1"
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("DB adat:", data);
+                    if (!data.error) {
+                        videoFromDB = data.video_id;
+                        statusFromDB = data.status;
+                        lengthFromDB = data.length;
+                        current_timeFromDB = data.current_time;
+                        volumeFromDB = data.volume;
+                        loadYouTubeAPI();
+                    } else {
+                        console.log("Hiba:", data.error);
+                    }
+                })
+                .catch(error => console.error("Fetch hiba:", error));
+        }
+
+
+        //video hosszának átadása az adatbázisnak
+        function setLength() {
+            console.log(length);
+            fetch("../../index.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    muvelet: "setLength",
+                    hossz: length
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => console.error("Fetch hiba:", error));
+        }
+
+        //jelenlegi idó átadása az adatbázisnak
+        function setCurrentTime() {
+            console.log(current_time);
+            fetch("../../index.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    muvelet: "setCurrentTime",
+                    ido: current_time
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => console.error("Fetch hiba:", error));
+        }
+
+
+        //adatok lekérdezése adatbázisbol (uj player látrehozása nélkül)
+        function fetchData() {
+            fetch("../../index.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    muvelet: "test1"
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("DB adat:", data);
+                    if (!data.error) {
+                        videoFromDB = data.video_id;
+                        statusFromDB = data.status;
+                        lengthFromDB = data.length;
+                        current_timeFromDB = data.current_time;
+                        volumeFromDB = data.volume;
+                    } else {
+                    }
+                })
+                .catch(error => console.error("Fetch hiba:", error));
+        }
+
+
+        //YouTube API betöltés
         function loadYouTubeAPI() {
             var tag = document.createElement('script');
             tag.src = "https://www.youtube.com/iframe_api";
             document.body.appendChild(tag);
 
-            // Call the onYouTubeIframeAPIReady function when the script is loaded
-            tag.onload = onYouTubeIframeAPIReady;
-            console.log("YouTube API betöltve");
         }
 
+
+        //
         function onYouTubeIframeAPIReady() {
-            console.log("YouTube API ready, videoFromDB:", videoFromDB);
             if (!videoFromDB) return;
 
             player = new YT.Player('player', {
@@ -37,35 +151,44 @@
             });
         }
 
-        fetch("../../index.php", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                muvelet: "test1"
-            })
-        })
-            .then(response => response.json())
-            .then(data => {
-                console.log("DB adat:", data);
-                if (!data.error) {
-                    console.log(data);
-                    videoFromDB = data.video_id;
-                    loadYouTubeAPI();
+        function update() {
+            fetchData();
+            if (player) {
+                length = Math.floor(player.getDuration());
+                current_time = Math.floor(player.getCurrentTime());
+                setLength();
+                setCurrentTime();
+                if (statusFromDB == 1) {
+                    player.playVideo();
                 } else {
-                    console.log("Hiba:", data.error);
+                    player.pauseVideo();
                 }
-            })
-            .catch(error => console.error("Fetch hiba:", error));
+                if (player.getVolume() != volumeFromDB) {
+                    player.setVolume(volumeFromDB);
+                }
+                /*
+                if (player.getCurrentTime() != current_timeFromDB) {
+                    player.seekTo(current_timeFromDB);
+                }
+                */
+            }
+        }
 
         function onPlayerReady(event) {
-            event.target.playVideo();
+            if (statusFromDB == 1) {
+                event.target.playVideo();
+            } else {
+                event.target.pauseVideo();
+            }
         }
+
 
         function onPlayerStateChange(event) {
             console.log("Player state:", event.data);
         }
+
+
+        setInterval(update, 1000);
 
     </script>
 
