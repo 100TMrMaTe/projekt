@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div style="margin: 20px;">
+        <button>
+            play/pause
+        </button>
+    </div>
+    <div style="margin: 20px;">
+        <label for="seekSlider">Idő:</label>
+        <input type="range" value="0" id="seekSlider" style="width: 300px;">
+    </div>
+    <div style="margin: 20px;">
+        <label for="volumeSlider">Hangerő:</label>
+        <input type="range" max="100" value="100" id="volumeSlider" style="width: 100px;">
+    </div>
+
+    <script>
+        document.querySelector("button").addEventListener("click", function () {
+            fetch("../../otthoniindex.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    muvelet: "kapcsolo"
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    //console.log(data);
+                })
+        });
+
+        let felhasznalo = false;
+        let porget = 0;
+        let seekSlider = document.querySelector("#seekSlider");
+        
+
+        // Húzás kezdetén
+        seekSlider.addEventListener("mousedown", () => felhasznalo = true);
+        seekSlider.addEventListener("mouseleave", () => felhasznalo = false);
+
+        // Húzás közben tároljuk az értéket
+        seekSlider.addEventListener("input", function () {
+            if (felhasznalo) {
+                porget = this.value;
+                console.log("Húzás közben:", porget);
+            }
+        });
+
+        // Felengedéskor küldés a backendnek
+        document.addEventListener("mouseup", function () {
+            if (!felhasznalo) return;
+
+            felhasznalo = false;
+            console.log("Elengedéskor küldve:", porget);
+
+            fetch("../../otthoniindex.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    muvelet: "porget",
+                    porget: porget
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+
+                });
+        });
+
+        // Hangerő slider
+        document.querySelector("#volumeSlider").addEventListener("mouseup", function () {
+            fetch("../../otthoniindex.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    muvelet: "volume",
+                    hangero: document.querySelector("#volumeSlider").value
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    
+
+                    //console.log(data);
+                })
+        });
+
+        // Track hosszának lekérése
+        fetch("../../otthoniindex.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                muvelet: "length",
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector("#seekSlider").max = data.length;
+            });
+
+        // Slider frissítése backendről, ha nem húz a felhasználó
+        function seekUpdate() {
+            if (felhasznalo) return;
+
+            fetch("../../otthoniindex.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    muvelet: "current_time",
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    seekSlider.value = data.current_time;
+                });
+        }
+
+        setInterval(seekUpdate, 1000);
+    </script>
+</body>
+
+</html>

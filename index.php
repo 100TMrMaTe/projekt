@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         case "kapcsolo":
             kapcsolo($conn);
             break;
-        case "seek";
+        case "seek":
             seek($conn, $data["ido"]);
             break;
         case "volume";
