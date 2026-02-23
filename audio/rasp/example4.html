@@ -30,7 +30,7 @@
 
         //adatok lekérdezése adatbázisbol
         function fetchVideoData() {
-            fetch("../../otthoniindex.php", {
+            fetch("../../index.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -56,14 +56,14 @@
                     }
                 })
                 .catch(error => console.error("Fetch hiba:", error));
-                
+
         }
 
 
         //video hosszának átadása az adatbázisnak
         function setLength() {
             //Console.log(length);
-            fetch("../../otthoniindex.php", {
+            fetch("../../index.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -83,7 +83,7 @@
         //jelenlegi idó átadása az adatbázisnak
         function setCurrentTime() {
             //Console.log(current_time);
-            fetch("../../otthoniindex.php", {
+            fetch("../../index.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -103,7 +103,7 @@
 
         //adatok lekérdezése adatbázisbol (uj player látrehozása nélkül)
         function fetchData() {
-            fetch("../../otthoniindex.php", {
+            fetch("../../index.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -156,13 +156,35 @@
             });
         }
 
+        function noSeek() {
+            fetch("../../index.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    muvelet: "noSeek"
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => console.error("Fetch hiba:", error));
+        }
+
         function update() {
             fetchData();
             if (player) {
                 length = Math.floor(player.getDuration());
                 current_time = Math.floor(player.getCurrentTime());
                 setLength();
-                setCurrentTime();
+                if (porget != -1) {
+                    player.seekTo(porget);
+                    noSeek();
+                } else {
+                    setCurrentTime();
+                }
                 if (statusFromDB == 1) {
                     player.playVideo();
                 } else {

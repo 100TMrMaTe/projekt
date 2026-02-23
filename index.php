@@ -1,6 +1,6 @@
 <?php
 include_once "database/database.php";
-include_once "database/otthon.php";
+//include_once "database/otthon.php";
 $conn = Connect_to_server();
 $data = (json_decode(file_get_contents("php://input"), true));
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -35,29 +35,35 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         case "test1":
             test1($conn);
             break;
-        case "test2":
-            test2($conn);
-            break;
         case "kapcsolo":
             kapcsolo($conn);
             break;
         case "seek":
             seek($conn, $data["ido"]);
             break;
-        case "volume";
+        case "volume":
             volume($conn, $data["hangero"]);
             break;
-        case "length";
+        case "length":
             length($conn);
             break;
-        case "setLength";
+        case "setLength":
             setLength($conn, $data["hossz"]);
             break;
-        case "setCurrentTime";
+        case "setCurrentTime":
             setCurrentTime($conn, $data["ido"]);
             break;
-        case "current_time";
+        case "current_time":
             current_time($conn);
+            break;
+        case "porget":
+            porget($conn, $data["porget"]);
+            break;
+        case "noSeek":
+            noSeek($conn);
+            break;
+        case "getVolume":
+            getVolume($conn);
             break;
         default:
             echo json_encode(array("status" => "error", "message" => "Ismeretlen muvelet"));
