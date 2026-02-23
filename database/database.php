@@ -275,11 +275,11 @@ function login($conn, $email, $password)
 
 function test1($conn)
 {
-  $sql = "SELECT video_id, status, length, current_time, volume from test1";
+  $sql = "SELECT video_id, status, length, current_time, volume, porget from test1";
   mysqli_query($conn, $sql);
   $result = mysqli_query($conn, $sql);
   $row = mysqli_fetch_assoc($result);
-  echo json_encode(array("video_id" => $row['video_id'], "status" => $row['status'], "length" => $row['length'], "current_time" => $row['current_time'], "volume" => $row['volume']));
+  echo json_encode(array("video_id" => $row['video_id'], "status" => $row['status'], "length" => $row['length'], "current_time" => $row['current_time'], "volume" => $row['volume'], "porget" => $row['porget']));
 }
 
 function kapcsolo($conn)
@@ -357,5 +357,36 @@ function current_time($conn)
   $row = mysqli_fetch_assoc($result);
   echo json_encode(array("current_time" => $row['current_time']));
 }
+
+function porget($conn, $porget)
+{
+  $sql = "UPDATE test1 SET test1.porget = $porget";
+  $status["status"] = "";
+  if ($result = mysqli_query($conn, $sql)) {
+    $status = "success";
+  } else {
+    $status = "error";
+  }
+  echo json_encode($status);
+}
+
+function noSeek($conn){
+  $sql = "UPDATE test1 SET test1.porget = -1";
+  $status["status"] = "";
+  if ($result = mysqli_query($conn, $sql)) {
+    $status = "success";
+  } else {
+    $status = "error";
+  }
+  echo json_encode($status);
+}
+
+function getVolume($conn){
+  $sql = "SELECT test1.volume FROM test1";
+  $result = mysqli_query($conn, $sql);
+  $row = mysqli_fetch_assoc($result);
+  echo json_encode(array("volume" => $row['volume']));
+}
+
 
 

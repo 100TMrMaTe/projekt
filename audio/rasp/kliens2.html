@@ -19,12 +19,12 @@
     </div>
     <div style="margin: 20px;">
         <label for="volumeSlider">Hangerő:</label>
-        <input type="range" max="100" value="100" id="volumeSlider" style="width: 100px;">
+        <input type="range" max="100" value="0" id="volumeSlider" style="width: 100px;">
     </div>
 
     <script>
         document.querySelector("button").addEventListener("click", function () {
-            fetch("../../otthoniindex.php", {
+            fetch("../../index.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -39,31 +39,51 @@
                 })
         });
 
-        let felhasznalo = false;
+        let felhasznaloSeek = false;
+        let felhasznaloVolume = false;
+        //let varakozikBackend = false;
         let porget = 0;
+        let volume = 0;
         let seekSlider = document.querySelector("#seekSlider");
-        
+        let volumeSlider = document.querySelector("#volumeSlider");
+        //let interval = setInterval(update, 1000);
+
 
         // Húzás kezdetén
-        seekSlider.addEventListener("mousedown", () => felhasznalo = true);
-        seekSlider.addEventListener("mouseleave", () => felhasznalo = false);
+        seekSlider.addEventListener("mousedown", () => felhasznaloSeek = true);
+        seekSlider.addEventListener("mouseleave", () => felhasznaloSeek = false);
+
+        // Hangerő kezdetén
+        volumeSlider.addEventListener("mousedown", () => felhasznaloVolume = true);
+        volumeSlider.addEventListener("mouseleave", () => felhasznaloVolume = false);
 
         // Húzás közben tároljuk az értéket
         seekSlider.addEventListener("input", function () {
-            if (felhasznalo) {
+            if (felhasznaloSeek) {
                 porget = this.value;
                 console.log("Húzás közben:", porget);
             }
         });
 
+        volumeSlider.addEventListener("input", function () {
+            if (felhasznaloVolume) {
+                volume = this.value;
+                console.log("Húzás közben:", volume);
+            }
+        });
+
         // Felengedéskor küldés a backendnek
         document.addEventListener("mouseup", function () {
-            if (!felhasznalo) return;
+            if (!felhasznaloSeek) return;
 
-            felhasznalo = false;
+            felhasznaloSeek = false;
+
+            //seekSlider.value = porget;
+
+            //varakozikBackend = true;
             console.log("Elengedéskor küldve:", porget);
 
-            fetch("../../otthoniindex.php", {
+            fetch("../../index.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -76,32 +96,42 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
-
+                    //varakozikBackend = false;
                 });
-        });
+        })
+        /*
+            .then(data => {
+                setTimeout(() => {
+                    interval = setInterval(update, 1000);
+                }, 500);
+            });
+            */
 
         // Hangerő slider
         document.querySelector("#volumeSlider").addEventListener("mouseup", function () {
-            fetch("../../otthoniindex.php", {
+            if (!felhasznaloVolume) return;
+
+            felhasznaloVolume = false;
+
+            console.log("Elengedéskor küldve:", volume);
+            fetch("../../index.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
                     muvelet: "volume",
-                    hangero: document.querySelector("#volumeSlider").value
+                    hangero: volume
                 })
             })
                 .then(response => response.json())
                 .then(data => {
-                    
-
                     //console.log(data);
                 })
         });
 
         // Track hosszának lekérése
-        fetch("../../otthoniindex.php", {
+        fetch("../../index.php", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -117,9 +147,11 @@
 
         // Slider frissítése backendről, ha nem húz a felhasználó
         function seekUpdate() {
-            if (felhasznalo) return;
+            //if (felhasznaloSeek || varakozikBackend) return;
+            if (felhasznaloSeek) return;
 
-            fetch("../../otthoniindex.php", {
+
+            fetch("../../index.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -134,7 +166,37 @@
                 });
         }
 
-        setInterval(seekUpdate, 1000);
+        function volumeUpdate() {
+            if (felhasznaloVolume) return;
+
+            fetch("../../index.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    muvelet: "getVolume",
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.querySelector("#volumeSlider").value = data.volume;
+                    console.log(data.volume);
+                });
+        }
+
+        function update() {
+            seekUpdate();
+            volumeUpdate();
+        }
+
+
+        /*
+        seekSlider.addEventListener("mousedown", () => {
+            felhasznaloSeek = true;
+            clearInterval(interval);
+        });*/
+        setInterval(update, 1000);
     </script>
 </body>
 
