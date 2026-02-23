@@ -21,7 +21,10 @@
         <label for="volumeSlider">Hangerő:</label>
         <input type="range" max="100" value="0" id="volumeSlider" style="width: 100px;">
     </div>
+    <div>
 
+
+    </div>
     <script>
         document.querySelector("button").addEventListener("click", function () {
             fetch("../../index.php", {
@@ -189,7 +192,6 @@
             seekUpdate();
             volumeUpdate();
         }
-
 
         /*
         seekSlider.addEventListener("mousedown", () => {
