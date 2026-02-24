@@ -193,6 +193,18 @@
         }
 
         function inditas() {
+
+            fetch("../index.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    muvelet: "playPause",
+                })
+            })
+                .then(response => response.json())
+                .then(data => console.log(data));
+
+            /*
             if (isPlaying) {
                 player.pauseVideo();
                 ido();
@@ -204,6 +216,7 @@
             }
 
             isPlaying = !isPlaying;
+            */
         }
         /*
                     function embedVideo(id) {
@@ -599,24 +612,8 @@
 
                         embedVideo(videok[i].videoId, videok[i].nagyobbImg, videok[i].title);
 
-
-                        fetch("../index.php", {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: JSON.stringify({
-                                muvelet: "insertIntoMusic",
-                                video_id: videok[i].videoId,
-                                title: videok[i].title,
-                                length: videok[i].duration
-                            })
-                        })
-                            .then(response => response.json())
-                            .then(data => {
-                                console.log(data);
-                            })
-                            .catch(error => console.error("Fetch hiba:", error));
+                        insertIntoMusic(videok[i].videoId, videok[i].title, videok[i].duration)
+                            .then(musicId => insertIntoPlaylist(musicId));
 
                     };
 
@@ -629,6 +626,109 @@
             });
         }
 
+        //a videó id alapján belerakja a zeneét a music táblába
+        function insertIntoMusic(videoId, title, length) {
+            return fetch("../index.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    muvelet: "insertIntoMusic",
+                    video_id: videoId,
+                    title: title,
+                    length: length
+                })
+            })
+                .then(response => response.json())
+                .then(data => data.music_id);
+        }
+
+        //a zenét id alapján belerakja a playlistbe
+        function insertIntoPlaylist(musicId) {
+            return fetch("../index.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    muvelet: "insertIntoPlaylist",
+                    music_id: musicId
+                })
+            });
+        }
+
+        //megnézi hogy a playlist tábla üres e
+        function isPlaylistEmpty() {
+            return fetch("../index.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    muvelet: "isPlaylistEmpty"
+                })
+            })
+                .then(response => response.json())
+                .then(data => data.empty);
+        }
+
+        //ezt meg kell majd hivni ha vége van egy számnak
+        function checkLejatszo() {
+            if (document.getElementById("lejatszo").childNodes.length == 0) {
+                setInterval(isPlaylistEmpty, 1000);
+            }
+        }
+
+        //kiüriti a currently_playing táblát
+        function emptyCurrentlyPlaying() {
+            return fetch("../index.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    muvelet: "emptyCurrentlyPlaying"
+                })
+            });
+        }
+
+        //true ha a vieonak a currently palyingben vége van
+        function isVideoEnded() {
+            return fetch("../index.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    muvelet: "isVideoEnded"
+                })
+            })
+                .then(response => response.json())
+                .then(data => data.ended);
+        }
+
+
+        function loadCurrentlyPlaying() {
+            return fetch("../index.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    muvelet: "loadCurrentlyPlaying"
+                })
+            })
+                .then(response => response.json())
+                .then(data => data);
+        }
+
+
+        loadCurrentlyPlaying().then(data => {
+            console.log(data);
+            embedVideo(data.video_id, "https://img.youtube.com/vi/" + data.video_id + "/0.jpg", data.title);
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
         document.getElementById("kereso").addEventListener('keydown', function (e) {
             if (e.key === 'Enter') {
                 keres();
@@ -637,7 +737,6 @@
 
             }
         });
-
 
 
 
