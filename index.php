@@ -58,14 +58,37 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         case "playPause":
             playPause($conn);
             break;
+        case "setVolume":
+            setVolume($conn, $data["volume"]);
+            break;
+        case "setPorget":
+            setPorget($conn, $data["time"]);
+            break;
+        case "getVolume":
+            getVolume($conn);
+            break;
+        case "getCurrentTime":
+            getCurrentTime($conn);
+            break;
+        case "getLength":
+            getLength($conn);
+            break;
+        case "getPlaylist":
+            getPlaylist($conn);
+            break;
 
 
         //==========================> server.html <==========================
 
         case "getVideoData":
             getVideoData($conn);
+            break;  
+        case "setCurrentTime":
+            setCurrentTime($conn, $data["time"]);
             break;
-
+        case "noSeek":
+            noSeek($conn);
+            break;
 
 
 
