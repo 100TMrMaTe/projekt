@@ -26,3 +26,37 @@ az a zene megy a currently playing táblába amelyik a playlist első zenéje v�
 6.: ha vege a videonak toroljuk a currently playingbol majd nezze meg hogy van e valami a playlistbn ha van mehet elorol 
 
 7.: 1mp kerje le hogy van e a playlistben video
+
+
+
+============================================================
+
+1. isVideoEnded
+    megnézzük vége van e a videonak midnen updateal
+
+
+2. isPlaylistEmpty
+    megnézzük üres e a playlist tábla: -ha igen akkor marad a lejátszó, ujraindul a video
+                                       -ha nem akkor: 3
+
+3. emptyCurrentlyPlaying
+    currently_playing tábla tartalmának törlése
+
+4. 
+    playlistből át kell rakni a követkető zenét a currently_playing-be (MIN id)
+
+5. 
+    amit átraktunk azt töröljük
+
+repeat
+
+==========================================================
+
+playlist betöltése
+
+összes fetchelése egy tömbbe
+
+tömbbön végigmenni és belerakni a divbe
+
+
+

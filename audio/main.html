@@ -22,49 +22,24 @@
                             <span>Felhasználó neve</span>
                         </div>
                         <div class="col-2 text-center">
-                            <span>Belépve (32:15)</span>
+                            <span>idő</span>
                         </div>
                         <div class="col-8 text-end">
                             <button class="btn text-white me-4">
-                                ez egy gomb
+                                admin oldal
                             </button>
                             <button class="btn text-white me-4">
-                                ez egy gomb
+                                fő oldal
                             </button>
-                            <button class="btn  text-white me-2">
-                                ez egy gomb
+                            <button class="btn text-white me-2">
+                                kijelentkezés
                             </button>
                         </div>
                     </div>
                 </div>
 
 
-                <nav class="navbar navbar-expand-lg p-2 rounded-3 mt-4" id="navbar">
-                    <div class="container-fluid text-light">
-                        <a class="navbar-brand" href="#">Navbar</a>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-                            aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarNav">
-                            <ul class="navbar-nav">
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Features</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Pricing</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
+
 
 
 
@@ -88,75 +63,8 @@
                 <div id="lejatszo" class="lejatszo"></div>
 
                 <div id="kovetkezo" class="kovetkezo">
-
-                    <ul>
-
-                        <li>
-                            <div class="row m-2 mb-3 p-2 rounded video talalat">
-                                <div class="col-4">
-                                    <img src="https://i.ytimg.com/vi/CyKm41o6WXQ/hqdefault.jpg"
-                                        class="img-fluid rounded" />
-                                </div>
-                                <div class="col-8 text-light">
-                                    <h3 class="text-truncate">BSW - Hello </h3>
-                                    <h4>3:21</h4>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="row m-2 mb-3 p-2 rounded video talalat">
-                                <div class="col-4">
-                                    <img src="https://i.ytimg.com/vi/CyKm41o6WXQ/hqdefault.jpg"
-                                        class="img-fluid rounded" />
-                                </div>
-                                <div class="col-8 text-light">
-                                    <h3 class="text-truncate">BSW - Hello </h3>
-                                    <h4>3:21</h4>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="row m-2 mb-3 p-2 rounded video talalat">
-                                <div class="col-4">
-                                    <img src="https://i.ytimg.com/vi/CyKm41o6WXQ/hqdefault.jpg"
-                                        class="img-fluid rounded" />
-                                </div>
-                                <div class="col-8 text-light">
-                                    <h3 class="text-truncate">BSW - Hello </h3>
-                                    <h4>3:21</h4>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="row m-2 mb-3 p-2 rounded video talalat">
-                                <div class="col-4">
-                                    <img src="https://i.ytimg.com/vi/CyKm41o6WXQ/hqdefault.jpg"
-                                        class="img-fluid rounded" />
-                                </div>
-                                <div class="col-8 text-light">
-                                    <h3 class="text-truncate">BSW - Hello </h3>
-                                    <h4>3:21</h4>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li>
-                            <div class="row m-2 mb-3 p-2 rounded video talalat">
-                                <div class="col-4">
-                                    <img src="https://i.ytimg.com/vi/CyKm41o6WXQ/hqdefault.jpg"
-                                        class="img-fluid rounded" />
-                                </div>
-                                <div class="col-8 text-light">
-                                    <h3 class="text-truncate">BSW - Hello </h3>
-                                    <h4>3:21</h4>
-                                </div>
-                            </div>
-                        </li>
+                    <ul id="playlist">
                     </ul>
-
                 </div>
             </div>
         </div>
@@ -192,42 +100,10 @@
             }
         }
 
-        function inditas() {
 
-            fetch("../index.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    muvelet: "playPause",
-                })
-            })
-                .then(response => response.json())
-                .then(data => console.log(data));
 
-            /*
-            if (isPlaying) {
-                player.pauseVideo();
-                ido();
-            }
-            if (!isPlaying) {
-                player.playVideo();
-                setInterval(ido, 1000);
-                //vane();
-            }
 
-            isPlaying = !isPlaying;
-            */
-        }
-        /*
-                    function embedVideo(id) {
-                        document.getElementById("lejatszo").innerHTML = `
-                <iframe id="ytFrame" width="600" height="340" src="https://www.youtube.com/embed/${id}?enablejsapi=1" frameborder="0" allow="autoplay"></iframe>
-            `;
-                        setTimeout(() => {
-                            player = new YT.Player('ytFrame');
-                        }, 500);
-                    }
-        */
+
         function slider() {
 
 
@@ -388,7 +264,6 @@
 
 
         function eredmenyTorol() {
-            console.log("dasdas");
             document.getElementById("eredmeny").classList.add("d-none");
         }
 
@@ -400,7 +275,6 @@
         function embedVideo(id, kep, cim) {
             document.getElementById("lejatszo").innerHTML = `
 <div class="talalat rounded-3 m-2">
-    <div id="ytFrame" class="d-none"></div>
     <div class="p-3 text-light">
 
         <div class="ratio ratio-16x9">
@@ -412,8 +286,8 @@
         </div>
 
         <div class="d-flex justify-content-start align-items-center mb-2">
-            <label class="slider">
-                <input type="range" class="level" id="volumeSlider" type="range" min="0" max="100" value="50" oninput="hangSzabalyzo(this.value)">
+            <label class="slider">                      
+                <input type="range" class="level" id="volumeSlider" type="range" max="100" value="0">
                 <svg class="volume" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve">
                     <g>
                         <path d="M18.36 19.36a1 1 0 0 1-.705-1.71C19.167 16.148 20 14.142 20 12s-.833-4.148-2.345-5.65a1 1 0 1 1 1.41-1.419C20.958 6.812 22 9.322 22 12s-1.042 5.188-2.935 7.069a.997.997 0 0 1-.705.291z" fill=rgba(220,220,220,1) data-original="#000000"></path>
@@ -468,21 +342,6 @@
     </div>
 </div>`;
 
-
-            player = new YT.Player('ytFrame', {
-                width: 0.1,
-                height: 0.1,
-                videoId: id,
-                events: {
-                    onReady: () => {
-                        player.setVolume(
-                            document.getElementById("volumeSlider").value
-                        );
-                        slider();
-
-                    }
-                }
-            });
         }
 
 
@@ -536,11 +395,6 @@
                         fetch(detailsURL)
                             .then(v => v.json())
                             .then(details => {
-                                //console.log(details);
-                                //console.log(details.items[0].contentDetails.duration);
-                                //console.log(adatok.items[0].id.kind); 
-                                //let van = details.items.contentDetails.duration;
-
                                 const videok = adatok.items
                                     .filter(item => item.id.kind === 'youtube#video')
                                     .map((item, i) => ({
@@ -552,46 +406,26 @@
                                         duration: videoHosszAtAlakit(details.items[i].contentDetails.duration) == 0 ? "LIVE" : videoHosszAtAlakit(details.items[i].contentDetails.duration),
                                         durationRaw: details.items[i].contentDetails.duration
                                     })).slice(0, 5);
-                                /*
-                                for (let j = 0; j < videok.length; j++) {
-                                    console.log(videok[j].durationRaw);
-                                    console.log(videok[j].duration);
-                                }
-                                */
-                                //console.log(details.items.contentDetails.durationRaw);
+
                                 vissza(videok);
                             });
                     });
             }
 
-            /*
-                        lekerVideok(videok => {
-                            //console.log(videok);
-                        });
-            */
 
             lekerVideok(function (videok) {
-
                 eredmeny.innerHTML = "";
-
-                //console.log(videok[0].title);
 
                 if (!videok.length) {
                     eredmeny.innerHTML = "<p>Nincs találat vagy hiba történt.</p>";
                     return;
                 }
-                ////console.log(videok);
-
 
                 for (let i = 0; i < videok.length; i++) {
                     let keret = document.createElement("div");
-                    ////console.log("asd");
                     keret.classList.add("container");
 
                     let talalat = document.createElement("div");
-
-                    //vane();
-                    //talalat.className = "video";
 
                     talalat.innerHTML = `
                     <div class="row mb-3 p-2 rounded video talalat">
@@ -605,26 +439,55 @@
                     </div>
                     `;
 
-                    ////console.log(videok[i].videoId);
-                    ////console.log(typeof videok[i].videoId);
                     talalat.onclick = () => {
                         eredmenyTorol();
 
-                        embedVideo(videok[i].videoId, videok[i].nagyobbImg, videok[i].title);
 
                         insertIntoMusic(videok[i].videoId, videok[i].title, videok[i].duration)
                             .then(musicId => insertIntoPlaylist(musicId));
+
 
                     };
 
                     keret.appendChild(talalat);
                     eredmeny.appendChild(keret);
                 }
-                //linkList.innerHTML = "";
-                //linkList.innerHTML += `<p><a href=\"https://www.youtube.com/watch?v=${videoId}\" target=\"_blank\">${title}</a></p>`;
-
             });
         }
+
+
+
+        function embedPlaylistItem(videoId, title) {
+            return `<li>
+                <div class="row m-2 mb-3 p-2 rounded video talalat">
+                    <div class="col-4">
+                        <img src="https://img.youtube.com/vi/${videoId}/0.jpg"
+                            class="img-fluid rounded" />
+                    </div>
+                    <div class="col-8 text-light">
+                        <h3 class="text-truncate">${title}</h3>
+                        <h4>0:00</h4>
+                    </div>
+                </div>
+            </li>`
+        }
+
+
+
+        let felhasznaloSeek = false;
+        let felhasznaloVolume = false;
+
+
+        let porget = 0;
+        let volume = 0;
+        let seekSlider = null;
+        let volumeSlider = null;
+
+
+
+
+
+
 
         //a videó id alapján belerakja a zeneét a music táblába
         function insertIntoMusic(videoId, title, length) {
@@ -715,17 +578,187 @@
         loadCurrentlyPlaying().then(data => {
             console.log(data);
             embedVideo(data.video_id, "https://img.youtube.com/vi/" + data.video_id + "/0.jpg", data.title);
+            seekSlider = document.querySelector("#seekSlider");
+            volumeSlider = document.querySelector("#volumeSlider");
+
+            getLength();
+
+            // Húzás kezdetén
+            seekSlider.addEventListener("pointerdown", () => felhasznaloSeek = true);
+            seekSlider.addEventListener("pointerleave", () => felhasznaloSeek = false);
+
+            // Hangerő kezdetén
+            volumeSlider.addEventListener("pointerdown", () => felhasznaloVolume = true);
+            volumeSlider.addEventListener("pointerleave", () => felhasznaloVolume = false);
+
+
+            // Húzás közben tároljuk az értéket
+            seekSlider.addEventListener("input", function () {
+                if (felhasznaloSeek) {
+                    porget = this.value;
+                }
+            });
+
+            volumeSlider.addEventListener("input", function () {
+                if (felhasznaloVolume) {
+                    volume = this.value;
+                }
+            });
+
+            volumeSlider.addEventListener("pointerup", function () {
+                if (!felhasznaloVolume) return;
+                felhasznaloVolume = false;
+                setVolume();
+            });
+
+            seekSlider.addEventListener("pointerup", function () {
+                if (!felhasznaloSeek) return;
+                felhasznaloSeek = false;
+                setPorget();
+            });
+
         });
 
 
+        function loadPlaylist() {
+            return fetch("../index.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    muvelet: "getPlaylist"
+                })
+            })
+                .then(response => response.json())
+                .then(data => data.playlist);
+        }
+
+        loadPlaylist().then(data => {
+            console.log(data);
+            data.forEach(e => {
+                document.getElementById("playlist").innerHTML += embedPlaylistItem(e.video_id, e.title);
+            });
+        })
+
+
+        //adatbázisban vált értéket az indításhoz
+        function inditas() {
+
+            fetch("../index.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    muvelet: "playPause",
+                })
+            })
+                .then(response => response.json())
+                .then(data => console.log(data));
+
+        }
+
+
+        function setVolume() {
+
+            //if (felhasznaloSeek) return;
+            fetch("../index.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    muvelet: "setVolume",
+                    volume: volume
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    //console.log(data);
+                })
+        }
+
+        function getVolume() {
+            if (felhasznaloVolume) return;
+            fetch("../index.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    muvelet: "getVolume"
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    volume = data.volume;
+
+                    if (volumeSlider) {
+                        volumeSlider.value = volume;
+                    }
+                });
+        }
+
+
+        function setPorget() {
+
+            fetch("../index.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    muvelet: "setPorget",
+                    time: porget
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                });
+        }
+
+        function getCurrentTime() {
+            if (felhasznaloSeek) return;
+
+            fetch("../index.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    muvelet: "getCurrentTime"
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    seekSlider.value = data.current_time;
+                });
+        }
+
+
+        function getLength() {
+            fetch("../index.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    muvelet: "getLength"
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    seekSlider.max = data.length;
+                });
+        }
 
 
 
 
+        function update() {
+            getCurrentTime();
+            getVolume();
+        }
 
 
-
-
+        setInterval(update, 1000);
 
 
 
@@ -737,6 +770,9 @@
 
             }
         });
+
+
+
 
 
 
