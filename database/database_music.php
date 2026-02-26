@@ -46,10 +46,11 @@ function insertIntoPlaylist($conn, $music_id)
 //megnéyi a playlist üres-e
 function isPlaylistEmpty($conn)
 {
-    $sql = "SELECT * FROM playlist LIMIT 1";
+    $sql = "SELECT id FROM playlist LIMIT 1";
 
     if ($stmt = $conn->prepare($sql)) {
         $stmt->execute();
+        $stmt->store_result();
 
         echo json_encode([
             "status" => "success",
@@ -60,39 +61,8 @@ function isPlaylistEmpty($conn)
     }
 }
 
-//currently_playing tábla kiürítése
-function emptyCurrentlyPlaying($conn)
-{
-    $sql = "TRUNCATE TABLE currently_playing";
-
-    if ($stmt = $conn->prepare($sql)) {
-        $stmt->execute();
-
-        echo json_encode([
-            "status" => "success"
-        ]);
-
-        $stmt->close();
-    }
-}
 
 
-//megnéyi vége van e a currently_playingben a videonak
-function isVideoEnded($conn)
-{
-    $sql = "SELECT currently_playing.music_id FROM currently_playing, music WHERE currently_playing.music_id = music.id and length = current_time";
-
-    if ($stmt = $conn->prepare($sql)) {
-        $stmt->execute();
-
-        echo json_encode([
-            "status" => "success",
-            "ended" => $stmt->num_rows != 0
-        ]);
-
-        $stmt->close();
-    }
-}
 
 
 function getPlaylist($conn)
@@ -115,6 +85,9 @@ function getPlaylist($conn)
         $stmt->close();
     }
 }
+
+
+
 
 
 
@@ -164,6 +137,23 @@ function playPause($conn)
     }
 }
 
+function isPlaying($conn) {
+    $sql = "SELECT currently_playing.status FROM currently_playing";
+
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->execute();
+
+        $result = $stmt->get_result(); // mysqli_result
+        $row = $result->fetch_assoc();
+
+        echo json_encode([
+            "status" => $row["status"] ?? null
+        ]);
+
+        $stmt->close();
+    }
+}
+
 
 function setVolume($conn, $volume)
 {
@@ -181,7 +171,8 @@ function setVolume($conn, $volume)
 }
 
 
-function setPorget($conn, $time){
+function setPorget($conn, $time)
+{
     $sql = "UPDATE currently_playing SET currently_playing.porget = $time";
 
     if ($stmt = $conn->prepare($sql)) {
@@ -236,7 +227,7 @@ function getCurrentTime($conn)
 
 function getLength($conn)
 {
-    $sql = "SELECT music.length FROM music";
+    $sql = "SELECT music.length FROM music where music.id = (SELECT currently_playing.music_id FROM currently_playing)";
 
     if ($stmt = $conn->prepare($sql)) {
         $stmt->execute();
@@ -298,7 +289,8 @@ function getVideoData($conn)
     }
 }
 
-function setCurrentTime($conn, $time){
+function setCurrentTime($conn, $time)
+{
     $sql = "UPDATE currently_playing SET currently_playing.current_time = $time";
 
     if ($stmt = $conn->prepare($sql)) {
@@ -312,9 +304,9 @@ function setCurrentTime($conn, $time){
     }
 }
 
-
-function noSeek($conn){
-    $sql = "UPDATE currently_playing SET currently_playing.porget = -1";
+function setLength($conn, $length)
+{
+    $sql = "UPDATE music SET music.length = $length";
 
     if ($stmt = $conn->prepare($sql)) {
         $stmt->execute();
@@ -328,6 +320,46 @@ function noSeek($conn){
 }
 
 
+function noSeek($conn)
+{
+    $sql = "UPDATE currently_playing SET currently_playing.porget = -1";
+
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->execute();
+
+        echo json_encode([
+            "status" => "success"
+        ]);
+
+        $stmt->close();
+    }
+}
+
+function moveFirstToCurrentlyPlaying($conn)
+{
+    $result = $conn->query("SELECT id, music_id FROM playlist ORDER BY id ASC LIMIT 1");
+
+    if ($result->num_rows == 0) {
+        echo json_encode(["status" => "empty"]);
+        return;
+    }
+
+    $row = $result->fetch_assoc();
+    $playlistId = $row['id'];
+    $musicId = $row['music_id'];
+
+    $stmt = $conn->prepare("UPDATE currently_playing SET music_id = ?");
+    $stmt->bind_param("i", $musicId);
+    $stmt->execute();
+    $stmt->close();
+
+    $stmt = $conn->prepare("DELETE FROM playlist WHERE id = ?");
+    $stmt->bind_param("i", $playlistId);
+    $stmt->execute();
+    $stmt->close();
+
+    echo json_encode(["status" => "success"]);
+}
 
 
 

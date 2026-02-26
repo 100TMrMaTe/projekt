@@ -15,10 +15,13 @@
         let player;
         let statusFromDB = null;
         let lengthFromDB = null;
+        let length = null;
         let current_timeFromDB = null;
         let volumeFromDB = null;
         let current_time = null;
         let porget = null;
+        let videoEnded = false;
+        let playlistEmpty = false;
 
         //adatok lekérdezése adatbázisbol
         getVideoDataFirst();
@@ -28,8 +31,8 @@
             var tag = document.createElement('script');
             tag.src = "https://www.youtube.com/iframe_api";
             document.body.appendChild(tag);
-
         }
+
 
         function onYouTubeIframeAPIReady() {
             if (!videoFromDB) return;
@@ -107,13 +110,9 @@
             }
         }
 
-        function onPlayerStateChange(event) {
-        }
-
 
         //jelenlegi idó átadása az adatbázisnak
         function setCurrentTime() {
-            //Console.log(current_time);
             fetch("../index.php", {
                 method: "POST",
                 headers: {
@@ -122,6 +121,23 @@
                 body: JSON.stringify({
                     muvelet: "setCurrentTime",
                     time: current_time
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                })
+                .catch(error => console.error("Fetch hiba:", error));
+        }
+
+        function setLength() {
+            fetch("../index.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    muvelet: "setLength",
+                    hossz: length
                 })
             })
                 .then(response => response.json())
@@ -147,12 +163,85 @@
                 .catch(error => console.error("Fetch hiba:", error));
         }
 
+        function isPlaylistEmpty() {
+            fetch("../index.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    muvelet: "isPlaylistEmpty"
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.empty) {
+                        playlistEmpty = true;
+                    } else {
+                        playlistEmpty = false;
+                    }
+                })
+                .catch(error => console.error("Fetch hiba:", error));
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.ENDED) {
+                videoEnded = true;
+                console.log("Video vége");
+                isPlaylistEmpty();
+                if (playlistEmpty) {
+                    //ha a playlist üres amrad a szám és újraindul
+                } else {
+                    //ez fut le ha van a playlistben következő videó
+
+                    fetch("../index.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            muvelet: "moveFirstToCurrentlyPlaying"
+                        })
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+
+                            return fetch("../index.php", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify({
+                                    muvelet: "getVideoData"
+                                })
+                            });
+                        })
+                        .then(response => response.json())
+                        .then(newData => {
+
+                            videoFromDB = newData.video_id;
+
+                            if (player && videoFromDB) {
+                                player.loadVideoById(videoFromDB);
+                            }
+
+                        })
+                        .catch(error => console.error("Fetch hiba:", error));
+                }
+
+            } else {
+                videoEnded = false;
+            }
+        }
+
+
 
 
         function update() {
             getVideoData();
             if (player) {
                 current_time = Math.floor(player.getCurrentTime());
+                length = Math.floor(player.getDuration());
                 if (statusFromDB == 1) {
                     player.playVideo();
                 } else {
@@ -169,6 +258,8 @@
                 }
             }
         }
+
+
 
         setInterval(update, 100);
 

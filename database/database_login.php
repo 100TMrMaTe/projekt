@@ -273,3 +273,62 @@ function login($conn, $email, $password)
   }
 }
 
+function tokenRefresh($conn, $token)
+{
+  $sql = "SELECT expire FROM active_users WHERE token = ? LIMIT 1";
+
+  $expire = null;
+
+  if ($stmt = $conn->prepare($sql)) {
+
+    $stmt->bind_param("s", $token);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    if ($row = $result->fetch_assoc()) {
+      $expire = $row['expire'];
+    }
+
+    $stmt->close();
+  }
+
+  if ($expire) {
+    $current_time = date("Y-m-d H:i:s");
+    if ($current_time < $expire) {
+      $new_expire = expire();
+      $update_sql = "UPDATE active_users SET expire = ? WHERE token = ?";
+      if ($stmt = $conn->prepare($update_sql)) {
+        $stmt->bind_param("ss", $new_expire, $token);
+        $stmt->execute();
+        $stmt->close();
+        echo json_encode(array("status" => "success_token_refresh"));
+        return;
+      } else {
+        echo json_encode(array("status" => "error_token_refresh"));
+        return;
+      }
+    } else {
+      echo json_encode(array("status" => "error_token_expired"));
+      return;
+    }
+  } else {
+    echo json_encode(array("status" => "error_token_not_found"));
+    return;
+  }
+}
+
+function logout($conn, $token)
+{
+  $sql = "DELETE FROM active_users WHERE token = ?";
+  if ($stmt = $conn->prepare($sql)) {
+    $stmt->bind_param("s", $token);
+    $stmt->execute();
+    $stmt->close();
+    echo json_encode(array("status" => "success_logout"));
+    return;
+  } else {
+    echo json_encode(array("status" => "error_logout"));
+    return;
+  }
+}
+
