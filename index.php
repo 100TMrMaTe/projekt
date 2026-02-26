@@ -46,12 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         case "isPlaylistEmpty":
             isPlaylistEmpty($conn);
             break;
-        case "emptyCurrentlyPlaying":
-            emptyCurrentlyPlaying($conn);
-            break;
-        case "isVideoEnded":
-            isVideoEnded($conn);
-            break;
         case "loadCurrentlyPlaying":
             loadCurrentlyPlaying($conn);
             break;
@@ -76,6 +70,15 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         case "getPlaylist":
             getPlaylist($conn);
             break;
+        case "tokenRefresh":
+            tokenRefresh($conn, $data["token"]);
+            break;
+        case "isPlaying":
+            isPlaying($conn);
+            break;
+        case "logout":
+            logout($conn, $data["token"]);
+            break;
 
 
         //==========================> server.html <==========================
@@ -89,47 +92,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         case "noSeek":
             noSeek($conn);
             break;
-
-
-
-
-
-
-        /*
-    case "test1":
-        test1($conn);
-        break;
-    case "kapcsolo":
-        kapcsolo($conn);
-        break;
-    case "seek":
-        seek($conn, $data["ido"]);
-        break;
-    case "volume":
-        volume($conn, $data["hangero"]);
-        break;
-    case "length":
-        length($conn);
-        break;
-    case "setLength":
-        setLength($conn, $data["hossz"]);
-        break;
-    case "setCurrentTime":
-        setCurrentTime($conn, $data["ido"]);
-        break;
-    case "current_time":
-        current_time($conn);
-        break;
-    case "porget":
-        porget($conn, $data["porget"]);
-        break;
-    case "noSeek":
-        noSeek($conn);
-        break;
-    case "getVolume":
-        getVolume($conn);
-        break;
-        */
+        case "moveFirstToCurrentlyPlaying":
+            moveFirstToCurrentlyPlaying($conn);
+            break;
+        case "setLength":
+            setLength($conn, $data["length"]);
+            break;
 
 
         default:

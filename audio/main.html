@@ -19,20 +19,28 @@
                 <div class="p-2 rounded-3" id="navbar">
                     <div class="row p-2 h-100">
                         <div class="col-2 text-center align-middle">
-                            <span>Felhasználó neve</span>
+                            <span id="headerfelhasznalonev">Felhasználó neve</span>
                         </div>
                         <div class="col-2 text-center">
-                            <span>idő</span>
+                            <span id="timer">idő</span>
                         </div>
                         <div class="col-8 text-end">
-                            <button class="btn text-white me-4">
+                            <a class="btn text-white me-4" id="adminpagebutton"
+                                href="../adminpage/adminpage_integrated.html">
                                 admin oldal
-                            </button>
-                            <button class="btn text-white me-4">
+                            </a>
+
+                            <a class="btn text-white me-4" id="mainpagebutton" href="../audio/main.html">
                                 fő oldal
-                            </button>
-                            <button class="btn text-white me-2">
-                                kijelentkezés
+                            </a>
+
+                            <button class="Btn" id="logoutbutton" onclick="logout()">
+                                <div class="sign"><svg viewBox="0 0 512 512">
+                                        <path
+                                            d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z">
+                                        </path>
+                                    </svg></div>
+                                <div class="text">Logout</div>
                             </button>
                         </div>
                     </div>
@@ -47,7 +55,7 @@
         </div>
 
         <div class="row">
-            <div class="col-6">
+            <div class="col-12 col-lg-6">
                 <div class="row pt-2 pb-5">
                     <div class="col-10">
                         <input type="text" oninput="//KeresesKezdese()" class="form-control text-light kereso"
@@ -59,7 +67,7 @@
                 </div>
                 <div id="eredmeny" class="eredmeny text-light"></div>
             </div>
-            <div class="col-6">
+            <div class="col-12 col-lg-6">
                 <div id="lejatszo" class="lejatszo"></div>
 
                 <div id="kovetkezo" class="kovetkezo">
@@ -78,8 +86,97 @@
         console.log(localStorage.getItem("user_class"));
         console.log(localStorage.getItem("isadmin"));
 
+        if (localStorage.getItem("isadmin") === "1") {
+            document.getElementById("adminpagebutton").style.display = "inline-block";
+        } else {
+            document.getElementById("adminpagebutton").style.display = "none";
+        }
+
+        document.getElementById("headerfelhasznalonev").innerText = localStorage.getItem("email");
+
+        let interval = null;
+        const DURATION = 30 * 60;
+        let totalSeconds = DURATION;
+
+        function updateDisplay() {
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+
+            document.getElementById("timer").textContent =
+                String(minutes).padStart(2, "0") + ":" +
+                String(seconds).padStart(2, "0");
+        }
+
+        function startTimer() {
+            clearInterval(interval);
+
+            totalSeconds = DURATION;
+            updateDisplay();
+
+            interval = setInterval(() => {
+                if (totalSeconds > 0) {
+                    totalSeconds--;
+                    updateDisplay();
+                } else {
+                    clearInterval(interval);
+                    interval = null;
+                    alert("Lejárt az idő!");
+                }
+            }, 1000);
+        }
+
+        startTimer();
+        document.body.addEventListener("click", startTimer);
+        document.body.addEventListener("click", tokenRefresh);
+
+        //document.body.addEventListener("pointer", startTimer);
+        //document.body.addEventListener("pointer", tokenRefresh);
+
+        updateDisplay();
+
+
+        function tokenRefresh() {
+            fetch("../index.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    muvelet: "tokenRefresh",
+                    token: localStorage.getItem("token")
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Token refreshed:", data);
+                    //kezeld le ha lejart a token vagy ha új token érkezett
+                })
+                .catch(error => console.error("Error refreshing token:", error));
+        }
+
+        function logout() {
+            //localStorage.clear();
+            //window.location.href = "../login/login.html";
+
+            fetch("../index.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    muvelet: "logout",
+                    token: localStorage.getItem("token")
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    localStorage.clear();
+                    window.location.href = "../login/login.html";
+                })
+                .catch(error => console.error("Error refreshing token:", error));
+        }
+
+
+
+
+
         let player;
-        let isPlaying = false;
 
         function elozo() {
             if (!player || !player.getCurrentTime) return;
@@ -321,8 +418,11 @@
 
             <div class="col-2">
                 <button onclick="inditas()" class="btn  text-white w-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16" id="play">
                         <path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-pause d-none" viewBox="0 0 16 16" id="pause">
+                        <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/>
                     </svg>
                 </button>
             </div>
@@ -482,6 +582,7 @@
         let volume = 0;
         let seekSlider = null;
         let volumeSlider = null;
+        let videoId = null;
 
 
 
@@ -528,6 +629,18 @@
             })
                 .then(response => response.json())
                 .then(data => data.empty);
+        }
+
+        function isPlaying() {
+            return fetch("../index.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    muvelet: "isPlaying"
+                })
+            })
+                .then(response => response.json())
+                .then(data => data.status);
         }
 
         //ezt meg kell majd hivni ha vége van egy számnak
@@ -577,6 +690,7 @@
 
         loadCurrentlyPlaying().then(data => {
             console.log(data);
+            videoId = data.video_id;
             embedVideo(data.video_id, "https://img.youtube.com/vi/" + data.video_id + "/0.jpg", data.title);
             seekSlider = document.querySelector("#seekSlider");
             volumeSlider = document.querySelector("#volumeSlider");
@@ -633,7 +747,6 @@
         }
 
         loadPlaylist().then(data => {
-            console.log(data);
             data.forEach(e => {
                 document.getElementById("playlist").innerHTML += embedPlaylistItem(e.video_id, e.title);
             });
@@ -755,10 +868,76 @@
         function update() {
             getCurrentTime();
             getVolume();
+
+            isPlaying().then(status => {
+                console.log(status);
+                if (status == 0) {
+                    document.getElementById("play").classList.remove("d-none");
+                    document.getElementById("pause").classList.add("d-none");
+                } else {
+                    document.getElementById("pause").classList.remove("d-none");
+                    document.getElementById("play").classList.add("d-none");
+                }
+            })
+
+            loadPlaylist().then(data => {
+                document.getElementById("playlist").innerHTML = "";
+                data.forEach(e => {
+                    document.getElementById("playlist").innerHTML += embedPlaylistItem(e.video_id, e.title);
+                });
+            })
+
+            loadCurrentlyPlaying().then(data => {
+                if (videoId != data.video_id) {
+                    console.log(data);
+                    videoId = data.video_id;
+                    embedVideo(data.video_id, "https://img.youtube.com/vi/" + data.video_id + "/0.jpg", data.title);
+                    seekSlider = document.querySelector("#seekSlider");
+                    volumeSlider = document.querySelector("#volumeSlider");
+
+                    getLength();
+
+                    // Húzás kezdetén
+                    seekSlider.addEventListener("pointerdown", () => felhasznaloSeek = true);
+                    seekSlider.addEventListener("pointerleave", () => felhasznaloSeek = false);
+
+                    // Hangerő kezdetén
+                    volumeSlider.addEventListener("pointerdown", () => felhasznaloVolume = true);
+                    volumeSlider.addEventListener("pointerleave", () => felhasznaloVolume = false);
+
+
+                    // Húzás közben tároljuk az értéket
+                    seekSlider.addEventListener("input", function () {
+                        if (felhasznaloSeek) {
+                            porget = this.value;
+                        }
+                    });
+
+                    volumeSlider.addEventListener("input", function () {
+                        if (felhasznaloVolume) {
+                            volume = this.value;
+                        }
+                    });
+
+                    volumeSlider.addEventListener("pointerup", function () {
+                        if (!felhasznaloVolume) return;
+                        felhasznaloVolume = false;
+                        setVolume();
+                    });
+
+                    seekSlider.addEventListener("pointerup", function () {
+                        if (!felhasznaloSeek) return;
+                        felhasznaloSeek = false;
+                        setPorget();
+                    });
+                }
+            })
+
+
         }
 
 
-        setInterval(update, 1000);
+        setInterval(update, 200);
 
 
 
@@ -770,8 +949,6 @@
 
             }
         });
-
-
 
 
 
