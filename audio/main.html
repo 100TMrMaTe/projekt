@@ -870,7 +870,6 @@
             getVolume();
 
             isPlaying().then(status => {
-                console.log(status);
                 if (status == 0) {
                     document.getElementById("play").classList.remove("d-none");
                     document.getElementById("pause").classList.add("d-none");
