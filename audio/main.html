@@ -86,6 +86,20 @@
         console.log(localStorage.getItem("user_class"));
         console.log(localStorage.getItem("isadmin"));
 
+
+        
+        let felhasznaloSeek = false;
+        let felhasznaloVolume = false;
+
+
+        let porget = 0;
+        let volume = 0;
+        let seekSlider = null;
+        let volumeSlider = null;
+        let videoId = null;
+        let hossz = null;
+
+
         if (localStorage.getItem("isadmin") === "1") {
             document.getElementById("adminpagebutton").style.display = "inline-block";
         } else {
@@ -173,9 +187,6 @@
         }
 
 
-
-
-
         let player;
 
         function elozo() {
@@ -190,17 +201,12 @@
 
         }
 
-
         function hangSzabalyzo(hangero) {
             if (player && player.setVolume) {
                 player.setVolume(hangero);
             }
         }
-
-
-
-
-
+/*
         function slider() {
 
 
@@ -227,13 +233,13 @@
 
         }
 
-
+        */
 
         function ido() {
-            if (!player || !player.getDuration) return;
-
-            let jelenlegi = Math.floor(player.getCurrentTime());
-            let teljes = player.getDuration();
+            //if (!player || !player.getDuration) return;
+            console.log(seekSlider.value);
+            let jelenlegi = Math.floor(seekSlider.value);
+            let teljes = Math.floor(hossz);
             //console.log(teljes);
             let perc = Math.floor(jelenlegi / 60);
             let masodperc = Math.floor(jelenlegi % 60);
@@ -270,7 +276,7 @@
             }
 
 
-
+            
 
 
 
@@ -309,6 +315,7 @@
 
         }
 
+       
 
         function keresettVideoIdo(seconds) {
             if (seconds === "LIVE") {
@@ -542,7 +549,7 @@
                     talalat.onclick = () => {
                         eredmenyTorol();
 
-
+                       
                         insertIntoMusic(videok[i].videoId, videok[i].title, videok[i].duration)
                             .then(musicId => insertIntoPlaylist(musicId));
 
@@ -571,24 +578,6 @@
                 </div>
             </li>`
         }
-
-
-
-        let felhasznaloSeek = false;
-        let felhasznaloVolume = false;
-
-
-        let porget = 0;
-        let volume = 0;
-        let seekSlider = null;
-        let volumeSlider = null;
-        let videoId = null;
-
-
-
-
-
-
 
         //a videó id alapján belerakja a zeneét a music táblába
         function insertIntoMusic(videoId, title, length) {
@@ -859,6 +848,7 @@
                 .then(response => response.json())
                 .then(data => {
                     seekSlider.max = data.length;
+                    hossz = data.length;
                 });
         }
 
@@ -868,6 +858,7 @@
         function update() {
             getCurrentTime();
             getVolume();
+            ido();
 
             isPlaying().then(status => {
                 if (status == 0) {
