@@ -60,3 +60,33 @@ tömbbön végigmenni és belerakni a divbe
 
 
 
+========================================================
+
+
+KERESÉS
+
+
+
+input mezőbe text - oninput fetchel
+
+php megkapja
+
+select music.video_id, music.title, music.length from music where music.title like(%keresett szöveg%);
+
+js visszakapja
+
+kell egy function ami html t megirja
+
+document.fetelementbyid("eredmeny").innerhtml be bele kell rakni
+
+ha nincs találat akkor yt api keresés
+
+
+
+
+
+
+
+
+
+

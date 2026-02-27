@@ -88,6 +88,27 @@ function getPlaylist($conn)
 
 
 
+function search($conn, $search)
+{
+    $sql = "SELECT video_id, title, length FROM music WHERE title LIKE '%" . $conn->real_escape_string($search) . "%'";
+
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $row = $result->fetch_all(MYSQLI_ASSOC);
+
+        echo json_encode([
+            "status" => "success",
+            "results" => $row
+
+        ]);
+
+        $stmt->close();
+    }
+}
+
+
 
 
 
@@ -242,6 +263,7 @@ function getLength($conn)
         $stmt->close();
     }
 }
+
 
 
 
