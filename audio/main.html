@@ -58,8 +58,8 @@
             <div class="col-12 col-lg-6">
                 <div class="row pt-2 pb-5">
                     <div class="col-10">
-                        <input type="text" oninput="//KeresesKezdese()" class="form-control text-light kereso"
-                            style="height: 45px;" placeholder="Keresés..." id="kereso" name="kereso">
+                        <input type="text" oninput="search(), kerdez()" class="form-control text-light kereso"
+                            style="height: 45px;" placeholder="Keresés..." id="search" name="kereso">
                     </div>
                     <div class="col-2">
                         <button onclick="keres(),eredmenyVisszahoz()" class="btn  text-white h-100">Keresés</button>
@@ -87,7 +87,7 @@
         console.log(localStorage.getItem("isadmin"));
 
 
-        
+
         let felhasznaloSeek = false;
         let felhasznaloVolume = false;
 
@@ -160,8 +160,10 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log("Token refreshed:", data);
-                    //kezeld le ha lejart a token vagy ha új token érkezett
+                    if (data.status != "success_token_refresh") {
+                        localStorage.clear();
+                        window.location.href = "../login/login.html";
+                    }
                 })
                 .catch(error => console.error("Error refreshing token:", error));
         }
@@ -206,34 +208,34 @@
                 player.setVolume(hangero);
             }
         }
-/*
-        function slider() {
-
-
-            const seekSlider = document.getElementById("seekSlider");
-
-            seekSlider.addEventListener("input", () => {
-                if (!player || !player.getDuration) return;
-
-                const hova = player.getDuration() * (seekSlider.value / 1000);
-                console.log(hova + "asdasd");
-                player.seekTo(hova, true);
-            });
-
-            // minden frame frissites
-            function current() {
-                if (!player || !player.getDuration) return;
-
-                const ujpozicio = player.getCurrentTime() * (1000 / player.getDuration());
-                seekSlider.value = ujpozicio;
-
-                requestAnimationFrame(current);
-            }
-            current();
-
-        }
-
-        */
+        /*
+                function slider() {
+        
+        
+                    const seekSlider = document.getElementById("seekSlider");
+        
+                    seekSlider.addEventListener("input", () => {
+                        if (!player || !player.getDuration) return;
+        
+                        const hova = player.getDuration() * (seekSlider.value / 1000);
+                        console.log(hova + "asdasd");
+                        player.seekTo(hova, true);
+                    });
+        
+                    // minden frame frissites
+                    function current() {
+                        if (!player || !player.getDuration) return;
+        
+                        const ujpozicio = player.getCurrentTime() * (1000 / player.getDuration());
+                        seekSlider.value = ujpozicio;
+        
+                        requestAnimationFrame(current);
+                    }
+                    current();
+        
+                }
+        
+                */
 
         function ido() {
             //if (!player || !player.getDuration) return;
@@ -276,7 +278,7 @@
             }
 
 
-            
+
 
 
 
@@ -315,7 +317,7 @@
 
         }
 
-       
+
 
         function keresettVideoIdo(seconds) {
             if (seconds === "LIVE") {
@@ -549,7 +551,7 @@
                     talalat.onclick = () => {
                         eredmenyTorol();
 
-                       
+
                         insertIntoMusic(videok[i].videoId, videok[i].title, videok[i].duration)
                             .then(musicId => insertIntoPlaylist(musicId));
 
@@ -852,6 +854,31 @@
                 });
         }
 
+        function kerdez() {
+            console.log(document.getElementById("search").value);
+        }
+
+        function search() {
+            return fetch("../index.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    muvelet: "search",
+                    search: document.getElementById("search").value
+                })
+
+            })
+
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                });
+        }
+
+
+
 
 
 
@@ -927,7 +954,7 @@
         }
 
 
-        setInterval(update, 200);
+        setInterval(update, 2000);
 
 
 

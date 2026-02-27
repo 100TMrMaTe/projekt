@@ -79,6 +79,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         case "logout":
             logout($conn, $data["token"]);
             break;
+        case "search":
+            search($conn, $data["search"]);
+            break;
 
 
         //==========================> server.html <==========================
