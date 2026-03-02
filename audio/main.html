@@ -48,9 +48,6 @@
 
 
 
-
-
-
             </div>
         </div>
 
@@ -467,10 +464,11 @@
 
 
         function keres() {
-            const kereso = document.getElementById("kereso").value;
+            console.log("anyad");
+            const search = document.getElementById("search").value;
             const eredmeny = document.getElementById("eredmeny");
 
-            if (kereso.length < 3) {
+            if (search.length < 3) {
                 eredmeny.innerHTML = "<p>Írj be legalább 3 karaktert...</p>";
                 return;
             }
@@ -479,7 +477,7 @@
 
             const apikulcs = "AIzaSyAvqcZuWfXHENDGZOhjSKoKyaZe4xGtTVM";
             const apikulcs2 = "AIzaSyAjhNmbvJwzwac3JK-UxQFId23xWsn10-E";
-            const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=5&q=${encodeURIComponent(kereso)}&key=${apikulcs2}`;
+            const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=5&q=${encodeURIComponent(search)}&key=${apikulcs2}`;
 
 
             function lekerVideok(vissza) {
@@ -564,9 +562,21 @@
             });
         }
 
+        function embedSearchItem(videoId, title, duration = "0:00") {
+            return `<div class="row mb-3 p-2 rounded video talalat">
+                        <div class="col-4">
+                            <img src="https://img.youtube.com/vi/${videoId}/0.jpg"  class="img-fluid rounded"/>
+                        </div>
+                        <div class="col-8 text-light">
+                            <h3 class="text-truncate">${title} </h3>
+                            <h4>${keresettVideoIdo(duration)}</h4>
+                        </div>
+                    </div>`
+        }
 
 
-        function embedPlaylistItem(videoId, title) {
+
+        function embedPlaylistItem(videoId, title, duration = "0:00") {
             return `<li>
                 <div class="row m-2 mb-3 p-2 rounded video talalat">
                     <div class="col-4">
@@ -575,7 +585,7 @@
                     </div>
                     <div class="col-8 text-light">
                         <h3 class="text-truncate">${title}</h3>
-                        <h4>0:00</h4>
+                        <h4>${keresettVideoIdo(duration)}</h4>
                     </div>
                 </div>
             </li>`
@@ -859,7 +869,7 @@
         }
 
         function search() {
-            return fetch("../index.php", {
+            fetch("../index.php", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -874,11 +884,41 @@
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
+
+                    let eredmeny = document.getElementById("eredmeny");
+                    let videok = data.results;
+
+                    eredmeny.innerHTML = "";
+
+                    if (!videok.length) {
+                        eredmeny.innerHTML = "<p>Nincs találat vagy hiba történt.</p>";
+                        return;
+                    }
+
+                    for (let i = 0; i < videok.length; i++) {
+                        let keret = document.createElement("div");
+                        keret.classList.add("container");
+
+                        let talalat = document.createElement("div");
+
+                        talalat.innerHTML = embedSearchItem(videok[i].video_id, videok[i].title, videok[i].length);
+
+                        console.log(videok[i].video_id);
+
+                        talalat.onclick = () => {
+                            eredmenyTorol();
+
+                            insertIntoMusic(videok[i].video_id, videok[i].title, videok[i].length)
+                                .then(musicId => insertIntoPlaylist(musicId));
+                        };
+
+                        keret.appendChild(talalat);
+                        eredmeny.appendChild(keret);
+                    }
+
+
                 });
         }
-
-
-
 
 
 
@@ -958,7 +998,7 @@
 
 
 
-        document.getElementById("kereso").addEventListener('keydown', function (e) {
+        document.getElementById("search").addEventListener('keydown', function (e) {
             if (e.key === 'Enter') {
                 keres();
                 eredmenyVisszahoz();
@@ -966,8 +1006,6 @@
 
             }
         });
-
-
 
 
     </script>
