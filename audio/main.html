@@ -59,7 +59,7 @@
                             style="height: 45px;" placeholder="Keresés..." id="search" name="kereso">
                     </div>
                     <div class="col-2">
-                        <button onclick="keres(),eredmenyVisszahoz()" class="btn  text-white h-100">Keresés</button>
+                        <button onclick="keres(),search(),eredmenyVisszahoz()" class="btn  text-white h-100">Keresés</button>
                     </div>
                 </div>
                 <div id="eredmeny" class="eredmeny text-light"></div>
@@ -82,6 +82,10 @@
         console.log(localStorage.getItem("email"));
         console.log(localStorage.getItem("user_class"));
         console.log(localStorage.getItem("isadmin"));
+
+        if(localStorage.getItem("token") == null) {
+            window.location.href = "../login/login.html";
+        }
 
 
 
@@ -562,7 +566,7 @@
             });
         }
 
-        function embedSearchItem(videoId, title, duration = "0:00") {
+        function embedSearchItem(videoId, title, duration) {
             return `<div class="row mb-3 p-2 rounded video talalat">
                         <div class="col-4">
                             <img src="https://img.youtube.com/vi/${videoId}/0.jpg"  class="img-fluid rounded"/>
@@ -572,11 +576,12 @@
                             <h4>${keresettVideoIdo(duration)}</h4>
                         </div>
                     </div>`
+
         }
 
 
 
-        function embedPlaylistItem(videoId, title, duration = "0:00") {
+        function embedPlaylistItem(videoId, title, duration) {
             return `<li>
                 <div class="row m-2 mb-3 p-2 rounded video talalat">
                     <div class="col-4">
@@ -749,7 +754,7 @@
 
         loadPlaylist().then(data => {
             data.forEach(e => {
-                document.getElementById("playlist").innerHTML += embedPlaylistItem(e.video_id, e.title);
+                document.getElementById("playlist").innerHTML += embedPlaylistItem(e.video_id, e.title, e.length);
             });
         })
 
@@ -890,6 +895,8 @@
 
                     eredmeny.innerHTML = "";
 
+                    console.log("EREDMENY TOROLVE");
+
                     if (!videok.length) {
                         eredmeny.innerHTML = "<p>Nincs találat vagy hiba történt.</p>";
                         return;
@@ -904,6 +911,7 @@
                         talalat.innerHTML = embedSearchItem(videok[i].video_id, videok[i].title, videok[i].length);
 
                         console.log(videok[i].video_id);
+
 
                         talalat.onclick = () => {
                             eredmenyTorol();
@@ -940,7 +948,7 @@
             loadPlaylist().then(data => {
                 document.getElementById("playlist").innerHTML = "";
                 data.forEach(e => {
-                    document.getElementById("playlist").innerHTML += embedPlaylistItem(e.video_id, e.title);
+                    document.getElementById("playlist").innerHTML += embedPlaylistItem(e.video_id, e.title, e.length);
                 });
             })
 
@@ -989,18 +997,17 @@
                     });
                 }
             })
-
-
         }
 
 
-        setInterval(update, 2000);
+        setInterval(update, 1000);
 
 
 
         document.getElementById("search").addEventListener('keydown', function (e) {
             if (e.key === 'Enter') {
                 keres();
+                search();
                 eredmenyVisszahoz();
                 //console.log("asdasd");
 
