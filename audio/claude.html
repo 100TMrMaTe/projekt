@@ -4,79 +4,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <title></title>
-    <link rel="stylesheet" href="style.css">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <title>Zenelejátszó</title>
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: system-ui, sans-serif;
+            color: white;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(120, 88, 163, .6), transparent 45%),
+                radial-gradient(circle at 80% 30%, rgba(77, 157, 197, .6), transparent 45%),
+                radial-gradient(circle at 60% 80%, rgba(81, 193, 124, .6), transparent 50%),
+                linear-gradient(135deg, #1e1e2f, #1a2a2a);
+            background-attachment: fixed;
+        }
+
+        /* glass alap */
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+        }
+
+        /* navbar */
+        #navbar {
+            padding: 12px;
+        }
+
+        /* input + gomb */
+        .kereso {
+            height: 45px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 14px;
+            color: white;
+        }
+
+        .kereso::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 14px;
+            color: white;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* találatok */
+        .talalat {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 16px;
+            transition: background .2s;
+        }
+
+        .talalat:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* lejátszó */
+        #lejatszo {
+            margin-bottom: 20px;
+        }
+
+        #seekSlider {
+            width: 100%;
+            height: 6px;
+            border-radius: 999px;
+            background: rgba(255,255,255,.3);
+            appearance: none;
+        }
+
+        #seekSlider::-webkit-slider-thumb {
+            appearance: none;
+            width: 0;
+            height: 0;
+            box-shadow: -2000px 0 0 2000px white;
+        }
+
+        ul {
+            padding-left: 0;
+            max-height: 450px;
+            overflow-y: auto;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        /* scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,.35);
+            border-radius: 999px;
+        }
+
+        /* logout */
+        #logoutbutton {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: none;
+            background: rgb(220,60,60);
+        }
+
+        #logoutbutton .text {
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="background"></div>
 
-    <div class="container">
-        <div class="row text-light">
-            <div class="col-12 p-3">
-                <div class="p-2 rounded-3" id="navbar">
-                    <div class="row p-2 h-100">
-                        <div class="col-2 text-center align-middle">
-                            <span id="headerfelhasznalonev">Felhasználó neve</span>
-                        </div>
-                        <div class="col-2 text-center">
-                            <span id="timer">idő</span>
-                        </div>
-                        <div class="col-8 text-end">
-                            <a class="btn text-white me-4" id="adminpagebutton"
-                                href="../adminpage/adminpage_integrated.html">
-                                admin oldal
-                            </a>
+<div class="container py-3">
 
-                            <a class="btn text-white me-4" id="mainpagebutton" href="../audio/main.html">
-                                fő oldal
-                            </a>
-
-                            <button class="Btn" id="logoutbutton" onclick="logout()">
-                                <div class="sign"><svg viewBox="0 0 512 512">
-                                        <path
-                                            d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z">
-                                        </path>
-                                    </svg></div>
-                                <div class="text">Logout</div>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-
-
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-12 col-lg-6">
-                <div class="row pt-2 pb-5">
-                    <div class="col-10">
-                        <input type="text" oninput="search(), kerdez()" class="form-control text-light kereso"
-                            style="height: 45px;" placeholder="Keresés..." id="search" name="kereso">
-                    </div>
-                    <div class="col-2">
-                        <button onclick="keres(),search(),eredmenyVisszahoz()" class="btn  text-white h-100">Keresés</button>
-                    </div>
-                </div>
-                <div id="eredmeny" class="eredmeny text-light"></div>
-            </div>
-            <div class="col-12 col-lg-6">
-                <div id="lejatszo" class="lejatszo"></div>
-
-                <div id="kovetkezo" class="kovetkezo">
-                    <ul id="playlist">
-                    </ul>
-                </div>
+    <!-- NAVBAR -->
+    <div id="navbar" class="glass mb-4">
+        <div class="row align-items-center">
+            <div class="col-3 text-center" id="headerfelhasznalonev">Felhasználó</div>
+            <div class="col-3 text-center" id="timer">00:00</div>
+            <div class="col-6 text-end">
+                <a id="adminpagebutton" class="btn me-2" href="#">Admin</a>
+                <a id="mainpagebutton" class="btn me-2" href="#">Főoldal</a>
+                <button id="logoutbutton" onclick="logout()">
+                    <svg width="18" height="18" fill="white" viewBox="0 0 16 16">
+                        <path d="M6 2a1 1 0 0 1 1 1v3h3a1 1 0 1 1 0 2H7v3a1 1 0 0 1-2 0V3a1 1 0 0 1 1-1z"/>
+                    </svg>
+                </button>
             </div>
         </div>
     </div>
 
+    <!-- TARTALOM -->
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="d-flex gap-2 mb-3">
+                <input id="search" class="form-control kereso" placeholder="Keresés...">
+                <button class="btn">Keresés</button>
+            </div>
+            <div id="eredmeny"></div>
+        </div>
 
-    <script>
+        <div class="col-lg-6">
+            <div id="lejatszo" class="glass p-3 mb-3"></div>
+            <div class="glass p-3">
+                <ul id="playlist"></ul>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- JS RÉSZ SZÁNDÉKOSAN ÉRINTETLEN -->
+
+<script>
 
         console.log(localStorage.getItem("token"));
         console.log(localStorage.getItem("email"));
@@ -697,7 +792,7 @@
         loadCurrentlyPlaying().then(data => {
             console.log(data);
             videoId = data.video_id;
-            embedVideo(data.video_id, "https://img.youtube.com/vi/" + data.video_id + "/0.jpg", data.title);
+            embedVideo(data.video_id, "https://img.youtube.com/vi/" + data.video_id + "/maxresdefault.jpg", data.title);
             seekSlider = document.querySelector("#seekSlider");
             volumeSlider = document.querySelector("#volumeSlider");
 
@@ -956,7 +1051,7 @@
                 if (videoId != data.video_id) {
                     console.log(data);
                     videoId = data.video_id;
-                    embedVideo(data.video_id, "https://img.youtube.com/vi/" + data.video_id + "/maxresdefault.jpg", data.title);
+                    embedVideo(data.video_id, "https://img.youtube.com/vi/" + data.video_id + "/0.jpg", data.title);
                     seekSlider = document.querySelector("#seekSlider");
                     volumeSlider = document.querySelector("#volumeSlider");
 
@@ -1045,6 +1140,8 @@
         }
         //setInterval(bgChange, 3000);
     </script>
-</body>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
 </html>
