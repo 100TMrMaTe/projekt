@@ -956,7 +956,7 @@
                 if (videoId != data.video_id) {
                     console.log(data);
                     videoId = data.video_id;
-                    embedVideo(data.video_id, "https://img.youtube.com/vi/" + data.video_id + "/0.jpg", data.title);
+                    embedVideo(data.video_id, "https://img.youtube.com/vi/" + data.video_id + "/maxresdefault.jpg", data.title);
                     seekSlider = document.querySelector("#seekSlider");
                     volumeSlider = document.querySelector("#volumeSlider");
 
@@ -1008,7 +1008,7 @@
             if (e.key === 'Enter') {
                 keres();
                 search();
-                eredmenyVisszahoz();
+                eredmenyVisszahoz(); 
                 //console.log("asdasd");
 
             }
