@@ -170,8 +170,6 @@
         }
 
         function logout() {
-            //localStorage.clear();
-            //window.location.href = "../login/login.html";
 
             fetch("../index.php", {
                 method: "POST",
@@ -192,51 +190,12 @@
 
         let player;
 
-        function elozo() {
-            if (!player || !player.getCurrentTime) return;
-            player.previousVideo();
-        }
-
-        function kovetkezo() {
-            if (!player || !player.getCurrentTime) return;
-            player.nextVideo();
-            console.log(player.nextVideo())
-
-        }
-
         function hangSzabalyzo(hangero) {
             if (player && player.setVolume) {
                 player.setVolume(hangero);
             }
         }
-        /*
-                function slider() {
-        
-        
-                    const seekSlider = document.getElementById("seekSlider");
-        
-                    seekSlider.addEventListener("input", () => {
-                        if (!player || !player.getDuration) return;
-        
-                        const hova = player.getDuration() * (seekSlider.value / 1000);
-                        console.log(hova + "asdasd");
-                        player.seekTo(hova, true);
-                    });
-        
-                    // minden frame frissites
-                    function current() {
-                        if (!player || !player.getDuration) return;
-        
-                        const ujpozicio = player.getCurrentTime() * (1000 / player.getDuration());
-                        seekSlider.value = ujpozicio;
-        
-                        requestAnimationFrame(current);
-                    }
-                    current();
-        
-                }
-        
-                */
+
 
         function ido() {
             //if (!player || !player.getDuration) return;
@@ -438,7 +397,7 @@
             </div>
 
             <div class="col-2">
-                <button onclick="kovetkezo()" class="btn  text-white w-100">
+                <button onclick="kovetkezo()" class="btn text-white w-100">
                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-skip-forward" viewBox="0 0 16 16">
                         <path d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.752l-6.267 3.636c-.52.302-1.233-.043-1.233-.696v-2.94l-6.267 3.636C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696L7.5 7.248v-2.94c0-.653.713-.998 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5M1 4.633v6.734L6.804 8zm7.5 0v6.734L14.304 8z"/>
                     </svg>
@@ -576,7 +535,6 @@
                             <h4>${keresettVideoIdo(duration)}</h4>
                         </div>
                     </div>`
-
         }
 
 
@@ -929,6 +887,18 @@
         }
 
 
+        
+
+        function kovetkezo()
+        {
+            let length = seekSlider.max;
+            console.log("max: ", seekSlider.max);
+            console.log("elotte time", porget);
+            porget = length-1.7; 
+            console.log("utana", length);
+            console.log("utana time", porget)
+            setPorget();
+        }
 
         function update() {
             getCurrentTime();
@@ -1013,6 +983,8 @@
 
             }
         });
+
+
 
 
     </script>

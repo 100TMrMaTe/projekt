@@ -81,6 +81,13 @@ document.fetelementbyid("eredmeny").innerhtml be bele kell rakni
 
 ha nincs találat akkor yt api keresés
 
+=================================================================
+
+KÖVETKTZŐ (gomb)
+
+playlist legkisebb eleme
+
+
 
 
 
