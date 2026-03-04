@@ -55,11 +55,13 @@
             <div class="col-12 col-lg-6">
                 <div class="row pt-2 pb-5">
                     <div class="col-10">
-                        <input type="text" oninput="search(), eredmenyVisszahoz()" class="form-control text-light kereso"
-                            style="height: 45px;" placeholder="Keresés..." id="search" name="kereso">
+                        <input type="text" oninput="search(), eredmenyVisszahoz()"
+                            class="form-control text-light kereso" style="height: 45px;" placeholder="Keresés..."
+                            id="search" name="kereso">
                     </div>
                     <div class="col-2">
-                        <button onclick="keres(),search(),eredmenyVisszahoz()" class="btn  text-white h-100">Keresés</button>
+                        <button onclick="keres(),search(),eredmenyVisszahoz()"
+                            class="btn  text-white h-100">Keresés</button>
                     </div>
                 </div>
                 <div id="eredmeny" class="eredmeny text-light"></div>
@@ -83,7 +85,7 @@
         console.log(localStorage.getItem("user_class"));
         console.log(localStorage.getItem("isadmin"));
 
-        if(localStorage.getItem("token") == null) {
+        if (localStorage.getItem("token") == null) {
             window.location.href = "../login/login.html";
         }
 
@@ -190,11 +192,6 @@
 
         let player;
 
-        function hangSzabalyzo(hangero) {
-            if (player && player.setVolume) {
-                player.setVolume(hangero);
-            }
-        }
 
 
         function ido() {
@@ -236,10 +233,6 @@
                 }
                 egeszIdo.innerText = `${teljesOra}:${teljesPerc}:${teljesMasodperc < 10 ? '0' : ''}${teljesMasodperc}`;
             }
-
-
-
-
 
 
             if (ora > 0) {
@@ -712,7 +705,7 @@
 
         loadPlaylist().then(data => {
             data.forEach(e => {
-                document.getElementById("playlist").innerHTML += embedPlaylistItem(e.video_id, e.title, e.length);
+                document.getElementById("playlist").innerHTML += embedPlaylistItem(e.video_id, e.title, (e.length) == 0 ? "LIVE" : e.length);
             });
         })
 
@@ -862,7 +855,7 @@
 
                         let talalat = document.createElement("div");
 
-                        talalat.innerHTML = embedSearchItem(videok[i].video_id, videok[i].title, videok[i].length);
+                        talalat.innerHTML = embedSearchItem(videok[i].video_id, videok[i].title, (videok[i].length) == 0 ? "LIVE" : videok[i].length);
 
                         console.log(videok[i].video_id);
 
@@ -883,8 +876,52 @@
         }
 
 
-        function kovetkezo()
-        {
+        function isPlaylistEmpty() {
+            fetch("../index.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    muvelet: "isPlaylistEmpty"
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.empty) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                })
+                .catch(error => console.error("Fetch hiba:", error));
+        }
+
+
+        function kovetkezo() {
+
+            if (isPlaylistEmpty()) {
+                return;
+            } else {
+                fetch("../index.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        muvelet: "moveFirstToCurrentlyPlaying"
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                    })
+                    .catch(error => console.error("Fetch hiba:", error));
+            }
+
+
+
+            /*
             let length = seekSlider.max;
             console.log("max: ", seekSlider.max);
             console.log("elotte time", porget);
@@ -892,6 +929,7 @@
             console.log("utana", length);
             console.log("utana time", porget)
             setPorget();
+            */
         }
 
         function update() {
@@ -912,7 +950,7 @@
             loadPlaylist().then(data => {
                 document.getElementById("playlist").innerHTML = "";
                 data.forEach(e => {
-                    document.getElementById("playlist").innerHTML += embedPlaylistItem(e.video_id, e.title, e.length);
+                    document.getElementById("playlist").innerHTML += embedPlaylistItem(e.video_id, e.title, (e.length) == 0 ? "LIVE" : e.length);
                 });
             })
 
@@ -966,13 +1004,11 @@
 
         setInterval(update, 1000);
 
-
-
         document.getElementById("search").addEventListener('keydown', function (e) {
             if (e.key === 'Enter') {
                 keres();
                 search();
-                eredmenyVisszahoz(); 
+                eredmenyVisszahoz();
                 //console.log("asdasd");
 
             }

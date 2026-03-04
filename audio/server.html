@@ -235,11 +235,16 @@
         }
 
 
-
-
         function update() {
             getVideoData();
             if (player) {
+
+                const currentVideoId = player.getVideoData().video_id;
+                if (currentVideoId !== videoFromDB) {
+                    player.loadVideoById(videoFromDB);
+                    return;
+                }
+
                 current_time = Math.floor(player.getCurrentTime());
                 length = Math.floor(player.getDuration());
                 if (statusFromDB == 1) {
@@ -260,9 +265,7 @@
         }
 
 
-
         setInterval(update, 100);
-
 
     </script>
 </body>
