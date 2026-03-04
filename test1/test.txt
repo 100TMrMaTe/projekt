@@ -50,7 +50,7 @@ chromium \
   --disable-translate \
   --disable-gpu \
   --disable-software-rasterizer \
-  http://localhost/projekt/audio/main.html
+  http://localhost/projekt/audio/server.html
 
 chromium http://localhost/projekt/audio/rasp/example3.html
 
@@ -63,7 +63,7 @@ böngésző megölése
 pkill chromium
 
 
-
+export DISPLAY=:0
 
 
 
