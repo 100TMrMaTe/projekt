@@ -55,7 +55,7 @@
             <div class="col-12 col-lg-6">
                 <div class="row pt-2 pb-5">
                     <div class="col-10">
-                        <input type="text" oninput="search(), kerdez()" class="form-control text-light kereso"
+                        <input type="text" oninput="search(), eredmenyVisszahoz()" class="form-control text-light kereso"
                             style="height: 45px;" placeholder="Keresés..." id="search" name="kereso">
                     </div>
                     <div class="col-2">
@@ -827,10 +827,6 @@
                 });
         }
 
-        function kerdez() {
-            console.log(document.getElementById("search").value);
-        }
-
         function search() {
             fetch("../index.php", {
                 method: "POST",
@@ -886,8 +882,6 @@
                 });
         }
 
-
-        
 
         function kovetkezo()
         {
