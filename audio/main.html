@@ -648,7 +648,7 @@
         loadCurrentlyPlaying().then(data => {
             console.log(data);
             videoId = data.video_id;
-            embedVideo(data.video_id, "https://img.youtube.com/vi/" + data.video_id + "/0.jpg", data.title);
+            embedVideo(data.video_id, "https://img.youtube.com/vi/" + data.video_id + "/hqdefault.jpg", data.title);
             seekSlider = document.querySelector("#seekSlider");
             volumeSlider = document.querySelector("#volumeSlider");
 
