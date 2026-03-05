@@ -90,7 +90,7 @@ function getPlaylist($conn)
 
 function search($conn, $search)
 {
-    $sql = "SELECT video_id, title, length FROM music WHERE title LIKE '%" . $conn->real_escape_string($search) . "%'";
+    $sql = "SELECT video_id, title, length FROM music WHERE title LIKE '%" . $conn->real_escape_string($search) . "%' LIMIT 7";
 
     if ($stmt = $conn->prepare($sql)) {
         $stmt->execute();
