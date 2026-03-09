@@ -435,3 +435,197 @@ li { list-style: none; }
         width: 105px;
     }
 }
+
+/* ─── MOBIL MINI PLAYER BAR ─── */
+#mobile-player-bar {
+    display: none; /* JS mutatja meg embedVideo után */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    flex-direction: column;
+    background: rgba(18, 12, 30, 0.72);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 -4px 32px rgba(0,0,0,0.38);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Seek csík a bar tetején */
+#mobile-seek-track {
+    width: 100%;
+    padding: 0;
+    line-height: 0;
+}
+
+#mobile-seek-slider {
+    width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+    height: 3px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 0;
+    cursor: pointer;
+    display: block;
+    transition: height 0.15s;
+    margin: 0;
+    padding: 0;
+}
+
+#mobile-seek-slider:hover,
+#mobile-seek-slider:active {
+    height: 5px;
+}
+
+#mobile-seek-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 0;
+    height: 0;
+    box-shadow: -2000px 0 0 2000px rgba(255,255,255,0.85);
+}
+
+#mobile-seek-slider::-moz-range-thumb {
+    -moz-appearance: none;
+    width: 0;
+    height: 0;
+    box-shadow: -2000px 0 0 2000px rgba(255,255,255,0.85);
+}
+
+/* Belső sor: kép + cím, gombok, hangerő */
+#mobile-player-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px 10px 14px;
+    gap: 10px;
+}
+
+/* Borítókép + cím */
+.mobile-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+}
+
+#mobile-thumb {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 6px;
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.1);
+}
+
+#mobile-title {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    min-width: 0;
+}
+
+/* Lejátszó gombok */
+.mobile-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.mobile-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.15s, transform 0.1s;
+    opacity: 0.85;
+}
+
+.mobile-btn:hover {
+    background: rgba(255,255,255,0.12);
+    opacity: 1;
+}
+
+.mobile-btn:active {
+    transform: scale(0.92);
+}
+
+.mobile-play-btn {
+    width: 42px;
+    height: 42px;
+    background: rgba(255,255,255,0.15) !important;
+    border: 1px solid rgba(255,255,255,0.22) !important;
+    opacity: 1 !important;
+}
+
+.mobile-play-btn:hover {
+    background: rgba(255,255,255,0.25) !important;
+}
+
+/* Hangerő csúszka */
+.mobile-volume {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+#mobile-volume-slider {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 72px;
+    height: 4px;
+    background: rgba(255,255,255,0.18);
+    border-radius: 999px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: height 0.15s;
+}
+
+#mobile-volume-slider:hover { height: 6px; }
+
+#mobile-volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 0;
+    height: 0;
+    box-shadow: -200px 0 0 200px rgba(255,255,255,0.85);
+}
+
+#mobile-volume-slider::-moz-range-thumb {
+    -moz-appearance: none;
+    width: 0;
+    height: 0;
+    box-shadow: -200px 0 0 200px rgba(255,255,255,0.85);
+}
+
+/* Csak mobilon látszik a bar, asztali nézetben el van rejtve */
+@media (min-width: 769px) {
+    #mobile-player-bar {
+        display: none !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .talalat {
+        display: none !important;
+    }
+}
+
+/* Mobilon a lap alja ne csússzon a bar alá */
+@media (max-width: 768px) {
+    body {
+        padding-bottom: 80px;
+    }
+}
