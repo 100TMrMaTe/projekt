@@ -355,7 +355,7 @@ body {
     align-items: center;
     justify-content: center;
     padding: 0;
-    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    transition: b 0.2s, transform 0.15s, box-shadow 0.2s;
 }
 
 .player-controls .btn:hover {
@@ -380,7 +380,6 @@ ul {
 }
 
 li { list-style: none; }
-
 /* ─── TIME LABELS ─── */
 #jelenlegiIdo, #egeszIdo {
     font-size: 0.78rem;
@@ -396,6 +395,7 @@ li { list-style: none; }
         gap: 8px;
     }
 
+    
     #navbar .col-2,
     #navbar .col-8 {
         text-align: center !important;
