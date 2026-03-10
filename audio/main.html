@@ -570,7 +570,8 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     muvelet: "insertIntoPlaylist",
-                    music_id: musicId
+                    music_id: musicId,
+                    token: cookieStore.get("token").value
                 })
             });
         }

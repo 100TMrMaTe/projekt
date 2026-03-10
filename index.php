@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             insertIntoMusic($conn, $data["video_id"], $data["title"], $data["length"]);
             break;
         case "insertIntoPlaylist":
-            insertIntoPlaylist($conn, $data["music_id"]);
+            insertIntoPlaylist($conn, $data["music_id"], $data["token"]);
             break;
         case "isPlaylistEmpty":
             isPlaylistEmpty($conn);

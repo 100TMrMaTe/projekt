@@ -24,14 +24,14 @@ function insertIntoMusic($conn, $video_id, $title, $length)
 }
 
 //beszúrja az adatbázisba, playlist táblába
-function insertIntoPlaylist($conn, $music_id)
+function insertIntoPlaylist($conn, $music_id, $token)
 {
-    $sql = "INSERT INTO playlist (music_id)
-            VALUES (?)
+    $sql = "INSERT INTO playlist (music_id, user_id)
+            VALUES (?, (SELECT users.id FROM users, active_users WHERE  users.id = active_users.user_id AND active_users.token = $token))
             ON DUPLICATE KEY UPDATE music_id = music_id";
 
     if ($stmt = $conn->prepare($sql)) {
-        $stmt->bind_param("i", $music_id);
+        $stmt->bind_param("is", $music_id, $token);
         $stmt->execute();
 
         echo json_encode([
