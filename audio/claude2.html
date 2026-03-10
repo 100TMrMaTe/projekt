@@ -70,12 +70,12 @@
 
     <script>
 
-        console.log(localStorage.getItem("token"));
-        console.log(localStorage.getItem("email"));
-        console.log(localStorage.getItem("user_class"));
-        console.log(localStorage.getItem("isadmin"));
+        console.log(cookieStore.get("token"));
+        console.log(cookieStore.get("email"));
+        console.log(cookieStore.get("user_class"));
+        console.log(cookieStore.get("isadmin"));
 
-        if (localStorage.getItem("token") == null) {
+        if (cookieStore.get("token") == null) {
             window.location.href = "../login/login.html";
         }
 
@@ -93,13 +93,13 @@
         let hossz = null;
 
 
-        if (localStorage.getItem("isadmin") === "1") {
+        if (cookieStore.get("isadmin") === "1") {
             document.getElementById("adminpagebutton").style.display = "inline-block";
         } else {
             document.getElementById("adminpagebutton").style.display = "none";
         }
 
-        document.getElementById("headerfelhasznalonev").innerText = localStorage.getItem("email");
+        document.getElementById("headerfelhasznalonev").innerText = cookieStore.get("email");
 
         let interval = null;
         const DURATION = 30 * 60;
@@ -148,13 +148,13 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     muvelet: "tokenRefresh",
-                    token: localStorage.getItem("token")
+                    token: cookieStore.get("token")
                 })
             })
                 .then(response => response.json())
                 .then(data => {
                     if (data.status != "success_token_refresh") {
-                        localStorage.clear();
+                        cookieStore.clear();
                         window.location.href = "../login/login.html";
                     }
                 })
@@ -168,12 +168,12 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     muvelet: "logout",
-                    token: localStorage.getItem("token")
+                    token: cookieStore.get("token")
                 })
             })
                 .then(response => response.json())
                 .then(data => {
-                    localStorage.clear();
+                    cookieStore.clear();
                     window.location.href = "../login/login.html";
                 })
                 .catch(error => console.error("Error refreshing token:", error));
