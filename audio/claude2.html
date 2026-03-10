@@ -10,49 +10,43 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <title></title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="claude2style.css">
 </head>
 
 <body>
     <div class="background"></div>
 
-    <div class="container">
-        <div class="row text-light">
-            <div class="col-12 p-3">
+    <div class="container-fluid px-3">
+
+        <!-- Navbar -->
+        <div class="row pt-2 pb-2">
+            <div class="col-12">
                 <div class="p-2 px-3 rounded-3" id="navbar">
-                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 p-1">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
                         <div class="d-flex align-items-center gap-3">
                             <span id="headerfelhasznalonev">Felhasználó neve</span>
                             <span id="timer">idő</span>
                         </div>
                         <div class="d-flex align-items-center gap-2 flex-wrap">
-                            <a class="btn text-white" id="adminpagebutton"
-                                href="../adminpage/adminpage_integrated.html">
-                                Admin oldal
-                            </a>
-                            <a class="btn text-white" id="mainpagebutton" href="../audio/main.html">
-                                Fő oldal
-                            </a>
+                            <a class="btn text-white" id="adminpagebutton" href="../adminpage/adminpage_integrated.html">Admin oldal</a>
+                            <a class="btn text-white" id="mainpagebutton" href="../audio/claude2.html">Fő oldal</a>
                             <button class="Btn" id="logoutbutton" onclick="logout()">
                                 <div class="sign"><svg viewBox="0 0 512 512">
-                                        <path
-                                            d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z">
-                                        </path>
-                                    </svg></div>
+                                    <path d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z"/>
+                                </svg></div>
                                 <div class="text">Logout</div>
                             </button>
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
         </div>
 
-        <div class="row">
+        <!-- Tartalom: bal (kereső) + jobb (player + playlist) -->
+        <div class="row g-3">
+            <!-- Bal: kereső -->
             <div class="col-12 col-lg-6">
-                <div class="d-flex gap-2 pt-3 pb-4">
+                <div class="d-flex gap-2 mb-2">
                     <input type="text" oninput="search(), eredmenyVisszahoz()"
                         class="form-control text-light kereso flex-grow-1" style="height: 46px;"
                         placeholder="🔍  Keresés..." id="search" name="kereso">
@@ -61,15 +55,16 @@
                 </div>
                 <div id="eredmeny" class="eredmeny text-light"></div>
             </div>
+
+            <!-- Jobb: player + playlist egymás alatt, szorosan -->
             <div class="col-12 col-lg-6">
                 <div id="lejatszo" class="lejatszo"></div>
-
-                <div id="kovetkezo" class="kovetkezo">
-                    <ul id="playlist">
-                    </ul>
+                <div id="kovetkezo" class="kovetkezo mt-2">
+                    <ul id="playlist"></ul>
                 </div>
             </div>
         </div>
+
     </div>
 
 
@@ -360,8 +355,9 @@
 
             <div class="d-flex align-items-center gap-2 player-controls">
                 <button onclick="elozo()" class="btn text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M.5 3.5A.5.5 0 0 1 1 4v3.248l6.267-3.636c.52-.302 1.233.043 1.233.696v2.94l6.267-3.636c.52-.302 1.233.043 1.233.696v7.384c0 .653-.713.998-1.233.696L8.5 8.752v2.94c0 .653-.713.998-1.233.696L1 8.752V12a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
                     </svg>
                 </button>
                 <button onclick="inditas()" class="btn text-white" style="width:54px;height:54px;">
@@ -786,7 +782,10 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    seekSlider.value = data.current_time;
+                    if (seekSlider) seekSlider.value = data.current_time;
+                    if (mobileSeekSlider && !felhasznaloSeek) {
+                        mobileSeekSlider.value = data.current_time;
+                    }
                 });
         }
 
@@ -804,6 +803,7 @@
                 .then(response => response.json())
                 .then(data => {
                     seekSlider.max = data.length;
+                    if (mobileSeekSlider) mobileSeekSlider.max = data.length;
                     hossz = data.length;
                 });
         }
@@ -1015,113 +1015,114 @@
 
 
     </script>
+
+
+    <!-- ─── MOBIL MINI PLAYER BAR (Spotify-stílus) ─── -->
+
+    <div id="mobile-player-bar">
+        <!-- Seek progress csík a tetején -->
+
+        <input type="range" id="mobile-seek-slider" min="0" max="1000" value="0">
+
+        <div id="mobile-player-inner">
+            <!-- Borítókép + cím -->
+            <div class="mobile-info">
+                <img id="mobile-thumb" src="" alt="">
+                <span id="mobile-title">–</span>
+            </div>
+            <!-- Gombok -->
+            <div class="mobile-controls">
+                <button onclick="favorite()" class="mobile-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <path
+                            d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
+                    </svg>
+                </button>
+                <button onclick="inditas()" class="mobile-btn mobile-play-btn" id="mobile-play-pause">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                        viewBox="0 0 16 16" id="mobile-play-icon">
+                        <path
+                            d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="d-none"
+                        viewBox="0 0 16 16" id="mobile-pause-icon">
+                        <path
+                            d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5" />
+                    </svg>
+                </button>
+                <button onclick="kovetkezo()" class="mobile-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+                        viewBox="0 0 16 16">
+                        <path
+                            d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.752l-6.267 3.636c-.52.302-1.233-.043-1.233-.696v-2.94l-6.267 3.636C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696L7.5 7.248v-2.94c0-.653.713-.998 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5" />
+                    </svg>
+                </button>
+            </div>
+            <!-- Hangerő -->
+            <div class="mobile-volume">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgba(255,255,255,0.7)"
+                    viewBox="0 0 24 24">
+                    <path
+                        d="M18.36 19.36a1 1 0 0 1-.705-1.71C19.167 16.148 20 14.142 20 12s-.833-4.148-2.345-5.65a1 1 0 1 1 1.41-1.419C20.958 6.812 22 9.322 22 12s-1.042 5.188-2.935 7.069a.997.997 0 0 1-.705.291z" />
+                    <path
+                        d="M15.53 16.53a.999.999 0 0 1-.703-1.711C15.572 14.082 16 13.054 16 12s-.428-2.082-1.173-2.819a1 1 0 1 1 1.406-1.422A6 6 0 0 1 18 12a6 6 0 0 1-1.767 4.241.996.996 0 0 1-.703.289zM12 22a1 1 0 0 1-.707-.293L6.586 17H4c-1.103 0-2-.897-2-2V9c0-1.103.897-2 2-2h2.586l4.707-4.707A.998.998 0 0 1 13 3v18a1 1 0 0 1-1 1z" />
+                </svg>
+                <input type="range" id="mobile-volume-slider" max="100" value="50">
+            </div>
+        </div>
+    </div>
     <script src="https://www.youtube.com/iframe_api"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        // Mobil seek szinkronizálása
+        console.log(window.innerWidth);
 
-            if (window.innerWidth <= 768) {
-                console.log("Mobil nézet");
-                const eredmeny = document.getElementById("eredmeny");
-                if (!eredmeny) return; // extra biztonság
-                document.getElementById("eredmeny").innerHTML = `
-                    <!-- ─── MOBIL MINI PLAYER BAR (Spotify-stílus) ─── -->
 
-                    <div id="mobile-player-bar">
-                        <!-- Seek progress csík a tetején -->
-                        <div id="mobile-seek-track">
-                            <input type="range" id="seekSlider" min="0" max="1000" value="0">
-                        </div>
-                        <div id="mobile-player-inner">
-                            <!-- Borítókép + cím -->
-                            <div class="mobile-info">
-                                <img id="mobile-thumb" src="" alt="">
-                                <span id="mobile-title">–</span>
-                            </div>
-                            <!-- Gombok -->
-                            <div class="mobile-controls">
-                                <button onclick="elozo()" class="mobile-btn">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                                        <path d="M.5 3.5A.5.5 0 0 1 1 4v3.248l6.267-3.636c.52-.302 1.233.043 1.233.696v2.94l6.267-3.636c.52-.302 1.233.043 1.233.696v7.384c0 .653-.713.998-1.233.696L8.5 8.752v2.94c0 .653-.713.998-1.233.696L1 8.752V12a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/>
-                                    </svg>
-                                </button>
-                                <button onclick="inditas()" class="mobile-btn mobile-play-btn" id="mobile-play-pause">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16" id="mobile-play-icon">
-                                        <path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
-                                    </svg>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="d-none" viewBox="0 0 16 16" id="mobile-pause-icon">
-                                        <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/>
-                                    </svg>
-                                </button>
-                                <button onclick="kovetkezo()" class="mobile-btn">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                                        <path d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.752l-6.267 3.636c-.52.302-1.233-.043-1.233-.696v-2.94l-6.267 3.636C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696L7.5 7.248v-2.94c0-.653.713-.998 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5"/>
-                                    </svg>
-                                </button>
-                            </div>
-                            <!-- Hangerő -->
-                            <div class="mobile-volume">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgba(255,255,255,0.7)" viewBox="0 0 24 24">
-                                    <path d="M18.36 19.36a1 1 0 0 1-.705-1.71C19.167 16.148 20 14.142 20 12s-.833-4.148-2.345-5.65a1 1 0 1 1 1.41-1.419C20.958 6.812 22 9.322 22 12s-1.042 5.188-2.935 7.069a.997.997 0 0 1-.705.291z"/>
-                                    <path d="M15.53 16.53a.999.999 0 0 1-.703-1.711C15.572 14.082 16 13.054 16 12s-.428-2.082-1.173-2.819a1 1 0 1 1 1.406-1.422A6 6 0 0 1 18 12a6 6 0 0 1-1.767 4.241.996.996 0 0 1-.703.289zM12 22a1 1 0 0 1-.707-.293L6.586 17H4c-1.103 0-2-.897-2-2V9c0-1.103.897-2 2-2h2.586l4.707-4.707A.998.998 0 0 1 13 3v18a1 1 0 0 1-1 1z"/>
-                                </svg>
-                                <input type="range" id="mobile-volume-slider" max="100" value="50">
-                            </div>
-                        </div>
-                    </div>`;
+        const _origGetCurrentTime = getCurrentTime;
+        // Patch: seekSlider.value változtatása után frissítjük a mobil csúszkát is
+        const mobileSeekSlider = document.getElementById("mobile-seek-slider");
+        const mobileVolumeSlider = document.getElementById("mobile-volume-slider");
 
-                // Mobil seek szinkronizálása
-                console.log(window.innerWidth);
+        if (mobileSeekSlider) {
+            mobileSeekSlider.addEventListener("pointerdown", () => felhasznaloSeek = true);
+            mobileSeekSlider.addEventListener("pointerleave", () => felhasznaloSeek = false);
+            mobileSeekSlider.addEventListener("input", function () {
+                if (felhasznaloSeek) { porget = this.value; if (seekSlider) seekSlider.value = this.value; }
+            });
+            mobileSeekSlider.addEventListener("pointerup", function () {
+                if (!felhasznaloSeek) return;
+                felhasznaloSeek = false;
+                setPorget();
+            });
+        }
 
-                if (typeof getCurrentTime === "function") {
-                    const _origGetCurrentTime = getCurrentTime;
+        if (mobileVolumeSlider) {
+            mobileVolumeSlider.addEventListener("pointerdown", () => felhasznaloVolume = true);
+            mobileVolumeSlider.addEventListener("pointerleave", () => felhasznaloVolume = false);
+            mobileVolumeSlider.addEventListener("input", function () {
+                if (felhasznaloVolume) { volume = this.value; if (volumeSlider) volumeSlider.value = this.value; }
+            });
+            mobileVolumeSlider.addEventListener("pointerup", function () {
+                if (!felhasznaloVolume) return;
+                felhasznaloVolume = false;
+                setVolume();
+            });
+        }
+
+        // Seek és volume értékek tükrözése a mobil csúszkákra
+        const _origUpdate = update;
+        function update() {
+            _origUpdate();
+            // Szinkronizálás késleltetéssel (a fetch-ek async-ok)
+            setTimeout(() => {
+                if (mobileSeekSlider && seekSlider && !felhasznaloSeek) {
+                    mobileSeekSlider.max = seekSlider.max;
+                    mobileSeekSlider.value = seekSlider.value;
                 }
-                // Patch: seekSlider.value változtatása után frissítjük a mobil csúszkát is
-                const mobileSeekSlider = document.getElementById("seekSlider");
-                const mobileVolumeSlider = document.getElementById("mobile-volume-slider");
-
-                if (mobileSeekSlider) {
-                    mobileSeekSlider.addEventListener("pointerdown", () => felhasznaloSeek = true);
-                    mobileSeekSlider.addEventListener("pointerleave", () => felhasznaloSeek = false);
-                    mobileSeekSlider.addEventListener("input", function () {
-                        if (felhasznaloSeek) { porget = this.value; if (seekSlider) seekSlider.value = this.value; }
-                    });
-                    mobileSeekSlider.addEventListener("pointerup", function () {
-                        if (!felhasznaloSeek) return;
-                        felhasznaloSeek = false;
-                        setPorget();
-                    });
+                if (mobileVolumeSlider && volumeSlider && !felhasznaloVolume) {
+                    mobileVolumeSlider.value = volumeSlider.value;
                 }
-
-                if (mobileVolumeSlider) {
-                    mobileVolumeSlider.addEventListener("pointerdown", () => felhasznaloVolume = true);
-                    mobileVolumeSlider.addEventListener("pointerleave", () => felhasznaloVolume = false);
-                    mobileVolumeSlider.addEventListener("input", function () {
-                        if (felhasznaloVolume) { volume = this.value; if (volumeSlider) volumeSlider.value = this.value; }
-                    });
-                    mobileVolumeSlider.addEventListener("pointerup", function () {
-                        if (!felhasznaloVolume) return;
-                        felhasznaloVolume = false;
-                        setVolume();
-                    });
-                }
-
-                // Seek és volume értékek tükrözése a mobil csúszkákra
-                const _origUpdate = update;
-                function update() {
-                    _origUpdate();
-                    // Szinkronizálás késleltetéssel (a fetch-ek async-ok)
-                    setTimeout(() => {
-                        if (mobileSeekSlider && seekSlider && !felhasznaloSeek) {
-                            mobileSeekSlider.max = seekSlider.max;
-                            mobileSeekSlider.value = seekSlider.value;
-                        }
-                        if (mobileVolumeSlider && volumeSlider && !felhasznaloVolume) {
-                            mobileVolumeSlider.value = volumeSlider.value;
-                        }
-                    }, 300);
-                }
-            }
-        });
+            }, 300);
+        }
     </script>
 </body>
 

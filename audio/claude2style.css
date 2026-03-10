@@ -453,45 +453,30 @@ li { list-style: none; }
     padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* Seek csík a bar tetején */
-#mobile-seek-track {
-    width: 100%;
-    padding: 0;
-    line-height: 0;
-}
-
 #mobile-seek-slider {
     width: 100%;
     appearance: none;
-    -webkit-appearance: none;
-    height: 3px;
-    background: rgba(255,255,255,0.15);
-    border-radius: 0;
+    height: 6px;
+    background: rgba(100, 100, 100, 0.4);
+    overflow: hidden;
+    border-radius: 0px;
     cursor: pointer;
-    display: block;
-    transition: height 0.15s;
-    margin: 0;
-    padding: 0;
-}
-
-#mobile-seek-slider:hover,
-#mobile-seek-slider:active {
-    height: 5px;
 }
 
 #mobile-seek-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 0;
     height: 0;
-    box-shadow: -2000px 0 0 2000px rgba(255,255,255,0.85);
+    box-shadow: -2000px 0 0 2000px rgba(220, 220, 220, 1);
 }
 
 #mobile-seek-slider::-moz-range-thumb {
     -moz-appearance: none;
     width: 0;
     height: 0;
-    box-shadow: -2000px 0 0 2000px rgba(255,255,255,0.85);
+    box-shadow: -2000px 0 0 2000px rgba(220, 220, 220, 1);
 }
+
 
 /* Belső sor: kép + cím, gombok, hangerő */
 #mobile-player-inner {
@@ -618,7 +603,7 @@ li { list-style: none; }
 }
 
 @media (max-width: 768px) {
-    .talalat {
+    .lejatszo {
         display: none !important;
     }
 }
