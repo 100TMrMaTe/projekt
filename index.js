@@ -433,10 +433,10 @@ function login() {
         const collapseList = [...collapseElementList].map(collapseEl => new bootstrap.Collapse(collapseEl))
         errorTimer();
       } else if (d.status == "success_login") {
-        cookieStore.set("token", d.token);
-        cookieStore.set("isadmin", d.isadmin);
-        cookieStore.set("email", d.email);
-        cookieStore.set("user_class", d.user_class);
+        localStorage.setItem("token", d.token);
+        localStorage.setItem("isadmin", d.isadmin);
+        localStorage.setItem("email", d.email);
+        localStorage.setItem("user_class", d.user_class);
         window.location.href = "../audio/claude2.html";
       }
     });
