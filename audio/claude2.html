@@ -99,17 +99,8 @@
     </div>
 
     <script>
-      async function getToken() {
-        const cookie = await cookieStore.get("token");
-        if (cookie) {
-          return cookie.value;
-        } else {
-          console.log("Nincs ilyen cookie");
-        }
-      }
-      console.log(getToken());
 
-      if (getCookie("token") == null) {
+      if (localStorage.getItem("token") == null) {
         window.location.href = "../login/login.html";
       }
 
@@ -123,18 +114,14 @@
       let videoId = null;
       let hossz = null;
 
-      if (cookieStore.get("isadmin") === "1") {
+      if (localStorage.getItem("isadmin") === "1") {
         document.getElementById("adminpagebutton").style.display =
           "inline-block";
       } else {
         document.getElementById("adminpagebutton").style.display = "none";
       }
 
-      document.getElementById("headerfelhasznalonev").innerText = getCookie(
-        "email",
-      ).then((email) => {
-        document.getElementById("headerfelhasznalonev").innerText = email;
-      });
+      document.getElementById("headerfelhasznalonev").innerText = localStorage.getItem("email");
 
       let interval = null;
       const DURATION = 30 * 60;
@@ -178,20 +165,18 @@
       updateDisplay();
 
       function tokenRefresh() {
-        let token = getCookie("token");
-        console.log("Token refresh: " + token);
         fetch("../index.php", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             muvelet: "tokenRefresh",
-            token: token,
+            token: localStorage.getItem("token"),
           }),
         })
           .then((response) => response.json())
           .then((data) => {
             if (data.status != "success_token_refresh") {
-              cookieStore.clear();
+              localStorage.clear();
               window.location.href = "../login/login.html";
             }
           })
@@ -203,13 +188,13 @@
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            muvelet: "logout",
-            token: getCookie("token"),
+              muvelet: "logout",
+              token: localStorage.getItem("token"),
           }),
         })
           .then((response) => response.json())
           .then((data) => {
-            cookieStore.clear();
+            localStorage.clear();
             window.location.href = "../login/login.html";
           })
           .catch((error) => console.error("Error refreshing token:", error));
@@ -569,7 +554,7 @@
           body: JSON.stringify({
             muvelet: "insertIntoPlaylist",
             music_id: musicId,
-            token: cookieStore.get("token").value,
+            token: localStorage.getItem("token"),
           }),
         });
       }
