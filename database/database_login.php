@@ -266,7 +266,7 @@ function login($conn, $email, $password)
       $sql_new_token = "UPDATE active_users SET token = '$new_token', expire = '" . expire() . "' WHERE user_id = '" . $row['id'] . "'";
       mysqli_query($conn, $sql_new_token);
     }
-    echo json_encode(array("status" => "success_login", "isadmin" => $row['isadmin'], "token" => $new_token, "email" => $email, "user_class" => $row['user_class']));
+    echo json_encode(array("status" => "success_login", "isadmin" => $row['isadmin'], "token" => $new_token, "email" => $email, "user_class" => $row['user_class'], "user_id" => $row['id']));
   } else {
     echo json_encode(array("status" => "error_login_wrong_password"));
     return;
