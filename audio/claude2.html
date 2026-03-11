@@ -496,8 +496,8 @@
                             <img src="${videok[i].img}"  class="img-fluid rounded"/>
                         </div>
                         <div class="col-8 text-light">
-                            <h3 class="text-truncate">${videok[i].title} </h3>
-                            <h4>${keresettVideoIdo(videok[i].duration)}</h4>
+                            <h2 class="text-truncate">${videok[i].title} </h2>
+                            <h3>${keresettVideoIdo(videok[i].duration)}</h3>
                         </div>
                     </div>
                     `;
@@ -521,11 +521,11 @@
       function embedSearchItem(videoId, title, duration) {
         return `<div class="row mb-3 p-2 rounded video talalat">
                         <div class="col-4">
-                            <img src="https://img.youtube.com/vi/${videoId}/0.jpg"  class="img-fluid rounded"/>
+                            <img src="https://img.youtube.com/vi/${videoId}/maxresdefault.jpg" class="img-fluid rounded"/>
                         </div>
                         <div class="col-8 text-light">
-                            <h3 class="text-truncate">${title} </h3>
-                            <h4>${keresettVideoIdo(duration)}</h4>
+                            <h2 class="text-truncate">${title} </h2>
+                            <h3>${keresettVideoIdo(duration)}</h3>
                         </div>
                     </div>`;
       }
@@ -534,7 +534,7 @@
         return `<li>
                 <div class="row m-2 mb-3 p-2 rounded video talalat">
                     <div class="col-4">
-                        <img src="https://img.youtube.com/vi/${videoId}/0.jpg"
+                        <img src="https://img.youtube.com/vi/${videoId}/maxresdefault.jpg"
                             class="img-fluid rounded" />
                     </div>
                     <div class="col-8 text-light">
