@@ -497,7 +497,7 @@
                         </div>
                         <div class="col-8 text-light">
                             <h2 class="text-truncate">${videok[i].title} </h2>
-                            <h3>${keresettVideoIdo(videok[i].duration)}</h3>
+                            <h2>${keresettVideoIdo(videok[i].duration)}</h2>
                         </div>
                     </div>
                     `;
@@ -513,7 +513,7 @@
             };
 
             keret.appendChild(talalat);
-            eredmeny.appendChild(keret);
+            eredmeny.appendChild(keret);dd
           }
         });
       }
@@ -521,7 +521,7 @@
       function embedSearchItem(videoId, title, duration) {
         return `<div class="row mb-3 p-2 rounded video talalat">
                         <div class="col-4">
-                            <img src="https://img.youtube.com/vi/${videoId}/maxresdefault.jpg" class="img-fluid rounded"/>
+                            <img src="https://img.youtube.com/vi/${videoId}/mqdefault.jpg" class="img-fluid rounded"/>
                         </div>
                         <div class="col-8 text-light">
                             <h2 class="text-truncate">${title} </h2>
@@ -534,7 +534,7 @@
         return `<li>
                 <div class="row m-2 mb-3 p-2 rounded video talalat">
                     <div class="col-4">
-                        <img src="https://img.youtube.com/vi/${videoId}/maxresdefault.jpg"
+                        <img src="https://img.youtube.com/vi/${videoId}/mqdefault.jpg"
                             class="img-fluid rounded" />
                     </div>
                     <div class="col-8 text-light">
