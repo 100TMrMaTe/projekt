@@ -27,7 +27,12 @@ function insertIntoMusic($conn, $video_id, $title, $length)
 function insertIntoPlaylist($conn, $music_id, $token)
 {
     $sql = "INSERT INTO playlist (music_id, user_id)
-            VALUES (?, (SELECT users.id FROM users, active_users WHERE  users.id = active_users.user_id AND active_users.token = $token))
+            VALUES (?, (
+                SELECT users.id 
+                FROM users, active_users 
+                WHERE users.id = active_users.user_id 
+                AND active_users.token = ?
+            ))
             ON DUPLICATE KEY UPDATE music_id = music_id";
 
     if ($stmt = $conn->prepare($sql)) {
@@ -359,7 +364,7 @@ function noSeek($conn)
 
 function moveFirstToCurrentlyPlaying($conn)
 {
-    $result = $conn->query("SELECT id, music_id FROM playlist ORDER BY id ASC LIMIT 1");
+    $result = $conn->query("SELECT id, music_id, user_id FROM playlist ORDER BY id ASC LIMIT 1");
 
     if ($result->num_rows == 0) {
         echo json_encode(["status" => "empty"]);
@@ -369,9 +374,10 @@ function moveFirstToCurrentlyPlaying($conn)
     $row = $result->fetch_assoc();
     $playlistId = $row['id'];
     $musicId = $row['music_id'];
+    $userId = $row['user_id'];
 
-    $stmt = $conn->prepare("UPDATE currently_playing SET music_id = ?");
-    $stmt->bind_param("i", $musicId);
+    $stmt = $conn->prepare("UPDATE currently_playing SET music_id = ?, user_id = ?");
+    $stmt->bind_param("ii", $musicId, $userId);
     $stmt->execute();
     $stmt->close();
 
