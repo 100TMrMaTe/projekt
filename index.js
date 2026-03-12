@@ -437,6 +437,7 @@ function login() {
         localStorage.setItem("isadmin", d.isadmin);
         localStorage.setItem("email", d.email);
         localStorage.setItem("user_class", d.user_class);
+        localStorage.setItem("user_id", d.user_id);
         window.location.href = "../audio/claude2.html";
       }
     });
