@@ -24,6 +24,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         case "useradmin":
             useradmin($conn, $data["id"]);
             break;
+        case "deleteuseradmin":
+            deleteuseradmin($conn, $data["id"]);
+            break;
         case "reset_password_request":
             checkEmail($conn, $data["email"]);
             break;
@@ -42,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             break;
         case "insertIntoPlaylist":
             insertIntoPlaylist($conn, $data["music_id"], $data["token"]);
+            InsertIntoLog($conn, $data["music_id"], $data["token"]);
             break;
         case "isPlaylistEmpty":
             isPlaylistEmpty($conn);
@@ -81,6 +85,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             break;
         case "search":
             search($conn, $data["search"]);
+            break;
+        case "kedvencHozzaad":
+            insertIntoFav($conn, $data["id"], $data["user_id"]);
+            break;
+        case "kedvencElvesz":
+            deleteFromFav($conn, $data["id"], $data["user_id"]);
             break;
 
 
