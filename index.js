@@ -204,6 +204,24 @@ function makeAdmin($id) {
     });
 }
 
+function revokeAdmin($id) {
+  fetch("../index.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      muvelet: "deleteuseradmin",
+      id: $id,
+    }),
+  })
+    .then((r) => r.json())
+    .then((d) => {
+      console.log(d);
+      localStorage.removeItem("isadmin");
+      init();
+      //toltse be ujra az egesz oszlopot
+    });
+}
+
 function waitingApproval(id, email, user_class) {
   return `                        <li class="list-group-item">
                             <div class="container">

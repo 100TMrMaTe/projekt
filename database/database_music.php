@@ -118,6 +118,7 @@ function search($conn, $search)
 
 
 
+
 //==========================> currently playing video <==========================
 
 function loadCurrentlyPlaying($conn)
@@ -164,7 +165,8 @@ function playPause($conn)
     }
 }
 
-function isPlaying($conn) {
+function isPlaying($conn)
+{
     $sql = "SELECT currently_playing.status FROM currently_playing";
 
     if ($stmt = $conn->prepare($sql)) {
@@ -271,6 +273,60 @@ function getLength($conn)
 }
 
 
+
+function kedvenc($conn){
+    $sql = "SELECT fav.id, fav.user_id, fav.music_id from fav";
+
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+
+        echo json_encode([
+            "id" => $row["id"] ?? null,
+            "user_id" => $row["user_id"] ?? null,
+            "music_id" => $row["music_id"] ?? null
+        ]);
+
+        $stmt->close();
+    }
+    
+}
+
+
+
+function insertIntoFav($conn, $video_id, $user_id)
+{
+    $sql = "INSERT INTO fav (music_id, user_id) VALUES ((SELECT id FROM music WHERE video_id = ?), ?)";
+
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param("si", $video_id, $user_id);
+        $stmt->execute();
+
+        echo json_encode([
+            "status" => "success"
+        ]);
+
+        $stmt->close();
+    }
+}
+
+function DeleteFromFav($conn, $video_id, $user_id)
+{
+    $sql = "DELETE FROM fav WHERE music_id = (SELECT id FROM music WHERE video_id = ?) AND user_id = ?";
+
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param("si", $video_id, $user_id);
+        $stmt->execute();
+
+        echo json_encode([
+            "status" => "success"
+        ]);
+
+        $stmt->close();
+    }
+}
 
 
 
@@ -390,6 +446,34 @@ function moveFirstToCurrentlyPlaying($conn)
     echo json_encode(["status" => "success"]);
 }
 
+function InsertIntoLog($conn, $music_id, $token)
+{
+    $log = [];
+    $stmt = $conn->prepare("SELECT title FROM music WHERE id = ?");
+    $stmt->bind_param("i", $music_id);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $log["title"] = $row['title'];
+    $log["date"] = date("Y-m-d H:i:s");
+    $stmt->close();
+
+    $stmt = $conn->prepare("SELECT user_id FROM active_users WHERE token = ?");
+    $stmt->bind_param("s", $token);
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $log["id"] = $row['user_id'];
+    $stmt->close();
+
+    $stmt = $conn->prepare("INSERT INTO user_handler (user_id, date, title) VALUES (?, ?, ?)");
+    $stmt->bind_param("iss", $log["id"], $log["date"], $log["title"]);
+    $stmt->execute();
+    $stmt->close();
+
+}
 
 
 
@@ -570,6 +654,3 @@ function insertIntoMusic($conn, $video_id, $title, $length)
     }
 }
 */
-
-
-

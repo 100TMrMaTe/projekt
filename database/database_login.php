@@ -97,7 +97,7 @@ function adminpage($conn)
     }
   }
 
-  $sql_log = "SELECT users.id,users.email, users.user_class, user_handler.date, user_handler.title FROM user_handler,users WHERE users.id=user_handler.user_id";
+  $sql_log = "SELECT users.id,users.email, users.user_class, user_handler.date, user_handler.title FROM user_handler,users WHERE users.id=user_handler.user_id ORDER BY user_handler.date DESC LIMIT 100";
   if ($result = mysqli_query($conn, $sql_log)) {
     while ($row = mysqli_fetch_assoc($result)) {
       $log[] = $row;
@@ -167,6 +167,20 @@ function useradmin($conn, $id)
 {
   $id = mysqli_real_escape_string($conn, $id);
   $sql = "UPDATE users SET isadmin = 1 WHERE id = '$id' AND isadmin = 0";
+  if (mysqli_query($conn, $sql)) {
+    echo json_encode(array("status" => "success_useradmin"));
+    //email kuldese
+    return;
+  } else {
+    echo json_encode(array("status" => "error_useradmin"));
+    return;
+  }
+}
+
+function deleteuseradmin($conn, $id)
+{
+  $id = mysqli_real_escape_string($conn, $id);
+  $sql = "UPDATE users SET isadmin = 0 WHERE id = '$id' AND isadmin = 1";
   if (mysqli_query($conn, $sql)) {
     echo json_encode(array("status" => "success_useradmin"));
     //email kuldese

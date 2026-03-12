@@ -1,4 +1,19 @@
-// Theme Management
+if(localStorage.getItem("token") === null) {
+    window.location.href = "../login/login.html";
+}
+else if(localStorage.getItem("isadmin") == 0) {
+    window.location.href = "../audio/claude2.html";
+}
+
+
+
+
+
+
+
+
+
+
 function toggleTheme() {
     const body = document.body;
     const icon = document.getElementById('theme-icon');
@@ -147,7 +162,7 @@ function usersAdmin(id, email, user_class) {
                         </div>
                     </div>
                     <div class="col-6">
-                        <button class="btn btn-warning w-100 action-btn" onclick="makeAdminWithAnimation(${id}, this)">
+                        <button class="btn btn-warning w-100 action-btn" onclick="revokeAdminWithAnimation(${id}, this)">
                             <i class="bi bi-shield-fill-check me-1"></i>Admin eltávolítás
                         </button>
                     </div>
@@ -316,6 +331,29 @@ function makeAdminWithAnimation(id, button) {
     
     // Call original function
     makeAdmin(id);
+    
+    // Show toast based on current state
+    const isAdmin = listItem.querySelector('.admin-badge');
+    if (isAdmin) {
+        showToast(`Admin jog eltávolítva: ${email}`, 'info');
+    } else {
+        showToast(`Admin jog hozzáadva: ${email}`, 'success');
+    }
+    
+    // The init() function will reload the list
+}
+
+function revokeAdminWithAnimation(id, button) {
+    const listItem = button.closest('li');
+    const email = listItem.querySelector('.email-text').textContent;
+    
+    // Disable button
+    button.disabled = true;
+    const originalText = button.innerHTML;
+    button.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Folyamatban...';
+    
+    // Call original function
+    revokeAdmin(id);
     
     // Show toast based on current state
     const isAdmin = listItem.querySelector('.admin-badge');
