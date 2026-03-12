@@ -140,7 +140,8 @@ function loadCurrentlyPlaying($conn)
             "status" => $row["status"] ?? null,
             "current_time" => $row["current_time"] ?? null,
             "volume" => $row["volume"] ?? null,
-            "porget" => $row["porget"] ?? null
+            "porget" => $row["porget"] ?? null,
+            "user_id" => $row["user_id"] ?? null
         ]);
 
         $stmt->close();
