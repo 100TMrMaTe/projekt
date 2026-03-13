@@ -303,13 +303,26 @@ function insertIntoFav($conn, $video_id, $user_id)
 
     if ($stmt = $conn->prepare($sql)) {
         $stmt->bind_param("si", $video_id, $user_id);
-        $stmt->execute();
-
-        echo json_encode([
-            "status" => "success"
-        ]);
+        $stmt->execute();      
 
         $stmt->close();
+
+        $sql = "SELECT music_id FROM fav WHERE music_id = (SELECT id FROM music WHERE video_id = ?) AND user_id = ?";
+
+        if ($stmt = $conn->prepare($sql)) {
+            $stmt->bind_param("si", $video_id, $user_id);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+
+            echo json_encode([
+                "status" => "success",
+                "music_id" => $row["music_id"] ?? null
+            ]);
+
+            $stmt->close();
+        }
     }
 }
 
@@ -320,12 +333,23 @@ function DeleteFromFav($conn, $video_id, $user_id)
     if ($stmt = $conn->prepare($sql)) {
         $stmt->bind_param("si", $video_id, $user_id);
         $stmt->execute();
-
-        echo json_encode([
-            "status" => "success"
-        ]);
-
         $stmt->close();
+        $sql = "SELECT music_id FROM fav WHERE music_id = (SELECT id FROM music WHERE video_id = ?) AND user_id = ?";
+
+        if ($stmt = $conn->prepare($sql)) {
+            $stmt->bind_param("si", $video_id, $user_id);
+            $stmt->execute();
+
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+
+            echo json_encode([
+                "status" => "success",
+                "music_id" => $row["music_id"] ?? null
+            ]);
+
+            $stmt->close();
+        }
     }
 }
 
