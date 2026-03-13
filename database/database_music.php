@@ -123,7 +123,7 @@ function search($conn, $search)
 
 function loadCurrentlyPlaying($conn)
 {
-    $sql = "SELECT currently_playing.*, music.video_id, music.title, music.length
+    $sql = "SELECT currently_playing.*, music.video_id, music.id, music.title, music.length
             FROM currently_playing
             JOIN music ON currently_playing.music_id = music.id
             LIMIT 1"; // csak az aktuális sort kérjük
@@ -136,6 +136,7 @@ function loadCurrentlyPlaying($conn)
 
         echo json_encode([
             "video_id" => $row["video_id"] ?? null,
+            "music_id" => $row["id"] ?? null,
             "title" => $row["title"] ?? null,
             "length" => $row["length"] ?? null,
             "status" => $row["status"] ?? null,
@@ -322,6 +323,25 @@ function DeleteFromFav($conn, $video_id, $user_id)
 
         echo json_encode([
             "status" => "success"
+        ]);
+
+        $stmt->close();
+    }
+}
+
+function favLeker($conn, $user_id){
+    $sql = "SELECT fav.music_id from fav WHERE fav.user_id = ?";
+
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $rows = $result->fetch_all(MYSQLI_ASSOC);
+
+        echo json_encode([
+            "status" => "success",
+            "fav_music_ids" => $rows
         ]);
 
         $stmt->close();
