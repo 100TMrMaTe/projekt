@@ -92,7 +92,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         case "kedvencElvesz":
             deleteFromFav($conn, $data["id"], $data["user_id"]);
             break;
-
+        case "favLeker":
+            favLeker($conn, $data["user_id"]);
+            break;
 
         //==========================> server.html <==========================
 
