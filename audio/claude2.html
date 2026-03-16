@@ -60,7 +60,9 @@
 						Keresés
 					</button>
 				</div>
-				<div id="eredmeny" class="eredmeny text-light"></div>
+				<div class="eredmenyDoboz" id="eredmenyDoboz">
+					<div id="eredmeny" class="eredmeny text-light"></div>
+				</div>
 			</div>
 
 			<!-- Jobb: player + playlist egymás alatt, szorosan -->
@@ -75,6 +77,7 @@
 
 	<script>
 
+		eredmenyTorol()
 
 		if (localStorage.getItem("token") == null) {
 			window.location.href = "../login/login.html";
@@ -89,6 +92,7 @@
 		let volumeSlider = null;
 		let videoId = null;
 		let hossz = null;
+		let currentMusicId = null;
 
 		if (localStorage.getItem("isadmin") === "1") {
 			document.getElementById("adminpagebutton").style.display =
@@ -313,78 +317,156 @@
 		}
 
 		function eredmenyTorol() {
-			document.getElementById("eredmeny").classList.add("d-none");
+			document.getElementById("eredmenyDoboz").classList.add("d-none");
 		}
 
 		function eredmenyVisszahoz() {
-			document.getElementById("eredmeny").classList.remove("d-none");
+			document.getElementById("eredmenyDoboz").classList.remove("d-none");
 		}
 		//console.log(player.getCurrentTime());
 
-		function embedVideo(id, kep, cim) {
-			document.getElementById("lejatszo").innerHTML = `
-<div class="talalat rounded-3 m-2">
-    <div class="p-3 text-light">
+		function embedVideo(id, kep, cim, music_id) {
+			let currentFavs = JSON.parse(localStorage.getItem("tomb"));
+			currentMusicId = music_id;
+			//console.log(currentFavs);
+			//console.log(music_id);
+			if (currentFavs.some(f => f.music_id == music_id)) {
+				document.getElementById("lejatszo").innerHTML = `
+				<div class="talalat rounded-3 m-2">
+					<div class="p-3 text-light">
 
-        <div class="ratio ratio-16x9 mb-3">
-            <img src="${kep}" class="video-img rounded">
-        </div>
+						<div class="ratio ratio-16x9 mb-3">
+							<img src="${kep}" class="video-img rounded">
+						</div>
 
-        <div id="cim" class="px-1 mb-3">
-            <h3>${cim}</h3>
-        </div>
+						<div id="cim" class="px-1 mb-3">
+							<h3>${cim}</h3>
+						</div>
 
-        <div class="mb-3">
-            <input type="range" id="seekSlider" min="0" max="1000" value="0">
-            <div class="d-flex justify-content-between pt-1">
-                <span id="jelenlegiIdo"></span>
-                <span id="egeszIdo"></span>
-            </div>
-        </div>
+						<div class="mb-3">
+							<input type="range" id="seekSlider" min="0" max="1000" value="0">
+							<div class="d-flex justify-content-between pt-1">
+								<span id="jelenlegiIdo"></span>
+								<span id="egeszIdo"></span>
+							</div>
+						</div>
 
-        <div class="d-flex align-items-center justify-content-between mb-3 px-1">
-            <label class="slider">
-                <input type="range" class="level" id="volumeSlider" max="100" value="0">
-                <svg class="volume" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <g>
-                        <path d="M18.36 19.36a1 1 0 0 1-.705-1.71C19.167 16.148 20 14.142 20 12s-.833-4.148-2.345-5.65a1 1 0 1 1 1.41-1.419C20.958 6.812 22 9.322 22 12s-1.042 5.188-2.935 7.069a.997.997 0 0 1-.705.291z" fill="rgba(220,220,220,1)"></path>
-                        <path d="M15.53 16.53a.999.999 0 0 1-.703-1.711C15.572 14.082 16 13.054 16 12s-.428-2.082-1.173-2.819a1 1 0 1 1 1.406-1.422A6 6 0 0 1 18 12a6 6 0 0 1-1.767 4.241.996.996 0 0 1-.703.289zM12 22a1 1 0 0 1-.707-.293L6.586 17H4c-1.103 0-2-.897-2-2V9c0-1.103.897-2 2-2h2.586l4.707-4.707A.998.998 0 0 1 13 3v18a1 1 0 0 1-1 1z" fill="rgba(220,220,220,1)"></path>
-                    </g>
-                </svg>
-            </label>
+						<div class="d-flex align-items-center justify-content-between mb-3 px-1">
+							<label class="slider">
+								<input type="range" class="level" id="volumeSlider" max="100" value="0">
+								<svg class="volume" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+									<g>
+										<path d="M18.36 19.36a1 1 0 0 1-.705-1.71C19.167 16.148 20 14.142 20 12s-.833-4.148-2.345-5.65a1 1 0 1 1 1.41-1.419C20.958 6.812 22 9.322 22 12s-1.042 5.188-2.935 7.069a.997.997 0 0 1-.705.291z" fill="rgba(220,220,220,1)"></path>
+										<path d="M15.53 16.53a.999.999 0 0 1-.703-1.711C15.572 14.082 16 13.054 16 12s-.428-2.082-1.173-2.819a1 1 0 1 1 1.406-1.422A6 6 0 0 1 18 12a6 6 0 0 1-1.767 4.241.996.996 0 0 1-.703.289zM12 22a1 1 0 0 1-.707-.293L6.586 17H4c-1.103 0-2-.897-2-2V9c0-1.103.897-2 2-2h2.586l4.707-4.707A.998.998 0 0 1 13 3v18a1 1 0 0 1-1 1z" fill="rgba(220,220,220,1)"></path>
+									</g>
+								</svg>
+							</label>
 
-            <div class="d-flex align-items-center gap-2 player-controls">
-                <button onclick="kedvenc()" id="kedvenc" class="btn text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                        <path
-                            d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
-                    </svg>
-                </button>
-                <button onclick="inditas()" class="btn text-white" style="width:54px;height:54px;" id="lejátszásgomb">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" viewBox="0 0 16 16" id="play">
-                        <path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="d-none" viewBox="0 0 16 16" id="pause">
-                        <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/>
-                    </svg>
-                </button>
-                <button onclick="kovetkezo()" class="btn text-white" id="kovetkezoBtn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
-                        <path d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.752l-6.267 3.636c-.52.302-1.233-.043-1.233-.696v-2.94l-6.267 3.636C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696L7.5 7.248v-2.94c0-.653.713-.998 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5"/>
-                    </svg>
-                </button>
-            </div>
-        </div>
+							<div class="d-flex align-items-center gap-2 player-controls">
+								<button onclick="deletekedvenc()" id="kedvenc" class="btn text-white">
+									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16" id="filled-heart">
+										<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
+									</svg>
+								</button>
+								<button onclick="inditas()" class="btn text-white" style="width:54px;height:54px;" id="lejátszásgomb">
+									<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" viewBox="0 0 16 16" id="play">
+										<path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
+									</svg>
+									<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="d-none" viewBox="0 0 16 16" id="pause">
+										<path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/>
+									</svg>
+								</button>
+								<button onclick="kovetkezo()" class="btn text-white" id="kovetkezoBtn">
+									<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+										<path d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.752l-6.267 3.636c-.52.302-1.233-.043-1.233-.696v-2.94l-6.267 3.636C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696L7.5 7.248v-2.94c0-.653.713-.998 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5"/>
+									</svg>
+								</button>
+							</div>
+						</div>
 
-    </div>
-</div>`;
+					</div>
+				</div>`;
+			} else {
+				document.getElementById("lejatszo").innerHTML = `
+				<div class="talalat rounded-3 m-2">
+					<div class="p-3 text-light">
 
-			// Mobil mini player frissítése
+						<div class="ratio ratio-16x9 mb-3">
+							<img src="${kep}" class="video-img rounded">
+						</div>
+
+						<div id="cim" class="px-1 mb-3">
+							<h3>${cim}</h3>
+						</div>
+
+						<div class="mb-3">
+							<input type="range" id="seekSlider" min="0" max="1000" value="0">
+							<div class="d-flex justify-content-between pt-1">
+								<span id="jelenlegiIdo"></span>
+								<span id="egeszIdo"></span>
+							</div>
+						</div>
+
+						<div class="d-flex align-items-center justify-content-between mb-3 px-1">
+							<label class="slider">
+								<input type="range" class="level" id="volumeSlider" max="100" value="0">
+								<svg class="volume" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+									<g>
+										<path d="M18.36 19.36a1 1 0 0 1-.705-1.71C19.167 16.148 20 14.142 20 12s-.833-4.148-2.345-5.65a1 1 0 1 1 1.41-1.419C20.958 6.812 22 9.322 22 12s-1.042 5.188-2.935 7.069a.997.997 0 0 1-.705.291z" fill="rgba(220,220,220,1)"></path>
+										<path d="M15.53 16.53a.999.999 0 0 1-.703-1.711C15.572 14.082 16 13.054 16 12s-.428-2.082-1.173-2.819a1 1 0 1 1 1.406-1.422A6 6 0 0 1 18 12a6 6 0 0 1-1.767 4.241.996.996 0 0 1-.703.289zM12 22a1 1 0 0 1-.707-.293L6.586 17H4c-1.103 0-2-.897-2-2V9c0-1.103.897-2 2-2h2.586l4.707-4.707A.998.998 0 0 1 13 3v18a1 1 0 0 1-1 1z" fill="rgba(220,220,220,1)"></path>
+									</g>
+								</svg>
+							</label>
+
+							<div class="d-flex align-items-center gap-2 player-controls">
+								<button onclick="kedvenc()" id="kedvenc" class="btn text-white">
+									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+										<path
+											d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
+									</svg>
+								</button>
+								<button onclick="inditas()" class="btn text-white" style="width:54px;height:54px;" id="lejátszásgomb">
+									<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" viewBox="0 0 16 16" id="play">
+										<path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
+									</svg>
+									<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="d-none" viewBox="0 0 16 16" id="pause">
+										<path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/>
+									</svg>
+								</button>
+								<button onclick="kovetkezo()" class="btn text-white" id="kovetkezoBtn">
+									<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+										<path d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.752l-6.267 3.636c-.52.302-1.233-.043-1.233-.696v-2.94l-6.267 3.636C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696L7.5 7.248v-2.94c0-.653.713-.998 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5"/>
+									</svg>
+								</button>
+							</div>
+						</div>
+
+					</div>
+				</div>`;
+			}
+
 			const bar = document.getElementById("mobile-player-bar");
 			if (bar) {
 				bar.style.display = "flex";
 				document.getElementById("mobile-thumb").src = kep;
 				document.getElementById("mobile-title").textContent = cim;
+
+				const mobilSziv = document.querySelector(".mobile-controls .mobile-btn:first-child");
+				if (mobilSziv) {
+					if (currentFavs.some(f => String(f.music_id) === String(music_id))) {
+						mobilSziv.onclick = deletekedvenc;
+						mobilSziv.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
+                </svg>`;
+					} else {
+						mobilSziv.onclick = kedvenc;
+						mobilSziv.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
+                </svg>`;
+					}
+				}
 			}
 		}
 
@@ -471,7 +553,7 @@
 					let talalat = document.createElement("div");
 
 					talalat.innerHTML = `
-                    <div class="row mb-3 p-2 rounded video talalat">
+                    <div class="row mb-2 p-2 rounded video talalat">
                         <div class="col-4">
                             <img src="${videok[i].img}"  class="img-fluid rounded"/>
                         </div>
@@ -499,7 +581,7 @@
 		}
 
 		function embedSearchItem(videoId, title, duration) {
-			return `<div class="row mb-3 p-2 rounded video talalat">
+			return `<div class="row mb-2 p-2 rounded video talalat">
                         <div class="col-4">
                             <img src="https://img.youtube.com/vi/${videoId}/mqdefault.jpg" class="img-fluid rounded"/>
                         </div>
@@ -512,7 +594,7 @@
 
 		function embedPlaylistItem(videoId, title, duration) {
 			return `<li>
-                <div class="row m-2 mb-3 p-2 rounded video talalat">
+                <div class="row m-2 mb-1 p-2 rounded video talalat">
                     <div class="col-4">
                         <img src="https://img.youtube.com/vi/${videoId}/mqdefault.jpg"
                             class="img-fluid rounded" />
@@ -630,6 +712,7 @@
 				data.video_id,
 				"https://img.youtube.com/vi/" + data.video_id + "/hqdefault.jpg",
 				data.title,
+				data.music_id,
 			);
 			seekSlider = document.querySelector("#seekSlider");
 			volumeSlider = document.querySelector("#volumeSlider");
@@ -701,30 +784,6 @@
 				document.getElementById("mobile-volume-slider").setAttribute("disabled", "disabled");
 				document.getElementById("mobile-seek-slider").setAttribute("disabled", "disabled");
 				document.getElementById("mobile-kovetkezoBtn").classList.add("disabled");
-			}
-
-			var favs = JSON.parse(localStorage.getItem("tomb")) || [];
-
-			console.log(favs);
-			console.log(data.music_id);
-
-			if (favs.some(f => f.music_id == data.music_id)) {
-
-				document.getElementById("kedvenc").onclick = deletekedvenc;
-				document.getElementById("kedvenc").innerHTML = `
-					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16" id="filled-heart">
-					<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
-					</svg>
-					`;
-
-			} else {
-
-				document.getElementById("kedvenc").onclick = kedvenc;
-				document.getElementById("kedvenc").innerHTML = `
-					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" id="heart-empty">
-					<path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
-					</svg>
-					`;
 			}
 		});
 
@@ -987,59 +1046,58 @@
 			})
 				.then((response) => response.json())
 				.then((data) => {
-					console.log(data);
 					document.getElementById("kedvenc").onclick = deletekedvenc;
 					document.getElementById("kedvenc").innerHTML = `
 					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16" id="filled-heart">
   						<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
 					</svg>
-					`
+					`;
+
+					const mobilSziv = document.querySelector(".mobile-controls .mobile-btn:first-child");
+					if (mobilSziv) {
+						mobilSziv.onclick = deletekedvenc;
+						mobilSziv.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/></svg>`;
+					}
 					var favs = JSON.parse(localStorage.getItem("tomb")) || [];
 
 					favs.push({ music_id: data.music_id });
 					localStorage.setItem("tomb", JSON.stringify(favs));
-					console.log(favs);
 
 				})
 				.catch((error) => console.error("Fetch hiba:", error));
 		}
 
 		function deletekedvenc() {
+			const musicIdToDelete = currentMusicId; // ← elmentjük mielőtt bármi változna
+
 			fetch("../index.php", {
 				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
+				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
 					muvelet: "kedvencElvesz",
 					id: videoId,
 					user_id: localStorage.getItem("user_id"),
-
-
 				}),
 			})
 				.then((response) => response.json())
 				.then((data) => {
-					console.log(data);
 					document.getElementById("kedvenc").onclick = kedvenc;
 					document.getElementById("kedvenc").innerHTML = `
-					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" id="heart-empty">
-                        <path
-                            d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
-                    </svg>
-					`
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+							<path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
+						</svg>`;
+
+					const mobilSziv = document.querySelector(".mobile-controls .mobile-btn:first-child");
+					if (mobilSziv) {
+						mobilSziv.onclick = kedvenc;
+						mobilSziv.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" /></svg>`;
+					}
+
 					let favs = JSON.parse(localStorage.getItem("tomb")) || [];
-					favs = favs.filter(f => f.music_id != data.music_id);
+					favs = favs.filter(f => String(f.music_id) !== String(musicIdToDelete));
 					localStorage.setItem("tomb", JSON.stringify(favs));
-					console.log(favs);
-				})
-				.catch((error) => console.error("Fetch hiba:", error));
+				});
 		}
-
-
-
-
-
 
 
 		function update() {
@@ -1092,6 +1150,7 @@
 						data.video_id +
 						"/maxresdefault.jpg",
 						data.title,
+						data.music_id,
 					);
 					seekSlider = document.querySelector("#seekSlider");
 					volumeSlider = document.querySelector("#volumeSlider");
