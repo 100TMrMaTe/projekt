@@ -409,7 +409,7 @@
 
 			eredmeny.innerHTML = "<p>Keresés folyamatban...</p>";
 
-			const apikulcs = "AIzaSyAvqcZuWfXHENDGZOhjSKoKyaZe4xGtTVM";
+			//const apikulcs = "AIzaSyAvqcZuWfXHENDGZOhjSKoKyaZe4xGtTVM";
 			const apikulcs2 = "AIzaSyAjhNmbvJwzwac3JK-UxQFId23xWsn10-E";
 			const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=5&q=${encodeURIComponent(search)}&key=${apikulcs2}`;
 
@@ -427,7 +427,7 @@
 							`https://www.googleapis.com/youtube/v3/videos` +
 							`?part=contentDetails` +
 							`&id=${videoIds}` +
-							`&key=${apikulcs}`;
+							`&key=${apikulcs2}`;
 
 						fetch(detailsURL)
 							.then((v) => v.json())

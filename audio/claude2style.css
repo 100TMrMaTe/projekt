@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 *,
@@ -86,6 +87,11 @@ body {
     padding: 4px 12px;
     display: inline-block;
 }
+
+
+/* ---eredmeny---*/
+
+
 
 /* ─── BUTTONS ─── */
 .btn {
@@ -617,3 +623,5 @@ li { list-style: none; }
         padding-bottom: 80px;
     }
 }
+
+
