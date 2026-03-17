@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <title></title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+    <div class="background"></div>
+
+    <div class="container">
+        <div class="row text-light">
+            <div class="col-12 p-3">
+                <div class="p-2 rounded-3" id="navbar">
+                    <div class="row p-2 h-100">
+                        <div class="col-2 text-center align-middle">
+                            <span>Felhasználó neve</span>
+                        </div>
+                        <div class="col-2 text-center">
+                            <span>Belépve (32:15)</span>
+                        </div>
+                        <div class="col-8 text-end">
+                            <button class="btn text-white me-4">
+                                ez egy gomb
+                            </button>
+                            <button class="btn text-white me-4">
+                                ez egy gomb
+                            </button>
+                            <button class="btn  text-white me-2">
+                                ez egy gomb
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <nav class="navbar navbar-expand-lg p-2 rounded-3 mt-4" id="navbar">
+                    <div class="container-fluid text-light">
+                        <a class="navbar-brand" href="#">Navbar</a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav">
+                                <li class="nav-item">
+                                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Features</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Pricing</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+
+
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6">
+                <div class="row pt-2 pb-5">
+                    <div class="col-10">
+                        <input type="text" oninput="//KeresesKezdese()" class="form-control text-light kereso"
+                            style="height: 45px;" placeholder="Keresés..." id="kereso" name="kereso">
+                    </div>
+                    <div class="col-2">
+                        <button onclick="keres(),eredmenyVisszahoz()"
+                            class="btn  text-white h-100">Keresés</button>
+                    </div>
+                </div>
+                <div id="eredmeny" class="eredmeny text-light"></div>
+            </div>
+            <div class="col-6">
+                <div id="lejatszo" class="lejatszo"></div>
+
+                <div id="kovetkezo" class="kovetkezo">
+
+                    <ul>
+
+                        <li>
+                            <div class="row m-2 mb-3 p-2 rounded video talalat">
+                                <div class="col-4">
+                                    <img src="https://i.ytimg.com/vi/CyKm41o6WXQ/hqdefault.jpg"
+                                        class="img-fluid rounded" />
+                                </div>
+                                <div class="col-8 text-light">
+                                    <h3 class="text-truncate">BSW - Hello </h3>
+                                    <h4>3:21</h4>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="row m-2 mb-3 p-2 rounded video talalat">
+                                <div class="col-4">
+                                    <img src="https://i.ytimg.com/vi/CyKm41o6WXQ/hqdefault.jpg"
+                                        class="img-fluid rounded" />
+                                </div>
+                                <div class="col-8 text-light">
+                                    <h3 class="text-truncate">BSW - Hello </h3>
+                                    <h4>3:21</h4>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="row m-2 mb-3 p-2 rounded video talalat">
+                                <div class="col-4">
+                                    <img src="https://i.ytimg.com/vi/CyKm41o6WXQ/hqdefault.jpg"
+                                        class="img-fluid rounded" />
+                                </div>
+                                <div class="col-8 text-light">
+                                    <h3 class="text-truncate">BSW - Hello </h3>
+                                    <h4>3:21</h4>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="row m-2 mb-3 p-2 rounded video talalat">
+                                <div class="col-4">
+                                    <img src="https://i.ytimg.com/vi/CyKm41o6WXQ/hqdefault.jpg"
+                                        class="img-fluid rounded" />
+                                </div>
+                                <div class="col-8 text-light">
+                                    <h3 class="text-truncate">BSW - Hello </h3>
+                                    <h4>3:21</h4>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="row m-2 mb-3 p-2 rounded video talalat">
+                                <div class="col-4">
+                                    <img src="https://i.ytimg.com/vi/CyKm41o6WXQ/hqdefault.jpg"
+                                        class="img-fluid rounded" />
+                                </div>
+                                <div class="col-8 text-light">
+                                    <h3 class="text-truncate">BSW - Hello </h3>
+                                    <h4>3:21</h4>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+
+        console.log(localStorage.getItem("token"));
+        console.log(localStorage.getItem("email"));
+        console.log(localStorage.getItem("user_class"));
+        console.log(localStorage.getItem("isadmin"));
+
+        let player;
+        let isPlaying = false;
+
+        function elozo() {
+            if (!player || !player.getCurrentTime) return;
+            player.previousVideo();
+        }
+
+        function kovetkezo() {
+            if (!player || !player.getCurrentTime) return;
+            player.nextVideo();
+            console.log(player.nextVideo())
+
+        }
+
+
+        function hangSzabalyzo(hangero) {
+            if (player && player.setVolume) {
+                player.setVolume(hangero);
+            }
+        }
+
+        function inditas() {
+            if (isPlaying) {
+                player.pauseVideo();
+                ido();
+            }
+            if (!isPlaying) {
+                player.playVideo();
+                setInterval(ido, 1000);
+                //vane();
+            }
+
+            isPlaying = !isPlaying;
+        }
+        /*
+                    function embedVideo(id) {
+                        document.getElementById("lejatszo").innerHTML = `
+                <iframe id="ytFrame" width="600" height="340" src="https://www.youtube.com/embed/${id}?enablejsapi=1" frameborder="0" allow="autoplay"></iframe>
+            `;
+                        setTimeout(() => {
+                            player = new YT.Player('ytFrame');
+                        }, 500);
+                    }
+        */
+        function slider() {
+
+
+            const seekSlider = document.getElementById("seekSlider");
+
+            seekSlider.addEventListener("input", () => {
+                if (!player || !player.getDuration) return;
+
+                const hova = player.getDuration() * (seekSlider.value / 1000);
+                console.log(hova + "asdasd");
+                player.seekTo(hova, true);
+            });
+
+            // minden frame frissites
+            function current() {
+                if (!player || !player.getDuration) return;
+
+                const ujpozicio = player.getCurrentTime() * (1000 / player.getDuration());
+                seekSlider.value = ujpozicio;
+
+                requestAnimationFrame(current);
+            }
+            current();
+
+        }
+
+
+
+        function ido() {
+            if (!player || !player.getDuration) return;
+
+            let jelenlegi = Math.floor(player.getCurrentTime());
+            let teljes = player.getDuration();
+            //console.log(teljes);
+            let perc = Math.floor(jelenlegi / 60);
+            let masodperc = Math.floor(jelenlegi % 60);
+            let ora = Math.floor(perc / 60);
+
+
+            let teljesPerc = Math.floor(teljes / 60);
+            let teljesMasodperc = Math.floor(teljes % 60);
+            let teljesOra = Math.floor(teljesPerc / 60);
+
+
+            let jelenlegiIdo = document.getElementById("jelenlegiIdo");
+            let egeszIdo = document.getElementById("egeszIdo");
+
+
+
+            if (teljesOra > 0) {
+                teljesPerc = teljesPerc % 60;
+            }
+            // document.getElementById("jelenlegiIdo").innerText = perc + ":" + masodperc;
+            console.log(teljesOra + ":" + teljesPerc + ":" + teljesMasodperc);
+
+            if (teljesOra === 0) {
+                egeszIdo.innerText = `${teljesPerc}:${teljesMasodperc < 10 ? '0' : ''}${teljesMasodperc}`;
+            }
+            //console.log(ora);
+
+            if (teljesOra != 0) {
+                if (teljesPerc < 10) {
+                    egeszIdo.innerText = `${teljesOra}:` + `0` + `${teljesPerc}:${teljesMasodperc < 10 ? '0' : ''}${teljesMasodperc}`;
+                    console.log("cadsd");
+                }
+                egeszIdo.innerText = `${teljesOra}:${teljesPerc}:${teljesMasodperc < 10 ? '0' : ''}${teljesMasodperc}`;
+            }
+
+
+
+
+
+
+            if (ora > 0) {
+                perc = perc % 60;
+            }
+            // document.getElementById("jelenlegiIdo").innerText = perc + ":" + masodperc;
+
+
+            if (ora === 0) {
+                jelenlegiIdo.innerText = `${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
+                //egeszIdo.innerText = `${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
+
+                console.log(ora);
+            }
+            if (ora != 0) {
+                if (perc < 10) {
+                    jelenlegiIdo.innerText = `${ora}:` + `0` + `${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
+                    //egeszIdo.innerText = `${ora}:` + `0` + `${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
+
+                }
+                else {
+                    jelenlegiIdo.innerText = `${ora}:${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
+                    //egeszIdo.innerText = `${ora}:${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
+                }
+
+            }
+
+
+
+
+
+            //document.getElementById("egeszIdo").innerText = Math.floor(teljes / 60) + ":" + Math.floor(teljes % 60);
+
+            //math.floor ataliitasa (round-ra)
+
+        }
+
+
+        function keresettVideoIdo(seconds) {
+            if (seconds === "LIVE") {
+                return "LIVE";
+            }
+            let perc = Math.floor(seconds / 60);
+            let masodperc = Math.floor(seconds % 60);
+            let ora = Math.floor(perc / 60);
+            if (ora > 0) {
+                perc = perc % 60;
+            }
+
+            //console.log(seconds);
+
+            //console.log(`${mins}:${secs < 10 ? '0' : ''}${secs}`);
+
+            if (ora === 0) {
+                return `${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
+            }
+
+            if (ora != 0 && perc < 10) {
+                return `${ora}:` + `0` + `${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
+            }
+            return `${ora}:${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
+        }
+
+        function videoHosszAtAlakit(alakito) {
+
+            if (alakito === null) {
+                return 0;
+            }
+
+           
+            const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
+            const illik = alakito.match(regex);
+
+
+             if (!illik)
+            {
+                return 0;
+            }
+        
+            const ora = parseInt(illik[1]) || 0;
+            const perc = parseInt(illik[2]) || 0;
+            const masodperc = parseInt(illik[3]) || 0;
+            //console.log(ora, perc, masodperc);
+            return ora * 3600 + perc * 60 + masodperc;
+        }
+
+
+
+
+        function eredmenyTorol() {
+            console.log("dasdas");
+            document.getElementById("eredmeny").classList.add("d-none");
+        }
+
+        function eredmenyVisszahoz() {
+            document.getElementById("eredmeny").classList.remove("d-none");
+        }
+        ////console.log(player.getCurrentTime());
+
+        function embedVideo(id, kep, cim) {
+            document.getElementById("lejatszo").innerHTML = `
+<div class="talalat rounded-3 m-2">
+    <div id="ytFrame" class="d-none"></div>
+    <div class="p-3 text-light">
+
+        <div class="ratio ratio-16x9">
+            <img src="${kep}" class="video-img rounded">
+        </div>
+
+        <div id="cim" class="p-2">
+            <h3>${cim}</h3>
+        </div>
+
+        <div class="d-flex justify-content-start align-items-center mb-2">
+            <label class="slider">
+                <input type="range" class="level" id="volumeSlider" type="range" min="0" max="100" value="50" oninput="hangSzabalyzo(this.value)">
+                <svg class="volume" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve">
+                    <g>
+                        <path d="M18.36 19.36a1 1 0 0 1-.705-1.71C19.167 16.148 20 14.142 20 12s-.833-4.148-2.345-5.65a1 1 0 1 1 1.41-1.419C20.958 6.812 22 9.322 22 12s-1.042 5.188-2.935 7.069a.997.997 0 0 1-.705.291z" fill=rgba(220,220,220,1) data-original="#000000"></path>
+                        <path d="M15.53 16.53a.999.999 0 0 1-.703-1.711C15.572 14.082 16 13.054 16 12s-.428-2.082-1.173-2.819a1 1 0 1 1 1.406-1.422A6 6 0 0 1 18 12a6 6 0 0 1-1.767 4.241.996.996 0 0 1-.703.289zM12 22a1 1 0 0 1-.707-.293L6.586 17H4c-1.103 0-2-.897-2-2V9c0-1.103.897-2 2-2h2.586l4.707-4.707A.998.998 0 0 1 13 3v18a1 1 0 0 1-1 1z" fill=rgba(220,220,220,1) data-original="#000000"></path>
+                    </g>
+                </svg>
+            </label>
+        </div>
+            
+
+        <div>
+            <input type="range" id="seekSlider" min="0" max="1000" value="0" >
+            <div class="d-flex justify-content-between pt-2">
+                <span id="jelenlegiIdo"></span>
+                <span id="egeszIdo"></span>
+            </div>
+        </div>
+        
+
+        <div class="row">
+            <div class="col-3">
+            </div>
+
+            <div class="col-2">
+                <button onclick="elozo()" class="btn  text-white w-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-skip-backward" viewBox="0 0 16 16">
+                        <path d="M.5 3.5A.5.5 0 0 1 1 4v3.248l6.267-3.636c.52-.302 1.233.043 1.233.696v2.94l6.267-3.636c.52-.302 1.233.043 1.233.696v7.384c0 .653-.713.998-1.233.696L8.5 8.752v2.94c0 .653-.713.998-1.233.696L1 8.752V12a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m7 1.133L1.696 8 7.5 11.367zm7.5 0L9.196 8 15 11.367z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="col-2">
+                <button onclick="inditas()" class="btn  text-white w-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
+                        <path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="col-2">
+                <button onclick="kovetkezo()" class="btn  text-white w-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-skip-forward" viewBox="0 0 16 16">
+                        <path d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.752l-6.267 3.636c-.52.302-1.233-.043-1.233-.696v-2.94l-6.267 3.636C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696L7.5 7.248v-2.94c0-.653.713-.998 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5M1 4.633v6.734L6.804 8zm7.5 0v6.734L14.304 8z"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="col-3">
+            </div>
+        </div>
+
+    </div>
+</div>`;
+
+
+            player = new YT.Player('ytFrame', {
+                width: 0.1,
+                height: 0.1,
+                videoId: id,
+                events: {
+                    onReady: () => {
+                        player.setVolume(
+                            document.getElementById("volumeSlider").value
+                        );
+                        slider();
+
+                    }
+                }
+            });
+        }
+
+
+
+
+
+
+        function vane() {
+            if (!player || !player.getDuration) return;
+
+            let hello = player.getDuration();
+            //console.log(hello);
+            //console.log(typeof hello);
+            return hello;
+        }
+
+
+        function keres() {
+            const kereso = document.getElementById("kereso").value;
+            const eredmeny = document.getElementById("eredmeny");
+
+            if (kereso.length < 3) {
+                eredmeny.innerHTML = "<p>Írj be legalább 3 karaktert...</p>";
+                return;
+            }
+
+            eredmeny.innerHTML = "<p>Keresés folyamatban...</p>";
+
+            const apikulcs = "AIzaSyAvqcZuWfXHENDGZOhjSKoKyaZe4xGtTVM";
+            const apikulcs2 = "AIzaSyAjhNmbvJwzwac3JK-UxQFId23xWsn10-E";
+            const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=5&q=${encodeURIComponent(kereso)}&key=${apikulcs2}`;
+
+
+            function lekerVideok(vissza) {
+
+                let van = 0;
+                fetch(URL)
+                    .then(valasz => valasz.json())
+                    .then(adatok => {
+                        console.log(adatok);
+                        const videoIds = adatok.items
+                            .map(item => item.id.videoId)
+                            .join(",");
+
+                        const detailsURL =
+                            `https://www.googleapis.com/youtube/v3/videos` +
+                            `?part=contentDetails` +
+                            `&id=${videoIds}` +
+                            `&key=${apikulcs}`;
+
+
+
+                        fetch(detailsURL)
+                            .then(v => v.json())
+                            .then(details => {
+                                //console.log(details);
+                                //console.log(details.items[0].contentDetails.duration);
+                                //console.log(adatok.items[0].id.kind); 
+                                //let van = details.items.contentDetails.duration;
+
+                                const videok = adatok.items
+                                    .filter(item => item.id.kind === 'youtube#video')
+                                    .map((item, i) => ({
+                                        csatorna: item.id.kind,
+                                        videoId: item.id.videoId,
+                                        title: item.snippet.title,
+                                        img: item.snippet.thumbnails.medium.url,
+                                        nagyobbImg: item.snippet.thumbnails.high.url,
+                                       duration: videoHosszAtAlakit(details.items[i].contentDetails.duration) == 0 ? "LIVE" : videoHosszAtAlakit(details.items[i].contentDetails.duration),
+                                       durationRaw: details.items[i].contentDetails.duration
+                                    })).slice(0, 5);
+                                    for (let j = 0; j < videok.length; j++) {
+                                        console.log(videok[j].durationRaw);
+                                    }
+                                //console.log(details.items.contentDetails.durationRaw);
+                                vissza(videok);
+                            });
+                    });
+            }
+
+            /*
+                        lekerVideok(videok => {
+                            //console.log(videok);
+                        });
+            */
+
+            lekerVideok(function (videok) {
+
+                eredmeny.innerHTML = "";
+
+                //console.log(videok[0].title);
+
+                if (!videok.length) {
+                    eredmeny.innerHTML = "<p>Nincs találat vagy hiba történt.</p>";
+                    return;
+                }
+                ////console.log(videok);
+
+
+                for (let i = 0; i < videok.length; i++) {
+                    let keret = document.createElement("div");
+                    ////console.log("asd");
+                    keret.classList.add("container");
+
+                    let talalat = document.createElement("div");
+
+                    //vane();
+                    //talalat.className = "video";
+
+                    talalat.innerHTML = `
+                    <div class="row mb-3 p-2 rounded video talalat">
+                        <div class="col-4">
+                            <img src="${videok[i].img}"  class="img-fluid rounded"/>
+                        </div>
+                        <div class="col-8 text-light">
+                            <h3 class="text-truncate">${videok[i].title} </h3>
+                            <h4>${keresettVideoIdo(videok[i].duration)}</h4>
+                        </div>
+                    </div>
+                    `;
+
+                    ////console.log(videok[i].videoId);
+                    ////console.log(typeof videok[i].videoId);
+                    talalat.onclick = () => {
+                        eredmenyTorol();
+
+                        embedVideo(videok[i].videoId, videok[i].nagyobbImg, videok[i].title);
+
+
+                    };
+
+                    keret.appendChild(talalat);
+                    eredmeny.appendChild(keret);
+                }
+                //linkList.innerHTML = "";
+                //linkList.innerHTML += `<p><a href=\"https://www.youtube.com/watch?v=${videoId}\" target=\"_blank\">${title}</a></p>`;
+
+            });
+        }
+
+        document.getElementById("kereso").addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') {
+                keres();
+                eredmenyVisszahoz();
+                //console.log("asdasd");
+
+            }
+        });
+
+    </script>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <script>
+        //background kép változtatása másodpercenként
+        function bgChange() {
+            const bgImages = [
+                'bg1.jpg',
+                'bg2.jpg',
+                'bg3.png',
+                'bg4.jpg',
+                'bg5.jpg',
+                'bg6.jpg',
+                '7.jpg',
+                '8.jpg',
+                '9.jpg',
+                '10.jpg',
+                '11.jpg',
+                '12.jpg',
+                '13.jpg',
+                '14.jpg'
+            ];
+            const index = Math.floor(Math.random() * bgImages.length);
+            document.body.style.backgroundImage = `url(../backgrounds/${bgImages[index]})`;
+            console.log("Background changed to: " + bgImages[index]);
+        }
+        //setInterval(bgChange, 3000);
+    </script>
+</body>
+
+</html>
