@@ -372,7 +372,24 @@ function favLeker($conn, $user_id){
     }
 }
 
+function favList($conn, $user_id){
+    $sql ="SELECT music.* from music JOIN fav ON music.id = fav.music_id WHERE fav.user_id = ?";
 
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $rows = $result->fetch_all(MYSQLI_ASSOC);
+
+        echo json_encode([
+            "status" => "success",
+            "fav_music" => $rows
+        ]);
+
+        $stmt->close();
+    }
+}
 
 
 //==========================> server.html <==========================

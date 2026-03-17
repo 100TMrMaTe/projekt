@@ -59,7 +59,32 @@
 						style="height: 46px; white-space: nowrap">
 						Keresés
 					</button>
+					<div id="kedvencGomb">
+						<button
+							onclick="kedvenceim(), kedvenceimVisszahoz(), lejatszoTorol(), kedvencGombTorol(), kedvencEltuntetGombVisszahoz()"
+							class="btn text-white px-4" style="height: 46px; white-space: nowrap">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+								class="bi bi-heart-fill" viewBox="0 0 16 16" id="filled-heart">
+								<path fill-rule="evenodd"
+									d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+							</svg>
+						</button>
+					</div>
+					<div id="kedvencEltuntetGomb">
+						<button
+							onclick="kedvenceimTorol(), lejatszoVisszahoz(), kedvencGombVisszahoz(), kedvencEltuntetGomb()"
+							class="btn text-white px-4" style="height: 46px; white-space: nowrap">
+							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+								class="bi bi-heart-fill" viewBox="0 0 16 16" id="filled-heart">
+								<path fill-rule="evenodd"
+									d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+							</svg>
+
+						</button>
+					</div>
+
 				</div>
+
 				<div class="eredmenyDoboz" id="eredmenyDoboz">
 					<div id="eredmeny" class="eredmeny text-light"></div>
 				</div>
@@ -68,6 +93,11 @@
 			<!-- Jobb: player + playlist egymás alatt, szorosan -->
 			<div class="col-12 col-lg-6">
 				<div id="lejatszo" class="lejatszo"></div>
+				<div id="kedvencDoboz" class="kedvencDoboz">
+
+
+
+				</div>
 				<div id="kovetkezo" class="kovetkezo mt-2">
 					<ul id="playlist"></ul>
 				</div>
@@ -76,8 +106,10 @@
 	</div>
 
 	<script>
+		kedvenceimTorol();
+		eredmenyTorol();
+		kedvencEltuntetGomb();
 
-		eredmenyTorol()
 
 		if (localStorage.getItem("token") == null) {
 			window.location.href = "../login/login.html";
@@ -323,6 +355,38 @@
 		function eredmenyVisszahoz() {
 			document.getElementById("eredmenyDoboz").classList.remove("d-none");
 		}
+
+		function kedvenceimVisszahoz() {
+			document.getElementById("kedvencDoboz").classList.remove("d-none");
+		}
+
+
+		function kedvenceimTorol() {
+			document.getElementById("kedvencDoboz").classList.add("d-none");
+		}
+
+		function lejatszoTorol() {
+			document.getElementById("lejatszo").classList.add("d-none");
+		}
+		function lejatszoVisszahoz() {
+			document.getElementById("lejatszo").classList.remove("d-none");
+		}
+		function kedvencGombTorol() {
+			document.getElementById("kedvencGomb").classList.add("d-none");
+		}
+
+		function kedvencGombVisszahoz() {
+			document.getElementById("kedvencGomb").classList.remove("d-none");
+		}
+		function kedvencEltuntetGomb() {
+			document.getElementById("kedvencEltuntetGomb").classList.add("d-none");
+		}
+
+
+		function kedvencEltuntetGombVisszahoz() {
+			document.getElementById("kedvencEltuntetGomb").classList.remove("d-none");
+		}
+
 		//console.log(player.getCurrentTime());
 
 		function embedVideo(id, kep, cim, music_id) {
@@ -607,6 +671,24 @@
             </li>`;
 		}
 
+
+		function kedvencKiir(videoId, title, duration) {
+			return `
+				<li>
+						<div class="row m-2 mb-1 p-2 rounded video talalat">
+							<div class="col-4">
+								<img src="https://img.youtube.com/vi/${videoId}/mqdefault.jpg"
+									class="img-fluid rounded" />
+							</div>
+							<div class="col-8 text-light">
+								<h3 class="text-truncate">${title}</h3>
+								<h4>${keresettVideoIdo(duration)}</h4>
+							</div>
+						</div>
+					</li>
+			`
+		}
+
 		//a videó id alapján belerakja a zeneét a music táblába
 		function insertIntoMusic(videoId, title, length) {
 			return fetch("../index.php", {
@@ -710,7 +792,7 @@
 			videoId = data.video_id;
 			embedVideo(
 				data.video_id,
-				"https://img.youtube.com/vi/" + data.video_id + "/hqdefault.jpg",
+				"https://img.youtube.com/vi/" + data.video_id + "/mqdefault.jpg",
 				data.title,
 				data.music_id,
 			);
@@ -1098,6 +1180,39 @@
 					localStorage.setItem("tomb", JSON.stringify(favs));
 				});
 		}
+
+
+
+		function kedvenceim() {
+			document.getElementById("kedvencDoboz").innerHTML = "";
+			fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "favList",
+					user_id: localStorage.getItem("user_id"),
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					console.log(data);
+					data.fav_music.forEach((e) => {
+						document.getElementById("kedvencDoboz").innerHTML += kedvencKiir(
+							e.video_id,
+							e.title,
+							e.length == 0 ? "LIVE" : e.length,
+						);
+					});
+				});
+
+
+
+
+		}
+
+
+
+
 
 
 		function update() {

@@ -95,6 +95,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         case "favLeker":
             favLeker($conn, $data["user_id"]);
             break;
+        case "favList":
+            favList($conn, $data["user_id"]);
+            break;
 
         //==========================> server.html <==========================
 
