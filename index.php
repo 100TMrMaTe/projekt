@@ -98,6 +98,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         case "favList":
             favList($conn, $data["user_id"]);
             break;
+        case "DeleteFromFavList":
+            DeleteFromFavList($conn, $data["id"], $data["user_id"]);
+            break;
 
         //==========================> server.html <==========================
 
