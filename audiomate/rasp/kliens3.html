@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div style="margin: 20px;">
+        <button>
+            play/pause
+        </button>
+    </div>
+    <div style="margin: 20px;">
+        <label for="seekSlider">Idő:</label>
+        <input type="range" value="0" id="seekSlider" style="width: 300px;">
+    </div>
+    <div style="margin: 20px;">
+        <label for="volumeSlider">Hangerő:</label>
+        <input type="range" max="100" value="0" id="volumeSlider" style="width: 100px;">
+    </div>
+    <div>
+
+
+    </div>
+    <script>
+        document.querySelector("button").addEventListener("click", function () {
+            fetch("../../index.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    muvelet: "kapcsolo"
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    //console.log(data);
+                })
+        });
+
+        let felhasznaloSeek = false;
+        let felhasznaloVolume = false;
+        //let varakozikBackend = false;
+        let porget = 0;
+        let volume = 0;
+        let seekSlider = document.querySelector("#seekSlider");
+        let volumeSlider = document.querySelector("#volumeSlider");
+        //let interval = setInterval(update, 1000);
+
+
+        // Húzás kezdetén
+        seekSlider.addEventListener("mousedown", () => felhasznaloSeek = true);
+        seekSlider.addEventListener("mouseleave", () => felhasznaloSeek = false);
+
+        // Hangerő kezdetén
+        volumeSlider.addEventListener("mousedown", () => felhasznaloVolume = true);
+        volumeSlider.addEventListener("mouseleave", () => felhasznaloVolume = false);
+
+        // Húzás közben tároljuk az értéket
+        seekSlider.addEventListener("input", function () {
+            if (felhasznaloSeek) {
+                porget = this.value;
+                console.log("Húzás közben:", porget);
+            }
+        });
+
+        volumeSlider.addEventListener("input", function () {
+            if (felhasznaloVolume) {
+                volume = this.value;
+                console.log("Húzás közben:", volume);
+            }
+        });
+
+        // Felengedéskor küldés a backendnek
+        document.addEventListener("mouseup", function () {
+            if (!felhasznaloSeek) return;
+
+            felhasznaloSeek = false;
+
+            //seekSlider.value = porget;
+
+            //varakozikBackend = true;
+            console.log("Elengedéskor küldve:", porget);
+
+            fetch("../../index.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    muvelet: "porget",
+                    porget: porget
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    //varakozikBackend = false;
+                });
+        })
+        /*
+            .then(data => {
+                setTimeout(() => {
+                    interval = setInterval(update, 1000);
+                }, 500);
+            });
+            */
+
+        // Hangerő slider
+        document.querySelector("#volumeSlider").addEventListener("mouseup", function () {
+            if (!felhasznaloVolume) return;
+
+            felhasznaloVolume = false;
+
+            console.log("Elengedéskor küldve:", volume);
+            fetch("../../index.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    muvelet: "volume",
+                    hangero: volume
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    //console.log(data);
+                })
+        });
+
+        // Track hosszának lekérése
+        fetch("../../index.php", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                muvelet: "length",
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.querySelector("#seekSlider").max = data.length;
+            });
+
+        // Slider frissítése backendről, ha nem húz a felhasználó
+        function seekUpdate() {
+            //if (felhasznaloSeek || varakozikBackend) return;
+            if (felhasznaloSeek) return;
+
+
+            fetch("../../index.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    muvelet: "current_time",
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    seekSlider.value = data.current_time;
+                });
+        }
+
+        function volumeUpdate() {
+            if (felhasznaloVolume) return;
+
+            fetch("../../index.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    muvelet: "getVolume",
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    document.querySelector("#volumeSlider").value = data.volume;
+                    console.log(data.volume);
+                });
+        }
+
+        function update() {
+            seekUpdate();
+            volumeUpdate();
+        }
+
+        /*
+        seekSlider.addEventListener("mousedown", () => {
+            felhasznaloSeek = true;
+            clearInterval(interval);
+        });*/
+        setInterval(update, 1000);
+    </script>
+</body>
+
+</html>
