@@ -353,6 +353,22 @@ function DeleteFromFav($conn, $video_id, $user_id)
     }
 }
 
+function DeleteFromFavList($conn, $music_id, $user_id)
+{
+    $sql = "DELETE FROM fav WHERE music_id = ? AND user_id = ?";
+
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param("ii", $music_id, $user_id);
+        $stmt->execute();
+        $stmt->close();
+
+        echo json_encode([
+            "status" => "success",
+            "music_id" => $music_id
+        ]);
+    }
+}
+
 function favLeker($conn, $user_id){
     $sql = "SELECT fav.music_id from fav WHERE fav.user_id = ?";
 
