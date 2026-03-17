@@ -1,0 +1,1164 @@
+<!doctype html>
+<html lang="hu">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+	<title>Zenelejátszó</title>
+	<link rel="stylesheet" href="claude3style.css" />
+</head>
+
+<body>
+	<div class="background"></div>
+
+	<!-- Navbar -->
+	<nav class="glass-navbar mb-4">
+		<div class="container-fluid px-4">
+			<div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+				<div class="d-flex align-items-center gap-3">
+					<span class="navbar-brand mb-0">
+						<i class="bi bi-music-note-beamed me-2"></i>Zenelejátszó
+					</span>
+					<span id="headerfelhasznalonev" class="info-badge">
+						<i class="bi bi-person-fill me-1"></i>Felhasználó
+					</span>
+					<span id="timer" class="info-badge">
+						<i class="bi bi-clock me-1"></i>30:00
+					</span>
+				</div>
+				<div class="d-flex align-items-center gap-2 flex-wrap">
+					<a class="btn-glass" id="adminpagebutton" href="../adminpage/adminpage_integrated.html"
+						style="display:none">
+						<i class="bi bi-shield-check me-1"></i>Admin
+					</a>
+					<a class="btn-glass" id="mainpagebutton" href="../audio/claude2.html">
+						<i class="bi bi-house-fill me-1"></i>Fő oldal
+					</a>
+					<button id="logoutbutton" onclick="logout()">
+						<div class="sign">
+							<svg viewBox="0 0 512 512">
+								<path
+									d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z" />
+							</svg>
+						</div>
+						<div class="text">Kijelentkezés</div>
+					</button>
+				</div>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container-fluid px-3 px-md-4">
+		<div class="row g-3">
+
+			<!-- Bal: kereső -->
+			<div class="col-12 col-lg-6">
+				<div class="card glass-card mb-3">
+					<div class="card-header glass-header">
+						<i class="bi bi-search me-2"></i>Zenekeresés
+					</div>
+					<div class="card-body p-3">
+						<div class="d-flex gap-2">
+							<input type="text" oninput="(search(), eredmenyVisszahoz())"
+								class="form-control kereso flex-grow-1" placeholder="Keresés..." id="search"
+								name="kereso" />
+							<button onclick="(keres(), search(), eredmenyVisszahoz())"
+								class="btn-glass px-3 d-flex align-items-center gap-1" style="white-space:nowrap">
+								<i class="bi bi-search"></i> Keresés
+							</button>
+						</div>
+					</div>
+				</div>
+				<div id="eredmeny" class="glass-card"></div>
+			</div>
+
+			<!-- Jobb: player + playlist -->
+			<div class="col-12 col-lg-6">
+				<div id="lejatszo" class="lejatszo"></div>
+				<div id="kovetkezo" class="mt-3">
+					<ul id="playlist" class="mb-0"></ul>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<script>
+
+		if (localStorage.getItem("token") == null) {
+			window.location.href = "../login/login.html";
+		}
+
+		let felhasznaloSeek = false;
+		let felhasznaloVolume = false;
+
+		let porget = 0;
+		let volume = 0;
+		let seekSlider = null;
+		let volumeSlider = null;
+		let videoId = null;
+		let hossz = null;
+
+		if (localStorage.getItem("isadmin") === "1") {
+			document.getElementById("adminpagebutton").style.display =
+				"inline-block";
+		} else {
+			document.getElementById("adminpagebutton").style.display = "none";
+		}
+
+		document.getElementById("headerfelhasznalonev").innerText = localStorage.getItem("email");
+
+		let interval = null;
+		const DURATION = 30 * 60;
+		let totalSeconds = DURATION;
+
+		function updateDisplay() {
+			const minutes = Math.floor(totalSeconds / 60);
+			const seconds = totalSeconds % 60;
+
+			document.getElementById("timer").textContent =
+				String(minutes).padStart(2, "0") +
+				":" +
+				String(seconds).padStart(2, "0");
+		}
+
+		function startTimer() {
+			clearInterval(interval);
+
+			totalSeconds = DURATION;
+			updateDisplay();
+
+			interval = setInterval(() => {
+				if (totalSeconds > 0) {
+					totalSeconds--;
+					updateDisplay();
+				} else {
+					clearInterval(interval);
+					interval = null;
+					alert("Lejárt az idő!");
+				}
+			}, 1000);
+		}
+
+		startTimer();
+		document.body.addEventListener("click", startTimer);
+		document.body.addEventListener("click", tokenRefresh);
+
+		//document.body.addEventListener("pointer", startTimer);
+		//document.body.addEventListener("pointer", tokenRefresh);
+
+		updateDisplay();
+
+		function tokenRefresh() {
+			fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "tokenRefresh",
+					token: localStorage.getItem("token"),
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					if (data.status != "success_token_refresh") {
+						localStorage.clear();
+						window.location.href = "../login/login.html";
+					}
+				})
+				.catch((error) => console.error("Error refreshing token:", error));
+		}
+
+		function logout() {
+			fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "logout",
+					token: localStorage.getItem("token"),
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					localStorage.clear();
+					window.location.href = "../login/login.html";
+				})
+				.catch((error) => console.error("Error refreshing token:", error));
+		}
+
+		let player;
+
+		function ido() {
+			//if (!player || !player.getDuration) return;
+			console.log(seekSlider.value);
+			let jelenlegi = Math.floor(seekSlider.value);
+			let teljes = Math.floor(hossz);
+			//console.log(teljes);
+			let perc = Math.floor(jelenlegi / 60);
+			let masodperc = Math.floor(jelenlegi % 60);
+			let ora = Math.floor(perc / 60);
+
+			let teljesPerc = Math.floor(teljes / 60);
+			let teljesMasodperc = Math.floor(teljes % 60);
+			let teljesOra = Math.floor(teljesPerc / 60);
+
+			let jelenlegiIdo = document.getElementById("jelenlegiIdo");
+			let egeszIdo = document.getElementById("egeszIdo");
+
+			if (teljesOra > 0) {
+				teljesPerc = teljesPerc % 60;
+			}
+			// document.getElementById("jelenlegiIdo").innerText = perc + ":" + masodperc;
+			console.log(teljesOra + ":" + teljesPerc + ":" + teljesMasodperc);
+
+			if (teljesOra === 0) {
+				egeszIdo.innerText = `${teljesPerc}:${teljesMasodperc < 10 ? "0" : ""}${teljesMasodperc}`;
+			}
+			//console.log(ora);
+
+			if (teljesOra != 0) {
+				if (teljesPerc < 10) {
+					egeszIdo.innerText =
+						`${teljesOra}:` +
+						`0` +
+						`${teljesPerc}:${teljesMasodperc < 10 ? "0" : ""}${teljesMasodperc}`;
+					console.log("cadsd");
+				}
+				egeszIdo.innerText = `${teljesOra}:${teljesPerc}:${teljesMasodperc < 10 ? "0" : ""}${teljesMasodperc}`;
+			}
+
+			if (ora > 0) {
+				perc = perc % 60;
+			}
+			// document.getElementById("jelenlegiIdo").innerText = perc + ":" + masodperc;
+
+			if (ora === 0) {
+				jelenlegiIdo.innerText = `${perc}:${masodperc < 10 ? "0" : ""}${masodperc}`;
+				//egeszIdo.innerText = `${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
+
+				console.log(ora);
+			}
+			if (ora != 0) {
+				if (perc < 10) {
+					jelenlegiIdo.innerText =
+						`${ora}:` +
+						`0` +
+						`${perc}:${masodperc < 10 ? "0" : ""}${masodperc}`;
+					//egeszIdo.innerText = `${ora}:` + `0` + `${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
+				} else {
+					jelenlegiIdo.innerText = `${ora}:${perc}:${masodperc < 10 ? "0" : ""}${masodperc}`;
+					//egeszIdo.innerText = `${ora}:${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
+				}
+			}
+
+			//document.getElementById("egeszIdo").innerText = Math.floor(teljes / 60) + ":" + Math.floor(teljes % 60);
+
+			//math.floor ataliitasa (round-ra)
+		}
+
+		function keresettVideoIdo(seconds) {
+			if (seconds === "LIVE") {
+				return "LIVE";
+			}
+			let perc = Math.floor(seconds / 60);
+			let masodperc = Math.floor(seconds % 60);
+			let ora = Math.floor(perc / 60);
+			if (ora > 0) {
+				perc = perc % 60;
+			}
+
+			//console.log(seconds);
+
+			//console.log(`${mins}:${secs < 10 ? '0' : ''}${secs}`);
+
+			if (ora === 0) {
+				return `${perc}:${masodperc < 10 ? "0" : ""}${masodperc}`;
+			}
+
+			if (ora != 0 && perc < 10) {
+				return (
+					`${ora}:` + `0` + `${perc}:${masodperc < 10 ? "0" : ""}${masodperc}`
+				);
+			}
+			return `${ora}:${perc}:${masodperc < 10 ? "0" : ""}${masodperc}`;
+		}
+
+		function videoHosszAtAlakit(alakito) {
+			if (alakito === null) {
+				return 0;
+			}
+
+			const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
+			const illik = alakito.match(regex);
+
+			if (!illik) {
+				return 0;
+			}
+
+			const ora = parseInt(illik[1]) || 0;
+			const perc = parseInt(illik[2]) || 0;
+			const masodperc = parseInt(illik[3]) || 0;
+			//console.log(ora, perc, masodperc);
+			return ora * 3600 + perc * 60 + masodperc;
+		}
+
+		function eredmenyTorol() {
+			document.getElementById("eredmeny").classList.add("d-none");
+		}
+
+		function eredmenyVisszahoz() {
+			document.getElementById("eredmeny").classList.remove("d-none");
+		}
+		////console.log(player.getCurrentTime());
+
+		function embedVideo(id, kep, cim) {
+			document.getElementById("lejatszo").innerHTML = `
+<div class="card glass-card">
+  <div class="card-header glass-header">
+    <i class="bi bi-play-circle-fill me-2"></i>Most játszik
+  </div>
+  <div class="card-body p-3">
+    <div class="ratio ratio-16x9 mb-3" style="border-radius:10px;overflow:hidden;">
+      <img src="${kep}" class="video-img">
+    </div>
+    <div id="cim" class="mb-3">
+      <p class="fw-bold mb-0" style="font-size:0.95rem;line-height:1.4;">${cim}</p>
+    </div>
+    <div class="mb-3">
+      <input type="range" id="seekSlider" min="0" max="1000" value="0">
+      <div class="d-flex justify-content-between pt-1">
+        <span id="jelenlegiIdo"></span>
+        <span id="egeszIdo"></span>
+      </div>
+    </div>
+    <div class="d-flex align-items-center justify-content-between">
+      <label class="slider">
+        <input type="range" class="level" id="volumeSlider" max="100" value="0">
+        <svg class="volume" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <g>
+            <path d="M18.36 19.36a1 1 0 0 1-.705-1.71C19.167 16.148 20 14.142 20 12s-.833-4.148-2.345-5.65a1 1 0 1 1 1.41-1.419C20.958 6.812 22 9.322 22 12s-1.042 5.188-2.935 7.069a.997.997 0 0 1-.705.291z" fill="rgba(220,220,220,1)"></path>
+            <path d="M15.53 16.53a.999.999 0 0 1-.703-1.711C15.572 14.082 16 13.054 16 12s-.428-2.082-1.173-2.819a1 1 0 1 1 1.406-1.422A6 6 0 0 1 18 12a6 6 0 0 1-1.767 4.241.996.996 0 0 1-.703.289zM12 22a1 1 0 0 1-.707-.293L6.586 17H4c-1.103 0-2-.897-2-2V9c0-1.103.897-2 2-2h2.586l4.707-4.707A.998.998 0 0 1 13 3v18a1 1 0 0 1-1 1z" fill="rgba(220,220,220,1)"></path>
+          </g>
+        </svg>
+      </label>
+      <div class="d-flex align-items-center gap-2 player-controls">
+        <button onclick="elozo()" class="ctrl-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16"><path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15"/></svg>
+        </button>
+        <button onclick="inditas()" class="ctrl-btn ctrl-play" id="lejátszásgomb">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16" id="play"><path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="d-none" viewBox="0 0 16 16" id="pause"><path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/></svg>
+        </button>
+        <button onclick="kovetkezo()" class="ctrl-btn" id="kovetkezoBtn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.752l-6.267 3.636c-.52.302-1.233-.043-1.233-.696v-2.94l-6.267 3.636C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696L7.5 7.248v-2.94c0-.653.713-.998 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>`;
+
+			// Mobil mini player frissítése
+			const bar = document.getElementById("mobile-player-bar");
+			if (bar) {
+				bar.style.display = "flex";
+				document.getElementById("mobile-thumb").src = kep;
+				document.getElementById("mobile-title").textContent = cim;
+			}
+		}
+
+		function vane() {
+			if (!player || !player.getDuration) return;
+
+			let hello = player.getDuration();
+			//console.log(hello);
+			//console.log(typeof hello);
+			return hello;
+		}
+
+		function keres() {
+			console.log("anyad");
+			const search = document.getElementById("search").value;
+			const eredmeny = document.getElementById("eredmeny");
+
+			if (search.length < 3) {
+				eredmeny.innerHTML = "<p>Írj be legalább 3 karaktert...</p>";
+				return;
+			}
+
+			eredmeny.innerHTML = "<p>Keresés folyamatban...</p>";
+
+			const apikulcs = "AIzaSyAvqcZuWfXHENDGZOhjSKoKyaZe4xGtTVM";
+			const apikulcs2 = "AIzaSyAjhNmbvJwzwac3JK-UxQFId23xWsn10-E";
+			const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=5&q=${encodeURIComponent(search)}&key=${apikulcs2}`;
+
+			function lekerVideok(vissza) {
+				let van = 0;
+				fetch(URL)
+					.then((valasz) => valasz.json())
+					.then((adatok) => {
+						console.log(adatok);
+						const videoIds = adatok.items
+							.map((item) => item.id.videoId)
+							.join(",");
+
+						const detailsURL =
+							`https://www.googleapis.com/youtube/v3/videos` +
+							`?part=contentDetails` +
+							`&id=${videoIds}` +
+							`&key=${apikulcs}`;
+
+						fetch(detailsURL)
+							.then((v) => v.json())
+							.then((details) => {
+								const videok = adatok.items
+									.filter((item) => item.id.kind === "youtube#video")
+									.map((item, i) => ({
+										csatorna: item.id.kind,
+										videoId: item.id.videoId,
+										title: item.snippet.title,
+										img: item.snippet.thumbnails.medium.url,
+										nagyobbImg: item.snippet.thumbnails.high.url,
+										duration:
+											videoHosszAtAlakit(
+												details.items[i].contentDetails.duration,
+											) == 0
+												? "LIVE"
+												: videoHosszAtAlakit(
+													details.items[i].contentDetails.duration,
+												),
+										durationRaw: details.items[i].contentDetails.duration,
+									}))
+									.slice(0, 5);
+
+								vissza(videok);
+							});
+					});
+			}
+
+			lekerVideok(function (videok) {
+				eredmeny.innerHTML = "";
+
+				if (!videok.length) {
+					eredmeny.innerHTML = "<p>Nincs találat vagy hiba történt.</p>";
+					return;
+				}
+
+				for (let i = 0; i < videok.length; i++) {
+					let keret = document.createElement("div");
+					keret.classList.add("container");
+
+					let talalat = document.createElement("div");
+
+					talalat.innerHTML = `
+              <div class="glass-item d-flex align-items-center gap-3 p-3" style="cursor:pointer;">
+                <img src="${videok[i].img}"
+                     style="width:120px;height:72px;object-fit:cover;border-radius:8px;flex-shrink:0;" />
+                <div style="min-width:0;flex:1;">
+                  <div class="fw-semibold text-truncate" style="font-size:0.9rem;">${videok[i].title}</div>
+                  <div style="font-size:0.78rem;opacity:0.6;">${keresettVideoIdo(videok[i].duration)}</div>
+                </div>
+              </div>`;
+
+					talalat.onclick = () => {
+						eredmenyTorol();
+
+						insertIntoMusic(
+							videok[i].videoId,
+							videok[i].title,
+							videok[i].duration,
+						).then((musicId) => insertIntoPlaylist(musicId));
+					};
+
+					keret.appendChild(talalat);
+					eredmeny.appendChild(keret); dd
+				}
+			});
+		}
+
+		function embedSearchItem(videoId, title, duration) {
+			return `<div class="glass-item d-flex align-items-center gap-3 p-3" style="cursor:pointer;">
+          <img src="https://img.youtube.com/vi/${videoId}/mqdefault.jpg"
+               style="width:120px;height:72px;object-fit:cover;border-radius:8px;flex-shrink:0;" />
+          <div style="min-width:0;flex:1;">
+            <div class="fw-semibold text-truncate" style="font-size:0.9rem;">${title}</div>
+            <div style="font-size:0.78rem;opacity:0.6;">${keresettVideoIdo(duration)}</div>
+          </div>
+        </div>`;
+		}
+
+		function embedPlaylistItem(videoId, title, duration) {
+			return `<li>
+          <div class="glass-item d-flex align-items-center gap-3 p-3">
+            <img src="https://img.youtube.com/vi/${videoId}/mqdefault.jpg"
+                 style="width:96px;height:60px;object-fit:cover;border-radius:7px;flex-shrink:0;" />
+            <div style="min-width:0;flex:1;">
+              <div class="fw-semibold text-truncate" style="font-size:0.88rem;">${title}</div>
+              <div style="font-size:0.75rem;opacity:0.6;">${keresettVideoIdo(duration)}</div>
+            </div>
+          </div>
+        </li>`;
+		}
+
+		//a videó id alapján belerakja a zeneét a music táblába
+		function insertIntoMusic(videoId, title, length) {
+			return fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "insertIntoMusic",
+					video_id: videoId,
+					title: title,
+					length: length,
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => data.music_id);
+		}
+
+		//a zenét id alapján belerakja a playlistbe
+		function insertIntoPlaylist(musicId) {
+			return fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "insertIntoPlaylist",
+					music_id: musicId,
+					token: localStorage.getItem("token"),
+				}),
+			});
+		}
+
+		//megnézi hogy a playlist tábla üres e
+		function isPlaylistEmpty() {
+			return fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "isPlaylistEmpty",
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => data.empty);
+		}
+
+		function isPlaying() {
+			return fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "isPlaying",
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => data.status);
+		}
+
+		//ezt meg kell majd hivni ha vége van egy számnak
+		function checkLejatszo() {
+			if (document.getElementById("lejatszo").childNodes.length == 0) {
+				setInterval(isPlaylistEmpty, 1000);
+			}
+		}
+
+		//kiüriti a currently_playing táblát
+		function emptyCurrentlyPlaying() {
+			return fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "emptyCurrentlyPlaying",
+				}),
+			});
+		}
+
+		//true ha a vieonak a currently palyingben vége van
+		function isVideoEnded() {
+			return fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "isVideoEnded",
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => data.ended);
+		}
+
+		function loadCurrentlyPlaying() {
+			return fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "loadCurrentlyPlaying",
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => data);
+		}
+
+		loadCurrentlyPlaying().then((data) => {
+			console.log(data);
+			videoId = data.video_id;
+			embedVideo(
+				data.video_id,
+				"https://img.youtube.com/vi/" + data.video_id + "/hqdefault.jpg",
+				data.title,
+			);
+			seekSlider = document.querySelector("#seekSlider");
+			volumeSlider = document.querySelector("#volumeSlider");
+
+			getLength();
+
+			// Húzás kezdetén
+			seekSlider.addEventListener(
+				"pointerdown",
+				() => (felhasznaloSeek = true),
+			);
+			seekSlider.addEventListener(
+				"pointerleave",
+				() => (felhasznaloSeek = false),
+			);
+
+			// Hangerő kezdetén
+			volumeSlider.addEventListener(
+				"pointerdown",
+				() => (felhasznaloVolume = true),
+			);
+			volumeSlider.addEventListener(
+				"pointerleave",
+				() => (felhasznaloVolume = false),
+			);
+
+			// Húzás közben tároljuk az értéket
+			seekSlider.addEventListener("input", function () {
+				if (felhasznaloSeek) {
+					porget = this.value;
+				}
+			});
+
+			volumeSlider.addEventListener("input", function () {
+				if (felhasznaloVolume) {
+					volume = this.value;
+				}
+			});
+
+			volumeSlider.addEventListener("pointerup", function () {
+				if (!felhasznaloVolume) return;
+				felhasznaloVolume = false;
+				setVolume();
+			});
+
+			seekSlider.addEventListener("pointerup", function () {
+				if (!felhasznaloSeek) return;
+				felhasznaloSeek = false;
+				setPorget();
+			});
+
+			if (data.user_id == localStorage.getItem("user_id") || localStorage.getItem("isadmin") === "1") {
+				document.getElementById("lejátszásgomb").classList.remove("disabled");
+				document.getElementById("kovetkezoBtn").classList.remove("disabled");
+				document.getElementById("volumeSlider").removeAttribute("disabled");
+				document.getElementById("seekSlider").removeAttribute("disabled");
+			}
+			else {
+				document.getElementById("lejátszásgomb").classList.add("disabled");
+				document.getElementById("kovetkezoBtn").classList.add("disabled");
+				document.getElementById("volumeSlider").setAttribute("disabled", "disabled");
+				document.getElementById("seekSlider").setAttribute("disabled", "disabled");
+			}
+
+
+
+		});
+
+		function loadPlaylist() {
+			return fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "getPlaylist",
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => data.playlist);
+		}
+
+		loadPlaylist().then((data) => {
+			data.forEach((e) => {
+				document.getElementById("playlist").innerHTML += embedPlaylistItem(
+					e.video_id,
+					e.title,
+					e.length == 0 ? "LIVE" : e.length,
+				);
+			});
+		});
+
+		//adatbázisban vált értéket az indításhoz
+		function inditas() {
+			fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "playPause",
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => console.log(data));
+		}
+
+		function setVolume() {
+			//if (felhasznaloSeek) return;
+			fetch("../index.php", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					muvelet: "setVolume",
+					volume: volume,
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					//console.log(data);
+				});
+		}
+
+		function getVolume() {
+			if (felhasznaloVolume) return;
+			fetch("../index.php", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					muvelet: "getVolume",
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					volume = data.volume;
+
+					if (volumeSlider) {
+						volumeSlider.value = volume;
+					}
+				});
+		}
+
+		function setPorget() {
+			fetch("../index.php", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					muvelet: "setPorget",
+					time: porget,
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => { });
+		}
+
+		function getCurrentTime() {
+			if (felhasznaloSeek) return;
+
+			fetch("../index.php", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					muvelet: "getCurrentTime",
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					if (seekSlider) seekSlider.value = data.current_time;
+					if (mobileSeekSlider && !felhasznaloSeek) {
+						mobileSeekSlider.value = data.current_time;
+					}
+				});
+		}
+
+		function getLength() {
+			fetch("../index.php", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					muvelet: "getLength",
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					seekSlider.max = data.length;
+					if (mobileSeekSlider) mobileSeekSlider.max = data.length;
+					hossz = data.length;
+				});
+		}
+
+		function search() {
+			fetch("../index.php", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					muvelet: "search",
+					search: document.getElementById("search").value,
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					console.log(data);
+
+					let eredmeny = document.getElementById("eredmeny");
+					let videok = data.results;
+
+					eredmeny.innerHTML = "";
+
+					console.log("EREDMENY TOROLVE");
+
+					if (!videok.length) {
+						eredmeny.innerHTML = "<p>Nincs találat vagy hiba történt.</p>";
+						return;
+					}
+
+					for (let i = 0; i < videok.length; i++) {
+						let keret = document.createElement("div");
+						keret.classList.add("container");
+
+						let talalat = document.createElement("div");
+
+						talalat.innerHTML = embedSearchItem(
+							videok[i].video_id,
+							videok[i].title,
+							videok[i].length == 0 ? "LIVE" : videok[i].length,
+						);
+
+						console.log(videok[i].video_id);
+
+						talalat.onclick = () => {
+							eredmenyTorol();
+
+							insertIntoMusic(
+								videok[i].video_id,
+								videok[i].title,
+								videok[i].length,
+							).then((musicId) => insertIntoPlaylist(musicId));
+						};
+
+						keret.appendChild(talalat);
+						eredmeny.appendChild(keret);
+					}
+				});
+		}
+
+		function isPlaylistEmpty() {
+			fetch("../index.php", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					muvelet: "isPlaylistEmpty",
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					if (data.empty) {
+						return true;
+					} else {
+						return false;
+					}
+				})
+				.catch((error) => console.error("Fetch hiba:", error));
+		}
+
+		function kovetkezo() {
+			if (isPlaylistEmpty()) {
+				return;
+			} else {
+				fetch("../index.php", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						muvelet: "moveFirstToCurrentlyPlaying",
+					}),
+				})
+					.then((response) => response.json())
+					.then((data) => {
+						console.log(data);
+					})
+					.catch((error) => console.error("Fetch hiba:", error));
+			}
+
+			/*
+				let length = seekSlider.max;
+				console.log("max: ", seekSlider.max);
+				console.log("elotte time", porget);
+				porget = length-1.7; 
+				console.log("utana", length);
+				console.log("utana time", porget)
+				setPorget();
+				*/
+		}
+
+		function update() {
+			getCurrentTime();
+			getVolume();
+			ido();
+
+			isPlaying().then((status) => {
+				const isPlay = status == 0;
+				// Asztali gombok
+				if (isPlay) {
+					document.getElementById("play").classList.remove("d-none");
+					document.getElementById("pause").classList.add("d-none");
+				} else {
+					document.getElementById("pause").classList.remove("d-none");
+					document.getElementById("play").classList.add("d-none");
+				}
+				// Mobil gombok
+				const mp = document.getElementById("mobile-play-icon");
+				const mpa = document.getElementById("mobile-pause-icon");
+				if (mp && mpa) {
+					if (isPlay) {
+						mp.classList.remove("d-none");
+						mpa.classList.add("d-none");
+					} else {
+						mpa.classList.remove("d-none");
+						mp.classList.add("d-none");
+					}
+				}
+			});
+
+			loadPlaylist().then((data) => {
+				document.getElementById("playlist").innerHTML = "";
+				data.forEach((e) => {
+					document.getElementById("playlist").innerHTML += embedPlaylistItem(
+						e.video_id,
+						e.title,
+						e.length == 0 ? "LIVE" : e.length,
+					);
+				});
+			});
+
+			loadCurrentlyPlaying().then((data) => {
+				if (videoId != data.video_id) {
+					console.log(data);
+					videoId = data.video_id;
+					embedVideo(
+						data.video_id,
+						"https://img.youtube.com/vi/" +
+						data.video_id +
+						"/maxresdefault.jpg",
+						data.title,
+					);
+					seekSlider = document.querySelector("#seekSlider");
+					volumeSlider = document.querySelector("#volumeSlider");
+
+					getLength();
+
+					// Húzás kezdetén
+					seekSlider.addEventListener(
+						"pointerdown",
+						() => (felhasznaloSeek = true),
+					);
+					seekSlider.addEventListener(
+						"pointerleave",
+						() => (felhasznaloSeek = false),
+					);
+
+					// Hangerő kezdetén
+					volumeSlider.addEventListener(
+						"pointerdown",
+						() => (felhasznaloVolume = true),
+					);
+					volumeSlider.addEventListener(
+						"pointerleave",
+						() => (felhasznaloVolume = false),
+					);
+
+					// Húzás közben tároljuk az értéket
+					seekSlider.addEventListener("input", function () {
+						if (felhasznaloSeek) {
+							porget = this.value;
+						}
+					});
+
+					volumeSlider.addEventListener("input", function () {
+						if (felhasznaloVolume) {
+							volume = this.value;
+						}
+					});
+
+					volumeSlider.addEventListener("pointerup", function () {
+						if (!felhasznaloVolume) return;
+						felhasznaloVolume = false;
+						setVolume();
+					});
+
+					seekSlider.addEventListener("pointerup", function () {
+						if (!felhasznaloSeek) return;
+						felhasznaloSeek = false;
+						setPorget();
+					});
+				}
+			});
+		}
+
+		setInterval(update, 1000);
+
+		document
+			.getElementById("search")
+			.addEventListener("keydown", function (e) {
+				if (e.key === "Enter") {
+					keres();
+					search();
+					eredmenyVisszahoz();
+					//console.log("asdasd");
+				}
+			});
+	</script>
+
+	<!-- ─── MOBIL MINI PLAYER BAR (Spotify-stílus) ─── -->
+
+	<div id="mobile-player-bar">
+		<!-- Seek progress csík a tetején -->
+
+		<input type="range" id="mobile-seek-slider" min="0" max="1000" value="0" />
+
+		<div id="mobile-player-inner">
+			<!-- Borítókép + cím -->
+			<div class="mobile-info">
+				<img id="mobile-thumb" src="" alt="" />
+				<span id="mobile-title">–</span>
+			</div>
+			<!-- Gombok -->
+			<div class="mobile-controls">
+				<button onclick="favorite()" class="mobile-btn">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+						viewBox="0 0 16 16">
+						<path
+							d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
+					</svg>
+				</button>
+				<button onclick="inditas()" class="mobile-btn mobile-play-btn" id="mobile-play-pause">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+						viewBox="0 0 16 16" id="mobile-play-icon">
+						<path
+							d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z" />
+					</svg>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="d-none"
+						viewBox="0 0 16 16" id="mobile-pause-icon">
+						<path
+							d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5" />
+					</svg>
+				</button>
+				<button onclick="kovetkezo()" class="mobile-btn">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+						viewBox="0 0 16 16">
+						<path
+							d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.752l-6.267 3.636c-.52.302-1.233-.043-1.233-.696v-2.94l-6.267 3.636C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696L7.5 7.248v-2.94c0-.653.713-.998 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5" />
+					</svg>
+				</button>
+			</div>
+			<!-- Hangerő -->
+			<div class="mobile-volume">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgba(255,255,255,0.7)"
+					viewBox="0 0 24 24">
+					<path
+						d="M18.36 19.36a1 1 0 0 1-.705-1.71C19.167 16.148 20 14.142 20 12s-.833-4.148-2.345-5.65a1 1 0 1 1 1.41-1.419C20.958 6.812 22 9.322 22 12s-1.042 5.188-2.935 7.069a.997.997 0 0 1-.705.291z" />
+					<path
+						d="M15.53 16.53a.999.999 0 0 1-.703-1.711C15.572 14.082 16 13.054 16 12s-.428-2.082-1.173-2.819a1 1 0 1 1 1.406-1.422A6 6 0 0 1 18 12a6 6 0 0 1-1.767 4.241.996.996 0 0 1-.703.289zM12 22a1 1 0 0 1-.707-.293L6.586 17H4c-1.103 0-2-.897-2-2V9c0-1.103.897-2 2-2h2.586l4.707-4.707A.998.998 0 0 1 13 3v18a1 1 0 0 1-1 1z" />
+				</svg>
+				<input type="range" id="mobile-volume-slider" max="100" value="50" />
+			</div>
+		</div>
+	</div>
+	<script src="https://www.youtube.com/iframe_api"></script>
+	<script>
+		// Mobil seek szinkronizálása
+		console.log(window.innerWidth);
+
+		const _origGetCurrentTime = getCurrentTime;
+		// Patch: seekSlider.value változtatása után frissítjük a mobil csúszkát is
+		const mobileSeekSlider = document.getElementById("mobile-seek-slider");
+		const mobileVolumeSlider = document.getElementById(
+			"mobile-volume-slider",
+		);
+
+		if (mobileSeekSlider) {
+			mobileSeekSlider.addEventListener(
+				"pointerdown",
+				() => (felhasznaloSeek = true),
+			);
+			mobileSeekSlider.addEventListener(
+				"pointerleave",
+				() => (felhasznaloSeek = false),
+			);
+			mobileSeekSlider.addEventListener("input", function () {
+				if (felhasznaloSeek) {
+					porget = this.value;
+					if (seekSlider) seekSlider.value = this.value;
+				}
+			});
+			mobileSeekSlider.addEventListener("pointerup", function () {
+				if (!felhasznaloSeek) return;
+				felhasznaloSeek = false;
+				setPorget();
+			});
+		}
+
+		if (mobileVolumeSlider) {
+			mobileVolumeSlider.addEventListener(
+				"pointerdown",
+				() => (felhasznaloVolume = true),
+			);
+			mobileVolumeSlider.addEventListener(
+				"pointerleave",
+				() => (felhasznaloVolume = false),
+			);
+			mobileVolumeSlider.addEventListener("input", function () {
+				if (felhasznaloVolume) {
+					volume = this.value;
+					if (volumeSlider) volumeSlider.value = this.value;
+				}
+			});
+			mobileVolumeSlider.addEventListener("pointerup", function () {
+				if (!felhasznaloVolume) return;
+				felhasznaloVolume = false;
+				setVolume();
+			});
+		}
+
+		// Seek és volume értékek tükrözése a mobil csúszkákra
+		const _origUpdate = update;
+		function update() {
+			_origUpdate();
+			// Szinkronizálás késleltetéssel (a fetch-ek async-ok)
+			setTimeout(() => {
+				if (mobileSeekSlider && seekSlider && !felhasznaloSeek) {
+					mobileSeekSlider.max = seekSlider.max;
+					mobileSeekSlider.value = seekSlider.value;
+				}
+				if (mobileVolumeSlider && volumeSlider && !felhasznaloVolume) {
+					mobileVolumeSlider.value = volumeSlider.value;
+				}
+			}, 300);
+		}
+	</script>
+</body>
+
+</html>
