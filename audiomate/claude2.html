@@ -524,7 +524,7 @@
 
 			//const apikulcs = "AIzaSyAvqcZuWfXHENDGZOhjSKoKyaZe4xGtTVM";
 			const apikulcs2 = "AIzaSyAjhNmbvJwzwac3JK-UxQFId23xWsn10-E";
-			const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=5&q=${encodeURIComponent(search)}&key=${apikulcs2}`;
+			const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&mqdefault=5&q=${encodeURIComponent(search)}&key=${apikulcs2}`;
 
 			function lekerVideok(vissza) {
 				let van = 0;
@@ -741,7 +741,7 @@
 			videoId = data.video_id;
 			embedVideo(
 				data.video_id,
-				"https://img.youtube.com/vi/" + data.video_id + "/hqdefault.jpg",
+				"https://img.youtube.com/vi/" + data.video_id + "/mqdefault.jpg",
 				data.title,
 				data.music_id,
 			);
@@ -1179,7 +1179,7 @@
 						data.video_id,
 						"https://img.youtube.com/vi/" +
 						data.video_id +
-						"/maxresdefault.jpg",
+						"/mqdefault.jpg",
 						data.title,
 						data.music_id,
 					);

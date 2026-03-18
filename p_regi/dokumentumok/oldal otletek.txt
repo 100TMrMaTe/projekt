@@ -23,4 +23,10 @@ mukodes:
 kedvenc zenek megjelenitese fiokonkent. 
 
 kiiirni egy navbarra a bejelentkezett emailt es hogy mennyi ideje van meg vissza az automatikus kijelentkezesig;
-	
+
+
+
+
+kell egy oldal ahol ajanlasok erkeznek minden ajnlas 7 napig lessz bent a listaban 
+lista minden elemhez egy lejatszas gomb ha nincs tokened akkor nem tudsz ranyomni ha van akkor rakja playlistbe
+bal oldalt kereses ugyan az mint a fo oldalon jobb oldalt meg az ajanlas lista es ha mar bent van akkor csak a het napot frissitjuk
