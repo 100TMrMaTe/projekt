@@ -350,6 +350,8 @@ function logout($conn, $token)
 
 
 
+
+
 include_once __DIR__ . "/../mailer/sendVerification.php";
 function Connect_to_server()
 {
@@ -494,7 +496,7 @@ function denyUser($conn, $id)
 
 function deleteUser($conn, $id)
 {
-  $tables = ["active_users", "user_handler", "playlist", "currently_playing"];
+  $tables = ["active_users", "user_handler", "playlist", "currently_playing", "fav"];
   foreach ($tables as $table) {
     $stmt = $conn->prepare("DELETE FROM $table WHERE user_id = ?");
     $stmt->bind_param("s", $id);
