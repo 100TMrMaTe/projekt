@@ -1,11 +1,49 @@
-if(localStorage.getItem("token") === null) {
+if (localStorage.getItem("token") === null) {
     window.location.href = "../login/login.html";
 }
-else if(localStorage.getItem("isadmin") == 0) {
+else if (localStorage.getItem("isadmin") == 0) {
     window.location.href = "../audio/claude2.html";
 }
+function tokenRefresh() {
+    if (!localStorage.getItem("token")) {
+        return;
+    }
+    fetch("../index.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            muvelet: "tokenRefresh",
+            token: localStorage.getItem("token"),
+        }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.status != "success_token_refresh") {
+                localStorage.clear();
+                window.location.href = "../login/login.html";
+            }
+        })
+        .catch((error) => console.error("Error refreshing token:", error));
+}
+document.body.addEventListener("click", tokenRefresh);
 
 
+function logout() {
+    fetch("../index.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            muvelet: "logout",
+            token: localStorage.getItem("token"),
+        }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            localStorage.clear();
+            window.location.href = "../login/login.html";
+        })
+        .catch((error) => console.error("Error refreshing token:", error));
+}
 
 
 
@@ -17,9 +55,9 @@ else if(localStorage.getItem("isadmin") == 0) {
 function toggleTheme() {
     const body = document.body;
     const icon = document.getElementById('theme-icon');
-    
+
     body.classList.toggle('dark-theme');
-    
+
     if (body.classList.contains('dark-theme')) {
         icon.className = 'bi bi-sun-fill';
         localStorage.setItem('theme', 'dark');
@@ -34,7 +72,7 @@ function loadTheme() {
     const savedTheme = localStorage.getItem('theme');
     const body = document.body;
     const icon = document.getElementById('theme-icon');
-    
+
     if (savedTheme === 'dark') {
         body.classList.add('dark-theme');
         if (icon) {
@@ -47,9 +85,9 @@ function loadTheme() {
 function showToast(message, type = 'info') {
     const toastEl = document.getElementById('notification-toast');
     const toastBody = document.getElementById('toast-message');
-    
+
     if (!toastEl || !toastBody) return;
-    
+
     const toast = new bootstrap.Toast(toastEl);
     toastBody.textContent = message;
     toastEl.className = `toast align-items-center border-0 ${type}`;
@@ -60,12 +98,12 @@ function showToast(message, type = 'info') {
 function filterList(listId, searchTerm) {
     const list = document.getElementById(listId);
     if (!list) return;
-    
+
     const items = list.getElementsByTagName('li');
     searchTerm = searchTerm.toLowerCase();
-    
+
     let visibleCount = 0;
-    
+
     for (let item of items) {
         const text = item.textContent.toLowerCase();
         if (text.includes(searchTerm)) {
@@ -82,9 +120,9 @@ function updateStats() {
     const regList = document.getElementById('reg');
     const usersList = document.getElementById('users');
     const logList = document.getElementById('log');
-    
+
     if (!regList || !usersList || !logList) return;
-    
+
     // Count only visible items (not loading spinner)
     const regCount = Array.from(regList.getElementsByTagName('li'))
         .filter(li => !li.querySelector('.spinner-border')).length;
@@ -92,21 +130,21 @@ function updateStats() {
         .filter(li => !li.querySelector('.spinner-border')).length;
     const logsCount = Array.from(logList.getElementsByTagName('li'))
         .filter(li => !li.querySelector('.spinner-border')).length;
-    
+
     // Update stat cards
     const pendingCountEl = document.getElementById('pending-count');
     const usersCountEl = document.getElementById('users-count');
     const logsCountEl = document.getElementById('logs-count');
-    
+
     if (pendingCountEl) pendingCountEl.textContent = regCount;
     if (usersCountEl) usersCountEl.textContent = usersCount;
     if (logsCountEl) logsCountEl.textContent = logsCount;
-    
+
     // Update badges
     const regBadge = document.getElementById('reg-badge');
     const usersBadge = document.getElementById('users-badge');
     const logBadge = document.getElementById('log-badge');
-    
+
     if (regBadge) regBadge.textContent = regCount;
     if (usersBadge) usersBadge.textContent = usersCount;
     if (logBadge) logBadge.textContent = logsCount;
@@ -244,17 +282,17 @@ function songlog(id, email, user_class, date, title) {
 function approveUserWithAnimation(id, button) {
     const listItem = button.closest('li');
     const email = listItem.querySelector('.email-text').textContent;
-    
+
     // Disable button
     button.disabled = true;
     button.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Jóváhagyás...';
-    
+
     // Call original function
     approveUser(id);
-    
+
     // Show success animation
     showToast(`Kérelem elfogadva: ${email}`, 'success');
-    
+
     // Animate removal
     setTimeout(() => {
         listItem.style.opacity = '0';
@@ -269,18 +307,18 @@ function approveUserWithAnimation(id, button) {
 function denyUserWithAnimation(id, button) {
     const listItem = button.closest('li');
     const email = listItem.querySelector('.email-text').textContent;
-    
+
     if (confirm(`Biztosan elutasítod a következő kérelmet: ${email}?`)) {
         // Disable button
         button.disabled = true;
         button.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Elutasítás...';
-        
+
         // Call original function
         denyUser(id);
-        
+
         // Show toast
         showToast(`Kérelem elutasítva: ${email}`, 'error');
-        
+
         // Animate removal
         setTimeout(() => {
             listItem.style.opacity = '0';
@@ -296,18 +334,18 @@ function denyUserWithAnimation(id, button) {
 function deleteUserWithAnimation(id, button) {
     const listItem = button.closest('li');
     const email = listItem.querySelector('.email-text').textContent;
-    
+
     if (confirm(`Biztosan törölni szeretnéd ezt a felhasználót: ${email}?`)) {
         // Disable button
         button.disabled = true;
         button.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Törlés...';
-        
+
         // Call original function
         deleteUser(id);
-        
+
         // Show toast
         showToast(`Felhasználó törölve: ${email}`, 'error');
-        
+
         // Animate removal
         setTimeout(() => {
             listItem.style.opacity = '0';
@@ -323,15 +361,15 @@ function deleteUserWithAnimation(id, button) {
 function makeAdminWithAnimation(id, button) {
     const listItem = button.closest('li');
     const email = listItem.querySelector('.email-text').textContent;
-    
+
     // Disable button
     button.disabled = true;
     const originalText = button.innerHTML;
     button.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Folyamatban...';
-    
+
     // Call original function
     makeAdmin(id);
-    
+
     // Show toast based on current state
     const isAdmin = listItem.querySelector('.admin-badge');
     if (isAdmin) {
@@ -339,22 +377,22 @@ function makeAdminWithAnimation(id, button) {
     } else {
         showToast(`Admin jog hozzáadva: ${email}`, 'success');
     }
-    
+
     // The init() function will reload the list
 }
 
 function revokeAdminWithAnimation(id, button) {
     const listItem = button.closest('li');
     const email = listItem.querySelector('.email-text').textContent;
-    
+
     // Disable button
     button.disabled = true;
     const originalText = button.innerHTML;
     button.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Folyamatban...';
-    
+
     // Call original function
     revokeAdmin(id);
-    
+
     // Show toast based on current state
     const isAdmin = listItem.querySelector('.admin-badge');
     if (isAdmin) {
@@ -362,7 +400,7 @@ function revokeAdminWithAnimation(id, button) {
     } else {
         showToast(`Admin jog hozzáadva: ${email}`, 'success');
     }
-    
+
     // The init() function will reload the list
 }
 
@@ -378,12 +416,12 @@ function bgChange() {
 }
 
 // Initialize on page load
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     loadTheme();
-    
+
     // Auto-refresh can be enabled here
     // setInterval(init, 5000);
-    
+
     // Background change can be enabled here
     // setInterval(bgChange, 30000);
 });
@@ -391,13 +429,13 @@ document.addEventListener('DOMContentLoaded', function() {
 // Override the original adminpageLog to include stats update
 const originalAdminpageLog = window.adminpageLog;
 if (typeof originalAdminpageLog === 'function') {
-    window.adminpageLog = function() {
+    window.adminpageLog = function () {
         // Call original function
         const result = originalAdminpageLog.apply(this, arguments);
-        
+
         // Update stats after data loads
         setTimeout(updateStats, 100);
-        
+
         return result;
     };
 }

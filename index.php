@@ -101,6 +101,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         case "DeleteFromFavList":
             DeleteFromFavList($conn, $data["id"], $data["user_id"]);
             break;
+        case "insertIntoMusicRequest":
+            insertIntoMusicRequest($conn, $data["music_id"]);
+            break;
+        case "getMusicRequest":
+            getMusicRequest($conn);
+            break;
 
         //==========================> server.html <==========================
 

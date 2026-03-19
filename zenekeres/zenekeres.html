@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="zenekeresstyle.css" />
+    <title></title>
+</head>
+
+<body>
+    <div class="background"></div>
+
+    <div class="container-fluid px-3">
+        <!-- Navbar -->
+        <div class="row pt-2 pb-2">
+            <div class="col-12">
+                <div class="p-2 px-3 rounded-3" id="navbar">
+                    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+                        <div class="d-flex align-items-center gap-3">
+                            <span id="headerfelhasznalonev">Felhasználó neve</span>
+                            <span id="timer">idő</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 flex-wrap">
+                            <a class="btn text-white" id="adminpagebutton"
+                                href="../adminpage/adminpage_integrated.html"><i
+                                    class="bi bi-shield-check me-1"></i>Admin oldal
+                            </a>
+                            <a class="btn text-white" id="fooldalbutton" href="../audio/claude2.html"><i
+                                    class="bi bi-house-fill me-1"></i>Főoldal
+                            </a>
+                            <button class="btn btn-glass" id="theme-toggle" onclick="toggleTheme()">
+                                <i class="bi bi-moon-stars-fill" id="theme-icon"></i>
+                            </button>
+                            <button class="Btn" id="logoutbutton" onclick="logout()">
+                                <div class="sign">
+                                    <svg viewBox="0 0 512 512">
+                                        <path
+                                            d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z" />
+                                    </svg>
+                                </div>
+                                <div class="text">Logout</div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tartalom: bal (kereső) + jobb (player + playlist) -->
+        <div class="row g-3">
+            <!-- Bal: kereső -->
+            <div class="col-12 col-lg-6">
+                <div class="d-flex gap-2 mb-2">
+                    <input type="text" oninput="(eredmenyVisszahoz(), search())"
+                        class="form-control text-light kereso flex-grow-1" style="height: 46px"
+                        placeholder="🔍  Keresés..." id="search" name="kereso" />
+                    <button onclick="(keres(), eredmenyVisszahoz())" class="btn text-white px-4"
+                        style="height: 46px; white-space: nowrap">
+                        Keresés
+                    </button>
+                    <div id="kedvencGomb">
+                        
+                    </div>
+                    <div id="kedvencEltuntetGomb">
+                    </div>
+
+                </div>
+
+                <div class="eredmenyDoboz me-3" id="eredmenyDoboz">
+                    <div id="eredmeny" class="eredmeny text-light"></div>
+                </div>
+            </div>
+
+            <!-- Jobb: player + playlist egymás alatt, szorosan -->
+            <div class="col-12 col-lg-6">
+                <div id="kedvencDoboz" class="kedvencDoboz">
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script src="zenekeres.js"></script>
+</body>
+
+</html>
