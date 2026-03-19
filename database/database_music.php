@@ -48,6 +48,24 @@ function insertIntoPlaylist($conn, $music_id, $token)
     }
 }
 
+function insertIntoMusicRequest($conn, $music_id)
+{
+    $sql = "INSERT INTO music_request (music_id, expire)
+            VALUES (?, DATE_ADD(NOW(), INTERVAL 7 DAY))
+            ON DUPLICATE KEY UPDATE expire = DATE_ADD(NOW(), INTERVAL 7 DAY)";
+
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param("i", $music_id);
+        $stmt->execute();
+
+        echo json_encode([
+            "status" => "success",
+        ]);
+
+        $stmt->close();
+    }
+}
+
 //megnéyi a playlist üres-e
 function isPlaylistEmpty($conn)
 {
@@ -91,6 +109,27 @@ function getPlaylist($conn)
     }
 }
 
+function getMusicRequest($conn)
+{
+    $sql = "SELECT music_request.expire, music.video_id, music.title, music.length, music.id
+            FROM music_request
+            JOIN music ON music_request.music_id = music.id
+            WHERE music_request.expire > NOW()";
+
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->execute();
+
+        $result = $stmt->get_result(); 
+        $rows = $result->fetch_all(MYSQLI_ASSOC);
+
+        echo json_encode([
+            "status" => "success",
+            "music_request" => $rows
+        ]);
+
+        $stmt->close();
+    }
+}
 
 
 function search($conn, $search)

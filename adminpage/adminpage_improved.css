@@ -446,3 +446,72 @@ body {
 .d-none-filter {
     display: none !important;
 }
+
+
+#logoutbutton {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: width 0.3s cubic-bezier(.4, 0, .2, 1), border-radius 0.3s;
+    box-shadow: 0 2px 12px rgba(255, 80, 80, 0.35);
+    background: linear-gradient(135deg, #ff5252, #d63031);
+    padding: 0;
+}
+
+#logoutbutton .sign {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: width 0.3s, padding 0.3s;
+    flex-shrink: 0;
+}
+
+#logoutbutton .sign svg {
+    width: 15px;
+    height: 15px;
+}
+
+#logoutbutton .sign svg path {
+    fill: white;
+}
+
+#logoutbutton .text {
+    position: absolute;
+    right: 0;
+    width: 0;
+    opacity: 0;
+    color: white;
+    font-size: 0.85em;
+    font-weight: 600;
+    transition: width 0.3s, opacity 0.3s;
+    white-space: nowrap;
+    padding-right: 10px;
+    font-family: 'Outfit', sans-serif;
+}
+
+#logoutbutton:hover {
+    width: 115px;
+    border-radius: 40px;
+}
+
+#logoutbutton:hover .sign {
+    width: 30%;
+    padding-left: 14px;
+}
+
+#logoutbutton:hover .text {
+    width: 70%;
+    opacity: 1;
+}
+
+#logoutbutton:active {
+    transform: scale(0.96);
+}

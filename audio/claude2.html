@@ -23,21 +23,30 @@
 		<div class="row pt-2 pb-2">
 			<div class="col-12">
 				<div class="p-2 px-3 rounded-3" id="navbar">
-					<div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+					<div class="d-flex align-items-center justify-content-between">
 						<div class="d-flex align-items-center gap-3">
 							<span id="headerfelhasznalonev">Felhasználó neve</span>
 							<span id="timer">idő</span>
 						</div>
-						<div class="d-flex align-items-center gap-2 flex-wrap">
+
+						<!-- Hamburger gomb (csak mobilon) -->
+						<button class="border-0 bg-transparent d-lg-none" onclick="toggleNav()"
+							style="color: white; font-size: 1.6rem; line-height:1;">
+							<i class="bi bi-list" id="nav-hamburger-icon"></i>
+						</button>
+
+						<!-- Gombok -->
+						<div id="navbarGombok" class="d-none d-lg-flex align-items-center gap-2 flex-wrap">
 							<a class="btn text-white" id="adminpagebutton"
-								href="../adminpage/adminpage_integrated.html"><i class="bi bi-shield-check me-1"></i>Admin oldal
+								href="../adminpage/adminpage_integrated.html">
+								<i class="bi bi-shield-check me-1"></i>Admin oldal
 							</a>
 							<a class="btn text-white" id="zenekeresekbutton"
 								href="../zenekeres/zenekeres.html">Zenekeresek
 							</a>
 							<button class="btn btn-glass" id="theme-toggle" onclick="toggleTheme()">
-                    			<i class="bi bi-moon-stars-fill" id="theme-icon"></i>
-                			</button>
+								<i class="bi bi-moon-stars-fill" id="theme-icon"></i>
+							</button>
 							<button class="Btn" id="logoutbutton" onclick="logout()">
 								<div class="sign">
 									<svg viewBox="0 0 512 512">
@@ -49,6 +58,32 @@
 							</button>
 						</div>
 					</div>
+
+					<!-- Mobil lenyíló rész -->
+					<div id="navbarMobil" class="d-none d-lg-none mt-2">
+						<div class="d-flex flex-column gap-2">
+							<a class="btn text-white w-100 text-start" id="adminpagebutton-mob"
+								href="../adminpage/adminpage_integrated.html">
+								<i class="bi bi-shield-check me-1"></i>Admin oldal
+							</a>
+							<a class="btn text-white w-100 text-start" href="../zenekeres/zenekeres.html">Zenekérések
+							</a>
+							<div class="d-flex gap-2">
+								<button class="btn btn-glass" onclick="toggleTheme()">
+									<i class="bi bi-moon-stars-fill" id="theme-icon-mob"></i>
+								</button>
+								<button class="Btn" id="logoutbutton" onclick="logout()">
+									<div class="sign">
+										<svg viewBox="0 0 512 512">
+											<path
+												d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z" />
+										</svg>
+									</div>
+									<div class="text">Logout</div>
+								</button>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -57,34 +92,34 @@
 		<div class="row g-3">
 			<!-- Bal: kereső -->
 			<div class="col-12 col-lg-6">
-				<div class="d-flex gap-2 mb-2">
-					<input type="text" oninput="(search(), eredmenyVisszahoz())"
-						class="form-control text-light kereso flex-grow-1" style="height: 46px"
-						placeholder="🔍  Keresés..." id="search" name="kereso" />
-					<button onclick="(keres(), search(), eredmenyVisszahoz())" class="btn text-white px-4"
-						style="height: 46px; white-space: nowrap">
-						Keresés
-					</button>
-					<div id="kedvencGomb">
-						<button
-							onclick="kedvenceim(), kedvenceimVisszahoz(), lejatszoTorol(), kedvencGombTorol(), kedvencEltuntetGombVisszahoz()"
-							class="btn text-white px-4" style="height: 46px; white-space: nowrap">
-							<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-								class="bi bi-heart-fill" viewBox="0 0 16 16" id="filled-heart">
-								<path fill-rule="evenodd"
-									d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
-							</svg>
+				<div class="kereso-sor">
+					<div class="d-flex gap-2">
+						<input type="text" oninput="(search(), eredmenyVisszahoz())"
+							class="form-control text-light kereso flex-grow-1" style="height: 46px"
+							placeholder="🔍  Keresés..." id="search" name="kereso" />
+						<button onclick="(keres(), search(), eredmenyVisszahoz())" class="btn text-white px-4"
+							style="height: 46px; white-space: nowrap">
+							Keresés
 						</button>
+						<div id="kedvencGomb">
+							<button
+								onclick="kedvenceim(), kedvenceimVisszahoz(), lejatszoTorol(), kedvencGombTorol(), kedvencEltuntetGombVisszahoz()"
+								class="btn text-white px-4" style="height: 46px; white-space: nowrap">
+								<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+									class="bi bi-heart-fill" viewBox="0 0 16 16" id="filled-heart">
+									<path fill-rule="evenodd"
+										d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+								</svg>
+							</button>
+						</div>
+						<div id="kedvencEltuntetGomb">
+							<button
+								onclick="kedvenceimTorol(), lejatszoVisszahoz(), kedvencGombVisszahoz(), kedvencEltuntetGomb()"
+								class="btn text-white px-4" style="height: 46px; white-space: nowrap">
+								🎶
+							</button>
+						</div>
 					</div>
-					<div id="kedvencEltuntetGomb">
-						<button
-							onclick="kedvenceimTorol(), lejatszoVisszahoz(), kedvencGombVisszahoz(), kedvencEltuntetGomb()"
-							class="btn text-white px-4" style="height: 46px; white-space: nowrap">
-							🎶
-
-						</button>
-					</div>
-
 				</div>
 
 				<div class="eredmenyDoboz" id="eredmenyDoboz">
@@ -237,6 +272,7 @@
 		let player;
 
 		function ido() {
+			if (!seekSlider || !hossz) return;
 			//if (!player || !player.getDuration) return;
 			//console.log(seekSlider.value);
 			let jelenlegi = Math.floor(seekSlider.value);
@@ -548,9 +584,9 @@
 		function toggleTheme() {
 			const body = document.body;
 			const icon = document.getElementById('theme-icon');
-			
+
 			body.classList.toggle('dark-theme');
-			
+
 			if (body.classList.contains('dark-theme')) {
 				icon.className = 'bi bi-sun-fill';
 				localStorage.setItem('theme', 'dark');
@@ -565,7 +601,7 @@
 			const savedTheme = localStorage.getItem('theme');
 			const body = document.body;
 			const icon = document.getElementById('theme-icon');
-			
+
 			if (savedTheme === 'dark') {
 				body.classList.add('dark-theme');
 				if (icon) {
@@ -832,89 +868,89 @@
 
 		setTimeout(() => {
 			loadCurrentlyPlaying().then((data) => {
-			//console.log(data);
-			currentlPlayingUserId = data.user_id;
-			videoId = data.video_id;
-			embedVideo(
-				data.video_id,
-				"https://img.youtube.com/vi/" + data.video_id + "/mqdefault.jpg",
-				data.title,
-				data.music_id,
-			);
-			seekSlider = document.querySelector("#seekSlider");
-			volumeSlider = document.querySelector("#volumeSlider");
+				//console.log(data);
+				currentlPlayingUserId = data.user_id;
+				videoId = data.video_id;
+				embedVideo(
+					data.video_id,
+					"https://img.youtube.com/vi/" + data.video_id + "/mqdefault.jpg",
+					data.title,
+					data.music_id,
+				);
+				seekSlider = document.querySelector("#seekSlider");
+				volumeSlider = document.querySelector("#volumeSlider");
 
-			getLength();
+				getLength();
 
-			// Húzás kezdetén
-			seekSlider.addEventListener(
-				"pointerdown",
-				() => (felhasznaloSeek = true),
-			);
-			seekSlider.addEventListener(
-				"pointerleave",
-				() => (felhasznaloSeek = false),
-			);
+				// Húzás kezdetén
+				seekSlider.addEventListener(
+					"pointerdown",
+					() => (felhasznaloSeek = true),
+				);
+				seekSlider.addEventListener(
+					"pointerleave",
+					() => (felhasznaloSeek = false),
+				);
 
-			// Hangerő kezdetén
-			volumeSlider.addEventListener(
-				"pointerdown",
-				() => (felhasznaloVolume = true),
-			);
-			volumeSlider.addEventListener(
-				"pointerleave",
-				() => (felhasznaloVolume = false),
-			);
+				// Hangerő kezdetén
+				volumeSlider.addEventListener(
+					"pointerdown",
+					() => (felhasznaloVolume = true),
+				);
+				volumeSlider.addEventListener(
+					"pointerleave",
+					() => (felhasznaloVolume = false),
+				);
 
-			// Húzás közben tároljuk az értéket
-			seekSlider.addEventListener("input", function () {
-				if (felhasznaloSeek) {
-					porget = this.value;
+				// Húzás közben tároljuk az értéket
+				seekSlider.addEventListener("input", function () {
+					if (felhasznaloSeek) {
+						porget = this.value;
+					}
+				});
+
+				volumeSlider.addEventListener("input", function () {
+					if (felhasznaloVolume) {
+						volume = this.value;
+					}
+				});
+
+				volumeSlider.addEventListener("pointerup", function () {
+					if (!felhasznaloVolume) return;
+					felhasznaloVolume = false;
+					setVolume();
+				});
+
+				seekSlider.addEventListener("pointerup", function () {
+					if (!felhasznaloSeek) return;
+					felhasznaloSeek = false;
+					setPorget();
+				});
+
+
+				if (data.user_id == localStorage.getItem("user_id") || localStorage.getItem("isadmin") === "1") {
+					document.getElementById("lejátszásgomb").classList.remove("disabled");
+					document.getElementById("kovetkezoBtn").classList.remove("disabled");
+					document.getElementById("volumeSlider").removeAttribute("disabled");
+					document.getElementById("seekSlider").removeAttribute("disabled");
+					document.getElementById("mobile-play-pause").classList.remove("disabled");
+					document.getElementById("mobile-volume-slider").removeAttribute("disabled");
+					document.getElementById("mobile-seek-slider").removeAttribute("disabled");
+					document.getElementById("mobile-kovetkezoBtn").classList.remove("disabled");
+				}
+				else {
+					document.getElementById("lejátszásgomb").classList.add("disabled");
+					document.getElementById("kovetkezoBtn").classList.add("disabled");
+					document.getElementById("volumeSlider").setAttribute("disabled", "disabled");
+					document.getElementById("seekSlider").setAttribute("disabled", "disabled");
+					document.getElementById("mobile-play-pause").classList.add("disabled");
+					document.getElementById("mobile-volume-slider").setAttribute("disabled", "disabled");
+					document.getElementById("mobile-seek-slider").setAttribute("disabled", "disabled");
+					document.getElementById("mobile-kovetkezoBtn").classList.add("disabled");
 				}
 			});
+		}, 400);
 
-			volumeSlider.addEventListener("input", function () {
-				if (felhasznaloVolume) {
-					volume = this.value;
-				}
-			});
-
-			volumeSlider.addEventListener("pointerup", function () {
-				if (!felhasznaloVolume) return;
-				felhasznaloVolume = false;
-				setVolume();
-			});
-
-			seekSlider.addEventListener("pointerup", function () {
-				if (!felhasznaloSeek) return;
-				felhasznaloSeek = false;
-				setPorget();
-			});
-
-
-			if (data.user_id == localStorage.getItem("user_id") || localStorage.getItem("isadmin") === "1") {
-				document.getElementById("lejátszásgomb").classList.remove("disabled");
-				document.getElementById("kovetkezoBtn").classList.remove("disabled");
-				document.getElementById("volumeSlider").removeAttribute("disabled");
-				document.getElementById("seekSlider").removeAttribute("disabled");
-				document.getElementById("mobile-play-pause").classList.remove("disabled");
-				document.getElementById("mobile-volume-slider").removeAttribute("disabled");
-				document.getElementById("mobile-seek-slider").removeAttribute("disabled");
-				document.getElementById("mobile-kovetkezoBtn").classList.remove("disabled");
-			}
-			else {
-				document.getElementById("lejátszásgomb").classList.add("disabled");
-				document.getElementById("kovetkezoBtn").classList.add("disabled");
-				document.getElementById("volumeSlider").setAttribute("disabled", "disabled");
-				document.getElementById("seekSlider").setAttribute("disabled", "disabled");
-				document.getElementById("mobile-play-pause").classList.add("disabled");
-				document.getElementById("mobile-volume-slider").setAttribute("disabled", "disabled");
-				document.getElementById("mobile-seek-slider").setAttribute("disabled", "disabled");
-				document.getElementById("mobile-kovetkezoBtn").classList.add("disabled");
-			}
-		});
-	}, 300);
-		
 
 		function loadPlaylist() {
 			return fetch("../index.php", {
@@ -1258,8 +1294,7 @@
 
 
 
-		function kedvencToPlaylist(id)
-		{
+		function kedvencToPlaylist(id) {
 			fetch("../index.php", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
@@ -1269,14 +1304,13 @@
 					token: localStorage.getItem("token"),
 				}),
 			})
-			.then((response) => response.json())
-			.then((data) => {
-				console.log(data);
-			});
+				.then((response) => response.json())
+				.then((data) => {
+					console.log(data);
+				});
 		}
 
-		function DeleteFromFavList(id,element)
-		{
+		function DeleteFromFavList(id, element) {
 			fetch("../index.php", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
@@ -1313,7 +1347,7 @@
 		function update() {
 			getCurrentTime();
 			getVolume();
-			ido();
+			if (seekSlider && hossz) ido();
 
 			isPlaying().then((status) => {
 				const isPlay = status == 0;
@@ -1553,6 +1587,15 @@
 				}
 			}, 300);
 		}
+
+		function toggleNav() {
+			const menu = document.getElementById("navbarMobil");
+			const icon = document.getElementById("nav-hamburger-icon");
+			const open = menu.classList.contains("d-none");
+			menu.classList.toggle("d-none", !open);
+			icon.className = open ? "bi bi-x" : "bi bi-list";
+		}
 	</script>
 </body>
+
 </html>
