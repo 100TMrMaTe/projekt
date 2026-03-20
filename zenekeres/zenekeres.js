@@ -1,6 +1,7 @@
 // ── Fejléc / auth inicializálás ──────────────────────────────────────────────
 getMusicRequest();
 
+document.getElementById("kedvencDoboz").innerHTML = "";
 if (localStorage.getItem("email") == null && localStorage.getItem("token") == null) {
     document.getElementById("headerfelhasznalonev").innerText = "Vendég";
     document.getElementById("timer").classList.add("d-none");
@@ -100,6 +101,7 @@ function insertIntoMusicRequest(musicId) {
             music_id: musicId,
         }),
     });
+
 }
 
 // ── Auth függvények ───────────────────────────────────────────────────────────
@@ -256,8 +258,8 @@ function eredmenyTorol() {
 
 
 
- function embedSearchItem(videoId, title, duration) {
-			return `<div class="row mb-2 p-2 rounded video talalat">
+function embedSearchItem(videoId, title, duration) {
+    return `<div class="row mb-2 p-2 rounded video talalat">
                         <div class="col-4">
                             <img src="https://img.youtube.com/vi/${videoId}/mqdefault.jpg" class="img-fluid rounded"/>
                         </div>
@@ -266,7 +268,7 @@ function eredmenyTorol() {
                             <h3>${keresettVideoIdo(duration)}</h3>
                         </div>
                     </div>`;
-		}
+}
 
 
 
@@ -387,8 +389,8 @@ function insertIntoMusic(videoId, title, length) {
 }
 
 function getMusicRequest() {
-    
-   fetch("../index.php", {
+    document.getElementById("kedvencDoboz").innerHTML = "";
+    fetch("../index.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -397,16 +399,16 @@ function getMusicRequest() {
     })
         .then((response) => response.json())
         .then((data) => {
-            console.log(data);
-			data.music_request.forEach((e) => {
-				document.getElementById("kedvencDoboz").innerHTML += kedvencKiir(
-					e.video_id,
-					e.title,
-					e.length == 0 ? "LIVE" : e.length,
+            //console.log(data);
+            data.music_request.forEach((e) => {
+                document.getElementById("kedvencDoboz").innerHTML += kedvencKiir(
+                    e.video_id,
+                    e.title,
+                    e.length == 0 ? "LIVE" : e.length,
                     e.id
-				);
-			});
-		});
+                );
+            });
+        });
 
 
 
@@ -414,85 +416,85 @@ function getMusicRequest() {
 }
 
 
-function kivansagToPlaylist(id)
-		{
-			fetch("../index.php", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({
-					muvelet: "insertIntoPlaylist",
-					music_id: id,
-					token: localStorage.getItem("token"),
-				}),
-			})
-			.then((response) => response.json())
-			.then((data) => {
-                
-			});
-		}
+function kivansagToPlaylist(id) {
+    fetch("../index.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            muvelet: "insertIntoPlaylist",
+            music_id: id,
+            token: localStorage.getItem("token"),
+        }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
 
-        
+        });
+}
+
+
 
 function search() {
-			fetch("../index.php", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					muvelet: "search",
-					search: document.getElementById("search").value,
-				}),
-			})
-				.then((response) => response.json())
-				.then((data) => {
-					//console.log(data);
+    fetch("../index.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            muvelet: "search",
+            search: document.getElementById("search").value,
+        }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            //console.log(data);
 
-					let eredmeny = document.getElementById("eredmeny");
-					let videok = data.results;
+            let eredmeny = document.getElementById("eredmeny");
+            let videok = data.results;
 
-					eredmeny.innerHTML = "";
+            eredmeny.innerHTML = "";
 
-					//console.log("EREDMENY TOROLVE");
+            //console.log("EREDMENY TOROLVE");
 
-					if (!videok.length) {
-						eredmeny.innerHTML = "<p>Nincs találat vagy hiba történt.</p>";
-						return;
-					}
+            if (!videok.length) {
+                eredmeny.innerHTML = "<p>Nincs találat vagy hiba történt.</p>";
+                return;
+            }
 
-					for (let i = 0; i < videok.length; i++) {
-						let keret = document.createElement("div");
-						keret.classList.add("container");
+            for (let i = 0; i < videok.length; i++) {
+                let keret = document.createElement("div");
+                keret.classList.add("container");
 
-						let talalat = document.createElement("div");
+                let talalat = document.createElement("div");
 
-						talalat.innerHTML = embedSearchItem(
-							videok[i].video_id,
-							videok[i].title,
-							videok[i].length == 0 ? "LIVE" : videok[i].length,
-						);
+                talalat.innerHTML = embedSearchItem(
+                    videok[i].video_id,
+                    videok[i].title,
+                    videok[i].length == 0 ? "LIVE" : videok[i].length,
+                );
 
-						//console.log(videok[i].video_id);
-
-						talalat.onclick = () => {
-							eredmenyTorol();
-
-							insertIntoMusic(
-								videok[i].video_id,
-								videok[i].title,
-								videok[i].length,
-							).then((musicId) => insertIntoPlaylist(musicId));
-						};
-
-						keret.appendChild(talalat);
-						eredmeny.appendChild(keret);
-					}
-				});
-		}
+                //console.log(videok[i].video_id);
 
 
+                    talalat.onclick = () => {
+                        eredmenyTorol();
+                        insertIntoMusic(
+                            videok[i].video_id,
+                            videok[i].title,
+                            videok[i].length,
+                        ).then((musicId) => insertIntoMusicRequest(musicId))
+                            .then(() => getMusicRequest()); 
+                };
 
-       
+                keret.appendChild(talalat);
+                eredmeny.appendChild(keret);
+            }
+        });
+}
+
+
+
+
 
 document.getElementById("search")
     .addEventListener("keydown", function (e) {
@@ -500,7 +502,7 @@ document.getElementById("search")
             keres();
             search();
             eredmenyVisszahoz();
-            
+
             //console.log("asdasd");
         }
     });
@@ -509,7 +511,7 @@ document.getElementById("search")
 
 function kedvencKiir(videoId, title, duration, id) {
 
-    if(localStorage.getItem("token") == null) {
+    if (localStorage.getItem("token") == null) {
         return `
         <li>
             <div class="row m-2 mb-1 p-2 rounded video talalat">
@@ -525,8 +527,8 @@ function kedvencKiir(videoId, title, duration, id) {
         </li>
     `;
     }
-    else{
-    return `
+    else {
+        return `
         <li>
             <div class="row m-2 mb-1 p-2 rounded video talalat">
                 <div class="col-4">
@@ -543,5 +545,5 @@ function kedvencKiir(videoId, title, duration, id) {
             </div>
         </li>
     `;
-}
+    }
 }

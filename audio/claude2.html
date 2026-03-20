@@ -428,7 +428,7 @@
 		//console.log(player.getCurrentTime());
 
 		function embedVideo(id, kep, cim, music_id) {
-			let currentFavs = JSON.parse(localStorage.getItem("tomb"));
+			let currentFavs = JSON.parse(localStorage.getItem("tomb")) || [];
 			currentMusicId = music_id;
 			//console.log(currentFavs);
 			//console.log(music_id);
@@ -1279,7 +1279,7 @@
 			})
 				.then((response) => response.json())
 				.then((data) => {
-					console.log(data);
+					//console.log(data);
 					data.fav_music.forEach((e) => {
 						document.getElementById("kedvencDoboz").innerHTML += kedvencKiir(
 							e.video_id,
@@ -1306,7 +1306,7 @@
 			})
 				.then((response) => response.json())
 				.then((data) => {
-					console.log(data);
+					//console.log(data);
 				});
 		}
 
@@ -1322,7 +1322,7 @@
 			})
 				.then((response) => response.json())
 				.then((data) => {
-					console.log(data);
+					//console.log(data);
 					element.closest("li").remove();
 					let favs = JSON.parse(localStorage.getItem("tomb")) || [];
 					favs = favs.filter(f => String(f.music_id) !== String(id));
@@ -1352,12 +1352,17 @@
 			isPlaying().then((status) => {
 				const isPlay = status == 0;
 				// Asztali gombok
-				if (isPlay) {
-					document.getElementById("play").classList.remove("d-none");
-					document.getElementById("pause").classList.add("d-none");
-				} else {
-					document.getElementById("pause").classList.remove("d-none");
-					document.getElementById("play").classList.add("d-none");
+				const playBtn = document.getElementById("play");
+				const pauseBtn = document.getElementById("pause");
+
+				if (playBtn && pauseBtn) {
+					if (isPlay) {
+						playBtn.classList.remove("d-none");
+						pauseBtn.classList.add("d-none");
+					} else {
+						pauseBtn.classList.remove("d-none");
+						playBtn.classList.add("d-none");
+					}
 				}
 				// Mobil gombok
 				const mp = document.getElementById("mobile-play-icon");

@@ -412,7 +412,7 @@ function bgChange() {
     ];
     const index = Math.floor(Math.random() * bgImages.length);
     document.body.style.backgroundImage = `url(../backgrounds/${bgImages[index]})`;
-    console.log("Background changed to: " + bgImages[index]);
+    //console.log("Background changed to: " + bgImages[index]);
 }
 
 // Initialize on page load
