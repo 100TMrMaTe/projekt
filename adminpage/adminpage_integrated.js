@@ -2,7 +2,7 @@ if (localStorage.getItem("token") === null) {
     window.location.href = "../login/login.html";
 }
 else if (localStorage.getItem("isadmin") == 0) {
-    window.location.href = "../audio/claude2.html";
+    window.location.href = "../audio/main.html";
 }
 function tokenRefresh() {
     if (!localStorage.getItem("token")) {

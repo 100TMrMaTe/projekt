@@ -10,7 +10,7 @@ require_once __DIR__ . "/../PHPMailer-master/src/Exception.php";
 function sendVerificationEmail($toEmail, $token)
 {
 
-    $verifyLink = "http://localhost/suliscucc/projekt/suc_reg/suc_reg.html?email_token=$token";
+    $verifyLink = "https://adysound.hu/suliscucc/projekt/suc_reg/suc_reg.html?email_token=$token";
 
     $mail = new PHPMailer(true);
 
@@ -77,7 +77,7 @@ function confirmReg($toEmail)
 
 function sendPasswordResetEmail($toEmail, $token)
 {
-    $verifyLink = "http://localhost/suliscucc/projekt/forgot/forgot.html?token=$token";
+    $verifyLink = "https://adysound.hu/suliscucc/projekt/forgot/forgot.html?token=$token";
 
     $mail = new PHPMailer(true);
 
