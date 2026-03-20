@@ -1,0 +1,99 @@
+1.: ha vége a videonak ki kell törölni a playlist táblából
+
+az a zene megy a currently playing táblába amelyik a playlist első zenéje vége után törlés
+
+2.: meg kell oldani hogy amint rákattintok egy video ami nincs benne a music táblába az belemegy 
+    innen belerakjuk a playlistbe 
+
+3.: playlistből zene betöltése currently playingbe ah sorra kerül
+    akkor kerül sorra HA nincs elötte másik zene
+
+
+
+
+////////////////////////////////
+
+1.: rakatintasz a videora rakja be a musicba ha nincs benne.
+
+2.: az 1-essel eggyut a playlistbe is keruljon be.
+
+3.: ha nem ures a playlist akkor kerje el az azonisotojat majd torolje a playlistbol
+
+4.: a 3. ba elkert azonosito alapjan kerjuk le a video adatait majd inserttel toltsuk fel a currently_playingbe 
+
+5.: innen mehet a csuszka stb
+
+6.: ha vege a videonak toroljuk a currently playingbol majd nezze meg hogy van e valami a playlistbn ha van mehet elorol 
+
+7.: 1mp kerje le hogy van e a playlistben video
+
+
+
+============================================================
+
+1. isVideoEnded
+    megnézzük vége van e a videonak midnen updateal
+
+
+2. isPlaylistEmpty
+    megnézzük üres e a playlist tábla: -ha igen akkor marad a lejátszó, ujraindul a video
+                                       -ha nem akkor: 3
+
+3. emptyCurrentlyPlaying
+    currently_playing tábla tartalmának törlése
+
+4. 
+    playlistből át kell rakni a követkető zenét a currently_playing-be (MIN id)
+
+5. 
+    amit átraktunk azt töröljük
+
+repeat
+
+==========================================================
+
+playlist betöltése
+
+összes fetchelése egy tömbbe
+
+tömbbön végigmenni és belerakni a divbe
+
+
+
+========================================================
+
+
+KERESÉS
+
+
+
+input mezőbe text - oninput fetchel
+
+php megkapja
+
+select music.video_id, music.title, music.length from music where music.title like(%keresett szöveg%);
+
+js visszakapja
+
+kell egy function ami html t megirja
+
+document.fetelementbyid("eredmeny").innerhtml be bele kell rakni
+
+ha nincs találat akkor yt api keresés
+
+=================================================================
+
+KÖVETKTZŐ (gomb)
+
+playlist legkisebb eleme
+
+
+
+
+
+
+
+
+
+
+
