@@ -1,542 +1,733 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="hu">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <title></title>
-    <link rel="stylesheet" href="style.css">
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
+	<link rel="preconnect" href="https://fonts.googleapis.com" />
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+	<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
+		rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+	<title></title>
+	<link rel="stylesheet" href="main.css" />
 </head>
 
-<body>
-    <div class="background"></div>
-
-    <div class="container">
-        <div class="row text-light">
-            <div class="col-12 p-3">
-                <div class="p-2 rounded-3" id="navbar">
-                    <div class="row p-2 h-100">
-                        <div class="col-2 text-center align-middle">
-                            <span id="headerfelhasznalonev">Felhasználó neve</span>
-                        </div>
-                        <div class="col-2 text-center">
-                            <span id="timer">idő</span>
-                        </div>
-                        <div class="col-8 text-end">
-                            <a class="btn text-white me-4" id="adminpagebutton"
-                                href="../adminpage/adminpage_integrated.html">
-                                admin oldal
-                            </a>
-
-                            <a class="btn text-white me-4" id="mainpagebutton" href="../audio/main.html">
-                                fő oldal
-                            </a>
-
-                            <button class="Btn" id="logoutbutton" onclick="logout()">
-                                <div class="sign"><svg viewBox="0 0 512 512">
-                                        <path
-                                            d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z">
-                                        </path>
-                                    </svg></div>
-                                <div class="text">Logout</div>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-
-
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-12 col-lg-6">
-                <div class="row pt-2 pb-5">
-                    <div class="col-10">
-                        <input type="text" oninput="search(), eredmenyVisszahoz()"
-                            class="form-control text-light kereso" style="height: 45px;" placeholder="Keresés..."
-                            id="search" name="kereso">
-                    </div>
-                    <div class="col-2">
-                        <button onclick="keres(),search(),eredmenyVisszahoz()"
-                            class="btn  text-white h-100">Keresés</button>
-                    </div>
-                </div>
-                <div id="eredmeny" class="eredmeny text-light"></div>
-            </div>
-            <div class="col-12 col-lg-6">
-                <div id="lejatszo" class="lejatszo"></div>
-
-                <div id="kovetkezo" class="kovetkezo">
-                    <ul id="playlist">
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <script>
-
-        console.log(localStorage.getItem("token"));
-        console.log(localStorage.getItem("email"));
-        console.log(localStorage.getItem("user_class"));
-        console.log(localStorage.getItem("isadmin"));
-
-        if (localStorage.getItem("token") == null) {
-            window.location.href = "../login/login.html";
-        }
-
-
-
-        let felhasznaloSeek = false;
-        let felhasznaloVolume = false;
-
-
-        let porget = 0;
-        let volume = 0;
-        let seekSlider = null;
-        let volumeSlider = null;
-        let videoId = null;
-        let hossz = null;
-
-
-        if (localStorage.getItem("isadmin") === "1") {
-            document.getElementById("adminpagebutton").style.display = "inline-block";
-        } else {
-            document.getElementById("adminpagebutton").style.display = "none";
-        }
-
-        document.getElementById("headerfelhasznalonev").innerText = localStorage.getItem("email");
-
-        let interval = null;
-        const DURATION = 30 * 60;
-        let totalSeconds = DURATION;
-
-        function updateDisplay() {
-            const minutes = Math.floor(totalSeconds / 60);
-            const seconds = totalSeconds % 60;
-
-            document.getElementById("timer").textContent =
-                String(minutes).padStart(2, "0") + ":" +
-                String(seconds).padStart(2, "0");
-        }
-
-        function startTimer() {
-            clearInterval(interval);
-
-            totalSeconds = DURATION;
-            updateDisplay();
-
-            interval = setInterval(() => {
-                if (totalSeconds > 0) {
-                    totalSeconds--;
-                    updateDisplay();
-                } else {
-                    clearInterval(interval);
-                    interval = null;
-                    alert("Lejárt az idő!");
-                }
-            }, 1000);
-        }
-
-        startTimer();
-        document.body.addEventListener("click", startTimer);
-        document.body.addEventListener("click", tokenRefresh);
-
-        //document.body.addEventListener("pointer", startTimer);
-        //document.body.addEventListener("pointer", tokenRefresh);
-
-        updateDisplay();
-
-
-        function tokenRefresh() {
-            fetch("../index.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    muvelet: "tokenRefresh",
-                    token: localStorage.getItem("token")
-                })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status != "success_token_refresh") {
-                        localStorage.clear();
-                        window.location.href = "../login/login.html";
-                    }
-                })
-                .catch(error => console.error("Error refreshing token:", error));
-        }
-
-        function logout() {
-
-            fetch("../index.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    muvelet: "logout",
-                    token: localStorage.getItem("token")
-                })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    localStorage.clear();
-                    window.location.href = "../login/login.html";
-                })
-                .catch(error => console.error("Error refreshing token:", error));
-        }
-
-
-        let player;
-
-
-
-        function ido() {
-            //if (!player || !player.getDuration) return;
-            console.log(seekSlider.value);
-            let jelenlegi = Math.floor(seekSlider.value);
-            let teljes = Math.floor(hossz);
-            //console.log(teljes);
-            let perc = Math.floor(jelenlegi / 60);
-            let masodperc = Math.floor(jelenlegi % 60);
-            let ora = Math.floor(perc / 60);
-
-
-            let teljesPerc = Math.floor(teljes / 60);
-            let teljesMasodperc = Math.floor(teljes % 60);
-            let teljesOra = Math.floor(teljesPerc / 60);
-
-
-            let jelenlegiIdo = document.getElementById("jelenlegiIdo");
-            let egeszIdo = document.getElementById("egeszIdo");
-
-
-
-            if (teljesOra > 0) {
-                teljesPerc = teljesPerc % 60;
-            }
-            // document.getElementById("jelenlegiIdo").innerText = perc + ":" + masodperc;
-            console.log(teljesOra + ":" + teljesPerc + ":" + teljesMasodperc);
-
-            if (teljesOra === 0) {
-                egeszIdo.innerText = `${teljesPerc}:${teljesMasodperc < 10 ? '0' : ''}${teljesMasodperc}`;
-            }
-            //console.log(ora);
-
-            if (teljesOra != 0) {
-                if (teljesPerc < 10) {
-                    egeszIdo.innerText = `${teljesOra}:` + `0` + `${teljesPerc}:${teljesMasodperc < 10 ? '0' : ''}${teljesMasodperc}`;
-                    console.log("cadsd");
-                }
-                egeszIdo.innerText = `${teljesOra}:${teljesPerc}:${teljesMasodperc < 10 ? '0' : ''}${teljesMasodperc}`;
-            }
-
-
-            if (ora > 0) {
-                perc = perc % 60;
-            }
-            // document.getElementById("jelenlegiIdo").innerText = perc + ":" + masodperc;
-
-
-            if (ora === 0) {
-                jelenlegiIdo.innerText = `${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
-                //egeszIdo.innerText = `${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
-
-                console.log(ora);
-            }
-            if (ora != 0) {
-                if (perc < 10) {
-                    jelenlegiIdo.innerText = `${ora}:` + `0` + `${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
-                    //egeszIdo.innerText = `${ora}:` + `0` + `${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
-
-                }
-                else {
-                    jelenlegiIdo.innerText = `${ora}:${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
-                    //egeszIdo.innerText = `${ora}:${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
-                }
-
-            }
-
-
-
-
-
-            //document.getElementById("egeszIdo").innerText = Math.floor(teljes / 60) + ":" + Math.floor(teljes % 60);
-
-            //math.floor ataliitasa (round-ra)
-
-        }
-
-
-
-        function keresettVideoIdo(seconds) {
-            if (seconds === "LIVE") {
-                return "LIVE";
-            }
-            let perc = Math.floor(seconds / 60);
-            let masodperc = Math.floor(seconds % 60);
-            let ora = Math.floor(perc / 60);
-            if (ora > 0) {
-                perc = perc % 60;
-            }
-
-            //console.log(seconds);
-
-            //console.log(`${mins}:${secs < 10 ? '0' : ''}${secs}`);
-
-            if (ora === 0) {
-                return `${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
-            }
-
-            if (ora != 0 && perc < 10) {
-                return `${ora}:` + `0` + `${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
-            }
-            return `${ora}:${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
-        }
-
-        function videoHosszAtAlakit(alakito) {
-
-            if (alakito === null) {
-                return 0;
-            }
-
-
-            const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
-            const illik = alakito.match(regex);
-
-
-            if (!illik) {
-                return 0;
-            }
-
-            const ora = parseInt(illik[1]) || 0;
-            const perc = parseInt(illik[2]) || 0;
-            const masodperc = parseInt(illik[3]) || 0;
-            //console.log(ora, perc, masodperc);
-            return ora * 3600 + perc * 60 + masodperc;
-        }
-
-
-
-
-        function eredmenyTorol() {
-            document.getElementById("eredmeny").classList.add("d-none");
-        }
-
-        function eredmenyVisszahoz() {
-            document.getElementById("eredmeny").classList.remove("d-none");
-        }
-        ////console.log(player.getCurrentTime());
-
-        function embedVideo(id, kep, cim) {
-            document.getElementById("lejatszo").innerHTML = `
-<div class="talalat rounded-3 m-2">
-    <div class="p-3 text-light">
-
-        <div class="ratio ratio-16x9">
-            <img src="${kep}" class="video-img rounded">
-        </div>
-
-        <div id="cim" class="p-2">
-            <h3>${cim}</h3>
-        </div>
-
-        <div class="d-flex justify-content-start align-items-center mb-2">
-            <label class="slider">                      
-                <input type="range" class="level" id="volumeSlider" type="range" max="100" value="0">
-                <svg class="volume" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="512" height="512" x="0" y="0" viewBox="0 0 24 24" style="enable-background:new 0 0 512 512" xml:space="preserve">
-                    <g>
-                        <path d="M18.36 19.36a1 1 0 0 1-.705-1.71C19.167 16.148 20 14.142 20 12s-.833-4.148-2.345-5.65a1 1 0 1 1 1.41-1.419C20.958 6.812 22 9.322 22 12s-1.042 5.188-2.935 7.069a.997.997 0 0 1-.705.291z" fill=rgba(220,220,220,1) data-original="#000000"></path>
-                        <path d="M15.53 16.53a.999.999 0 0 1-.703-1.711C15.572 14.082 16 13.054 16 12s-.428-2.082-1.173-2.819a1 1 0 1 1 1.406-1.422A6 6 0 0 1 18 12a6 6 0 0 1-1.767 4.241.996.996 0 0 1-.703.289zM12 22a1 1 0 0 1-.707-.293L6.586 17H4c-1.103 0-2-.897-2-2V9c0-1.103.897-2 2-2h2.586l4.707-4.707A.998.998 0 0 1 13 3v18a1 1 0 0 1-1 1z" fill=rgba(220,220,220,1) data-original="#000000"></path>
-                    </g>
-                </svg>
-            </label>
-        </div>
-            
-
-        <div>
-            <input type="range" id="seekSlider" min="0" max="1000" value="0" >
-            <div class="d-flex justify-content-between pt-2">
-                <span id="jelenlegiIdo"></span>
-                <span id="egeszIdo"></span>
-            </div>
-        </div>
-        
-
-        <div class="row">
-            <div class="col-3">
-            </div>
-
-            <div class="col-2">
-                <button onclick="elozo()" class="btn  text-white w-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-skip-backward" viewBox="0 0 16 16">
-                        <path d="M.5 3.5A.5.5 0 0 1 1 4v3.248l6.267-3.636c.52-.302 1.233.043 1.233.696v2.94l6.267-3.636c.52-.302 1.233.043 1.233.696v7.384c0 .653-.713.998-1.233.696L8.5 8.752v2.94c0 .653-.713.998-1.233.696L1 8.752V12a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m7 1.133L1.696 8 7.5 11.367zm7.5 0L9.196 8 15 11.367z"/>
-                    </svg>
-                </button>
-            </div>
-
-            <div class="col-2">
-                <button onclick="inditas()" class="btn  text-white w-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16" id="play">
-                        <path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-pause d-none" viewBox="0 0 16 16" id="pause">
-                        <path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/>
-                    </svg>
-                </button>
-            </div>
-
-            <div class="col-2">
-                <button onclick="kovetkezo()" class="btn text-white w-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-skip-forward" viewBox="0 0 16 16">
-                        <path d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.752l-6.267 3.636c-.52.302-1.233-.043-1.233-.696v-2.94l-6.267 3.636C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696L7.5 7.248v-2.94c0-.653.713-.998 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5M1 4.633v6.734L6.804 8zm7.5 0v6.734L14.304 8z"/>
-                    </svg>
-                </button>
-            </div>
-
-            <div class="col-3">
-            </div>
-        </div>
-
-    </div>
-</div>`;
-
-        }
-
-
-
-
-        function vane() {
-            if (!player || !player.getDuration) return;
-
-            let hello = player.getDuration();
-            //console.log(hello);
-            //console.log(typeof hello);
-            return hello;
-        }
-
-
-        function keres() {
-            console.log("anyad");
-            const search = document.getElementById("search").value;
-            const eredmeny = document.getElementById("eredmeny");
-
-            if (search.length < 3) {
-                eredmeny.innerHTML = "<p>Írj be legalább 3 karaktert...</p>";
-                return;
-            }
-
-            eredmeny.innerHTML = "<p>Keresés folyamatban...</p>";
-
-            const apikulcs = "AIzaSyDwBB_Wm1JSYl_OKcd-yIC55IZebRLje4Q";
-            //const apikulcs2 = "AIzaSyDwBB_Wm1JSYl_OKcd-yIC55IZebRLje4Q";
-            const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=5&q=${encodeURIComponent(search)}&key=${apikulcs}`;
-
-
-            function lekerVideok(vissza) {
-
-                let van = 0;
-                fetch(URL)
-                    .then(valasz => valasz.json())
-                    .then(adatok => {
-                        console.log(adatok);
-                        const videoIds = adatok.items
-                            .map(item => item.id.videoId)
-                            .join(",");
-
-                        const detailsURL =
-                            `https://www.googleapis.com/youtube/v3/videos` +
-                            `?part=contentDetails` +
-                            `&id=${videoIds}` +
-                            `&key=${apikulcs}`;
-
-
-
-                        fetch(detailsURL)
-                            .then(v => v.json())
-                            .then(details => {
-                                const videok = adatok.items
-                                    .filter(item => item.id.kind === 'youtube#video')
-                                    .map((item, i) => ({
-                                        csatorna: item.id.kind,
-                                        videoId: item.id.videoId,
-                                        title: item.snippet.title,
-                                        img: item.snippet.thumbnails.medium.url,
-                                        nagyobbImg: item.snippet.thumbnails.high.url,
-                                        duration: videoHosszAtAlakit(details.items[i].contentDetails.duration) == 0 ? "LIVE" : videoHosszAtAlakit(details.items[i].contentDetails.duration),
-                                        durationRaw: details.items[i].contentDetails.duration
-                                    })).slice(0, 5);
-
-                                vissza(videok);
-                            });
-                    });
-            }
-
-
-            lekerVideok(function (videok) {
-                eredmeny.innerHTML = "";
-
-                if (!videok.length) {
-                    eredmeny.innerHTML = "<p>Nincs találat vagy hiba történt.</p>";
-                    return;
-                }
-
-                for (let i = 0; i < videok.length; i++) {
-                    let keret = document.createElement("div");
-                    keret.classList.add("container");
-
-                    let talalat = document.createElement("div");
-
-                    talalat.innerHTML = `
-                    <div class="row mb-3 p-2 rounded video talalat">
+<body onload="init()">
+	<div class="background"></div>
+
+	<div class="container-fluid px-3">
+		<!-- Navbar -->
+		<div class="row pt-2 pb-2">
+			<div class="col-12">
+				<div class="p-2 px-3 rounded-3" id="navbar">
+					<div class="d-flex align-items-center justify-content-between">
+						<div class="d-flex align-items-center gap-3">
+							<span id="headerfelhasznalonev">Felhasználó neve</span>
+							<span id="timer">idő</span>
+						</div>
+
+						<!-- Hamburger gomb (csak mobilon) -->
+						<button class="border-0 bg-transparent d-lg-none" onclick="toggleNav()"
+							style="color: white; font-size: 1.6rem; line-height:1;">
+							<i class="bi bi-list" id="nav-hamburger-icon"></i>
+						</button>
+
+						<!-- Gombok -->
+						<div id="navbarGombok" class="d-none d-lg-flex align-items-center gap-2 flex-wrap">
+							<a class="btn text-white" id="adminpagebutton"
+								href="../adminpage/adminpage_integrated.html">
+								<i class="bi bi-shield-check me-1"></i>Admin oldal
+							</a>
+							<a class="btn text-white" id="zenekeresekbutton"
+								href="../zenekeres/zenekeres.html">Zenekeresek
+							</a>
+							<button class="btn btn-glass" id="theme-toggle" onclick="toggleTheme()">
+								<i class="bi bi-moon-stars-fill" id="theme-icon"></i>
+							</button>
+							<button class="Btn" id="logoutbutton" onclick="logout()">
+								<div class="sign">
+									<svg viewBox="0 0 512 512">
+										<path
+											d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z" />
+									</svg>
+								</div>
+								<div class="text">Logout</div>
+							</button>
+						</div>
+					</div>
+
+					<!-- Mobil lenyíló rész -->
+					<div id="navbarMobil" class="d-none d-lg-none mt-2">
+						<div class="d-flex flex-column gap-2">
+							<a class="btn text-white w-100 text-start" id="adminpagebutton-mob"
+								href="../adminpage/adminpage_integrated.html">
+								<i class="bi bi-shield-check me-1"></i>Admin oldal
+							</a>
+							<a class="btn text-white w-100 text-start" href="../zenekeres/zenekeres.html">Zenekérések
+							</a>
+							<div class="d-flex gap-2">
+								<button class="btn btn-glass" onclick="toggleTheme()">
+									<i class="bi bi-moon-stars-fill" id="theme-icon-mob"></i>
+								</button>
+								<button class="Btn" id="logoutbutton" onclick="logout()">
+									<div class="sign">
+										<svg viewBox="0 0 512 512">
+											<path
+												d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z" />
+										</svg>
+									</div>
+									<div class="text">Logout</div>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Tartalom: bal (kereső) + jobb (player + playlist) -->
+		<div class="row g-3">
+			<!-- Bal: kereső -->
+			<div class="col-12 col-lg-6">
+				<div class="kereso-sor">
+					<div class="d-flex gap-2">
+						<input type="text" oninput="(search(), eredmenyVisszahoz())"
+							class="form-control text-light kereso flex-grow-1" style="height: 46px"
+							placeholder="🔍  Keresés..." id="search" name="kereso" />
+						<button onclick="(keres(), search(), eredmenyVisszahoz())" class="btn text-white px-4"
+							style="height: 46px; white-space: nowrap">
+							Keresés
+						</button>
+						<div id="kedvencGomb">
+							<button
+								onclick="kedvenceim(), kedvenceimVisszahoz(), lejatszoTorol(), kedvencGombTorol(), kedvencEltuntetGombVisszahoz()"
+								class="btn text-white px-4" style="height: 46px; white-space: nowrap">
+								<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+									class="bi bi-heart-fill" viewBox="0 0 16 16" id="filled-heart">
+									<path fill-rule="evenodd"
+										d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314" />
+								</svg>
+							</button>
+						</div>
+						<div id="kedvencEltuntetGomb">
+							<button
+								onclick="kedvenceimTorol(), lejatszoVisszahoz(), kedvencGombVisszahoz(), kedvencEltuntetGomb()"
+								class="btn text-white px-4" style="height: 46px; white-space: nowrap">
+								🎶
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="eredmenyDoboz" id="eredmenyDoboz">
+					<div id="eredmeny" class="eredmeny text-light"></div>
+				</div>
+			</div>
+
+			<!-- Jobb: player + playlist egymás alatt, szorosan -->
+			<div class="col-12 col-lg-6">
+				<div id="lejatszo" class="lejatszo"></div>
+				<div id="kedvencDoboz" class="kedvencDoboz">
+
+
+
+				</div>
+				<div id="kovetkezo" class="kovetkezo mt-2">
+					<ul id="playlist"></ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		kedvenceimTorol();
+		eredmenyTorol();
+		kedvencEltuntetGomb();
+
+
+		if (localStorage.getItem("token") == null) {
+			window.location.href = "../login/login.html";
+		}
+
+		let felhasznaloSeek = false;
+		let felhasznaloVolume = false;
+
+		let porget = 0;
+		let volume = 0;
+		let seekSlider = null;
+		let volumeSlider = null;
+		let videoId = null;
+		let hossz = null;
+		let currentMusicId = null;
+
+		if (localStorage.getItem("isadmin") === "1") {
+			document.getElementById("adminpagebutton").style.display =
+				"inline-block";
+		} else {
+			document.getElementById("adminpagebutton").style.display = "none";
+		}
+
+		document.getElementById("headerfelhasznalonev").innerText = localStorage.getItem("email");
+
+		let interval = null;
+		const DURATION = 30 * 60;
+		let totalSeconds = DURATION;
+
+		function updateDisplay() {
+			const minutes = Math.floor(totalSeconds / 60);
+			const seconds = totalSeconds % 60;
+
+			document.getElementById("timer").textContent =
+				String(minutes).padStart(2, "0") +
+				":" +
+				String(seconds).padStart(2, "0");
+		}
+
+		function startTimer() {
+			clearInterval(interval);
+
+			totalSeconds = DURATION;
+			updateDisplay();
+
+			interval = setInterval(() => {
+				if (totalSeconds > 0) {
+					totalSeconds--;
+					updateDisplay();
+				} else {
+					clearInterval(interval);
+					interval = null;
+					alert("Lejárt az idő!");
+				}
+			}, 1000);
+		}
+
+		startTimer();
+		document.body.addEventListener("click", startTimer);
+		document.body.addEventListener("click", tokenRefresh);
+
+		//document.body.addEventListener("pointer", startTimer);
+		//document.body.addEventListener("pointer", tokenRefresh);
+
+		updateDisplay();
+
+		function init() {
+			tokenRefresh();
+			favLeker();
+		}
+
+		function tokenRefresh() {
+			fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "tokenRefresh",
+					token: localStorage.getItem("token"),
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					if (data.status != "success_token_refresh") {
+						localStorage.clear();
+						window.location.href = "../login/login.html";
+					}
+				})
+				.catch((error) => console.error("Error refreshing token:", error));
+		}
+
+		function favLeker() {
+			fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "favLeker",
+					user_id: localStorage.getItem("user_id"),
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => localStorage.setItem("tomb", JSON.stringify(data.fav_music_ids)));
+		}
+
+
+
+		function logout() {
+			fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "logout",
+					token: localStorage.getItem("token"),
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					localStorage.clear();
+					window.location.href = "../login/login.html";
+				})
+				.catch((error) => console.error("Error refreshing token:", error));
+		}
+
+		let player;
+
+		function ido() {
+			if (!seekSlider || !hossz) return;
+			//if (!player || !player.getDuration) return;
+			//console.log(seekSlider.value);
+			let jelenlegi = Math.floor(seekSlider.value);
+			let teljes = Math.floor(hossz);
+			//console.log(teljes);
+			let perc = Math.floor(jelenlegi / 60);
+			let masodperc = Math.floor(jelenlegi % 60);
+			let ora = Math.floor(perc / 60);
+
+			let teljesPerc = Math.floor(teljes / 60);
+			let teljesMasodperc = Math.floor(teljes % 60);
+			let teljesOra = Math.floor(teljesPerc / 60);
+
+			let jelenlegiIdo = document.getElementById("jelenlegiIdo");
+			let egeszIdo = document.getElementById("egeszIdo");
+
+			if (teljesOra > 0) {
+				teljesPerc = teljesPerc % 60;
+			}
+			// document.getElementById("jelenlegiIdo").innerText = perc + ":" + masodperc;
+			//console.log(teljesOra + ":" + teljesPerc + ":" + teljesMasodperc);
+
+			if (teljesOra === 0) {
+				egeszIdo.innerText = `${teljesPerc}:${teljesMasodperc < 10 ? "0" : ""}${teljesMasodperc}`;
+			}
+			//console.log(ora);
+
+			if (teljesOra != 0) {
+				if (teljesPerc < 10) {
+					egeszIdo.innerText =
+						`${teljesOra}:` +
+						`0` +
+						`${teljesPerc}:${teljesMasodperc < 10 ? "0" : ""}${teljesMasodperc}`;
+					//console.log("cadsd");
+				}
+				egeszIdo.innerText = `${teljesOra}:${teljesPerc}:${teljesMasodperc < 10 ? "0" : ""}${teljesMasodperc}`;
+			}
+
+			if (ora > 0) {
+				perc = perc % 60;
+			}
+			// document.getElementById("jelenlegiIdo").innerText = perc + ":" + masodperc;
+
+			if (ora === 0) {
+				jelenlegiIdo.innerText = `${perc}:${masodperc < 10 ? "0" : ""}${masodperc}`;
+				//egeszIdo.innerText = `${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
+
+				//console.log(ora);
+			}
+			if (ora != 0) {
+				if (perc < 10) {
+					jelenlegiIdo.innerText =
+						`${ora}:` +
+						`0` +
+						`${perc}:${masodperc < 10 ? "0" : ""}${masodperc}`;
+					//egeszIdo.innerText = `${ora}:` + `0` + `${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
+				} else {
+					jelenlegiIdo.innerText = `${ora}:${perc}:${masodperc < 10 ? "0" : ""}${masodperc}`;
+					//egeszIdo.innerText = `${ora}:${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
+				}
+			}
+
+			//document.getElementById("egeszIdo").innerText = Math.floor(teljes / 60) + ":" + Math.floor(teljes % 60);
+
+			//math.floor ataliitasa (round-ra)
+		}
+
+		function keresettVideoIdo(seconds) {
+			if (seconds === "LIVE") {
+				return "LIVE";
+			}
+			let perc = Math.floor(seconds / 60);
+			let masodperc = Math.floor(seconds % 60);
+			let ora = Math.floor(perc / 60);
+			if (ora > 0) {
+				perc = perc % 60;
+			}
+
+			//console.log(seconds);
+
+			//console.log(`${mins}:${secs < 10 ? '0' : ''}${secs}`);
+
+			if (ora === 0) {
+				return `${perc}:${masodperc < 10 ? "0" : ""}${masodperc}`;
+			}
+
+			if (ora != 0 && perc < 10) {
+				return (
+					`${ora}:` + `0` + `${perc}:${masodperc < 10 ? "0" : ""}${masodperc}`
+				);
+			}
+			return `${ora}:${perc}:${masodperc < 10 ? "0" : ""}${masodperc}`;
+		}
+
+		function videoHosszAtAlakit(alakito) {
+			if (alakito === null) {
+				return 0;
+			}
+
+			const regex = /PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/;
+			const illik = alakito.match(regex);
+
+			if (!illik) {
+				return 0;
+			}
+
+			const ora = parseInt(illik[1]) || 0;
+			const perc = parseInt(illik[2]) || 0;
+			const masodperc = parseInt(illik[3]) || 0;
+			//console.log(ora, perc, masodperc);
+			return ora * 3600 + perc * 60 + masodperc;
+		}
+
+		function eredmenyTorol() {
+			document.getElementById("eredmenyDoboz").classList.add("d-none");
+		}
+
+		function eredmenyVisszahoz() {
+			document.getElementById("eredmenyDoboz").classList.remove("d-none");
+		}
+
+		function kedvenceimVisszahoz() {
+			document.getElementById("kedvencDoboz").classList.remove("d-none");
+		}
+
+
+		function kedvenceimTorol() {
+			document.getElementById("kedvencDoboz").classList.add("d-none");
+		}
+
+		function lejatszoTorol() {
+			document.getElementById("lejatszo").classList.add("d-none");
+		}
+		function lejatszoVisszahoz() {
+			document.getElementById("lejatszo").classList.remove("d-none");
+		}
+		function kedvencGombTorol() {
+			document.getElementById("kedvencGomb").classList.add("d-none");
+		}
+
+		function kedvencGombVisszahoz() {
+			document.getElementById("kedvencGomb").classList.remove("d-none");
+		}
+		function kedvencEltuntetGomb() {
+			document.getElementById("kedvencEltuntetGomb").classList.add("d-none");
+		}
+
+
+		function kedvencEltuntetGombVisszahoz() {
+			document.getElementById("kedvencEltuntetGomb").classList.remove("d-none");
+		}
+
+		//console.log(player.getCurrentTime());
+
+		function embedVideo(id, kep, cim, music_id) {
+			let currentFavs = JSON.parse(localStorage.getItem("tomb")) || [];
+			currentMusicId = music_id;
+			//console.log(currentFavs);
+			//console.log(music_id);
+			if (currentFavs.some(f => f.music_id == music_id)) {
+				document.getElementById("lejatszo").innerHTML = `
+				<div class="talalat rounded-3 m-2">
+					<div class="p-3 text-light">
+
+						<div class="ratio ratio-16x9 mb-3">
+							<img src="${kep}" class="video-img rounded">
+						</div>
+
+						<div id="cim" class="px-1 mb-3">
+							<h3>${cim}</h3>
+						</div>
+
+						<div class="mb-3">
+							<input type="range" id="seekSlider" min="0" max="1000" value="0">
+							<div class="d-flex justify-content-between pt-1">
+								<span id="jelenlegiIdo"></span>
+								<span id="egeszIdo"></span>
+							</div>
+						</div>
+
+						<div class="d-flex align-items-center justify-content-between mb-3 px-1">
+							<label class="slider">
+								<input type="range" class="level" id="volumeSlider" max="100" value="0">
+								<svg class="volume" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+									<g>
+										<path d="M18.36 19.36a1 1 0 0 1-.705-1.71C19.167 16.148 20 14.142 20 12s-.833-4.148-2.345-5.65a1 1 0 1 1 1.41-1.419C20.958 6.812 22 9.322 22 12s-1.042 5.188-2.935 7.069a.997.997 0 0 1-.705.291z" fill="rgba(220,220,220,1)"></path>
+										<path d="M15.53 16.53a.999.999 0 0 1-.703-1.711C15.572 14.082 16 13.054 16 12s-.428-2.082-1.173-2.819a1 1 0 1 1 1.406-1.422A6 6 0 0 1 18 12a6 6 0 0 1-1.767 4.241.996.996 0 0 1-.703.289zM12 22a1 1 0 0 1-.707-.293L6.586 17H4c-1.103 0-2-.897-2-2V9c0-1.103.897-2 2-2h2.586l4.707-4.707A.998.998 0 0 1 13 3v18a1 1 0 0 1-1 1z" fill="rgba(220,220,220,1)"></path>
+									</g>
+								</svg>
+							</label>
+
+							<div class="d-flex align-items-center gap-2 player-controls">
+								<button onclick="deletekedvenc()" id="kedvenc" class="btn text-white">
+									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16" id="filled-heart">
+										<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
+									</svg>
+								</button>
+								<button onclick="inditas()" class="btn text-white" style="width:54px;height:54px;" id="lejátszásgomb">
+									<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" viewBox="0 0 16 16" id="play">
+										<path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
+									</svg>
+									<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="d-none" viewBox="0 0 16 16" id="pause">
+										<path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/>
+									</svg>
+								</button>
+								<button onclick="kovetkezo()" class="btn text-white" id="kovetkezoBtn">
+									<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+										<path d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.752l-6.267 3.636c-.52.302-1.233-.043-1.233-.696v-2.94l-6.267 3.636C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696L7.5 7.248v-2.94c0-.653.713-.998 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5"/>
+									</svg>
+								</button>
+							</div>
+						</div>
+
+					</div>
+				</div>`;
+			} else {
+				document.getElementById("lejatszo").innerHTML = `
+				<div class="talalat rounded-3 m-2">
+					<div class="p-3 text-light">
+
+						<div class="ratio ratio-16x9 mb-3">
+							<img src="${kep}" class="video-img rounded">
+						</div>
+
+						<div id="cim" class="px-1 mb-3">
+							<h3>${cim}</h3>
+						</div>
+
+						<div class="mb-3">
+							<input type="range" id="seekSlider" min="0" max="1000" value="0">
+							<div class="d-flex justify-content-between pt-1">
+								<span id="jelenlegiIdo"></span>
+								<span id="egeszIdo"></span>
+							</div>
+						</div>
+
+						<div class="d-flex align-items-center justify-content-between mb-3 px-1">
+							<label class="slider">
+								<input type="range" class="level" id="volumeSlider" max="100" value="0">
+								<svg class="volume" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+									<g>
+										<path d="M18.36 19.36a1 1 0 0 1-.705-1.71C19.167 16.148 20 14.142 20 12s-.833-4.148-2.345-5.65a1 1 0 1 1 1.41-1.419C20.958 6.812 22 9.322 22 12s-1.042 5.188-2.935 7.069a.997.997 0 0 1-.705.291z" fill="rgba(220,220,220,1)"></path>
+										<path d="M15.53 16.53a.999.999 0 0 1-.703-1.711C15.572 14.082 16 13.054 16 12s-.428-2.082-1.173-2.819a1 1 0 1 1 1.406-1.422A6 6 0 0 1 18 12a6 6 0 0 1-1.767 4.241.996.996 0 0 1-.703.289zM12 22a1 1 0 0 1-.707-.293L6.586 17H4c-1.103 0-2-.897-2-2V9c0-1.103.897-2 2-2h2.586l4.707-4.707A.998.998 0 0 1 13 3v18a1 1 0 0 1-1 1z" fill="rgba(220,220,220,1)"></path>
+									</g>
+								</svg>
+							</label>
+
+							<div class="d-flex align-items-center gap-2 player-controls">
+								<button onclick="kedvenc()" id="kedvenc" class="btn text-white">
+									<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+										<path
+											d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
+									</svg>
+								</button>
+								<button onclick="inditas()" class="btn text-white" style="width:54px;height:54px;" id="lejátszásgomb">
+									<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" viewBox="0 0 16 16" id="play">
+										<path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
+									</svg>
+									<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="d-none" viewBox="0 0 16 16" id="pause">
+										<path d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5"/>
+									</svg>
+								</button>
+								<button onclick="kovetkezo()" class="btn text-white" id="kovetkezoBtn">
+									<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+										<path d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.752l-6.267 3.636c-.52.302-1.233-.043-1.233-.696v-2.94l-6.267 3.636C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696L7.5 7.248v-2.94c0-.653.713-.998 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5"/>
+									</svg>
+								</button>
+							</div>
+						</div> 
+
+					</div>
+				</div>`;
+			}
+
+			const bar = document.getElementById("mobile-player-bar");
+			if (bar) {
+				bar.style.display = "flex";
+				document.getElementById("mobile-thumb").src = kep;
+				document.getElementById("mobile-title").textContent = cim;
+
+				const mobilSziv = document.querySelector(".mobile-controls .mobile-btn:first-child");
+				if (mobilSziv) {
+					if (currentFavs.some(f => String(f.music_id) === String(music_id))) {
+						mobilSziv.onclick = deletekedvenc;
+						mobilSziv.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
+                </svg>`;
+					} else {
+						mobilSziv.onclick = kedvenc;
+						mobilSziv.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
+                </svg>`;
+					}
+				}
+			}
+		}
+
+		function vane() {
+			if (!player || !player.getDuration) return;
+
+			let hello = player.getDuration();
+			//console.log(hello);
+			//console.log(typeof hello);
+			return hello;
+		}
+
+		function toggleTheme() {
+			const body = document.body;
+			const icon = document.getElementById('theme-icon');
+
+			body.classList.toggle('dark-theme');
+
+			if (body.classList.contains('dark-theme')) {
+				icon.className = 'bi bi-sun-fill';
+				localStorage.setItem('theme', 'dark');
+			} else {
+				icon.className = 'bi bi-moon-stars-fill';
+				localStorage.setItem('theme', 'light');
+			}
+		}
+
+		// Load saved theme
+		function loadTheme() {
+			const savedTheme = localStorage.getItem('theme');
+			const body = document.body;
+			const icon = document.getElementById('theme-icon');
+
+			if (savedTheme === 'dark') {
+				body.classList.add('dark-theme');
+				if (icon) {
+					icon.className = 'bi bi-sun-fill';
+				}
+			}
+		}
+
+		function keres() {
+			//console.log("anyad");
+			const search = document.getElementById("search").value;
+			const eredmeny = document.getElementById("eredmeny");
+
+			if (search.length < 3) {
+				eredmeny.innerHTML = "<p>Írj be legalább 3 karaktert...</p>";
+				return;
+			}
+
+			eredmeny.innerHTML = "<p>Keresés folyamatban...</p>";
+
+			//const apikulcs = "AIzaSyAvqcZuWfXHENDGZOhjSKoKyaZe4xGtTVM";
+			const apikulcs2 = "AIzaSyAjhNmbvJwzwac3JK-UxQFId23xWsn10-E";
+			const URL = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&mqdefault=5&q=${encodeURIComponent(search)}&key=${apikulcs2}`;
+
+			function lekerVideok(vissza) {
+				let van = 0;
+				fetch(URL)
+					.then((valasz) => valasz.json())
+					.then((adatok) => {
+						//console.log(adatok);
+						const videoIds = adatok.items
+							.map((item) => item.id.videoId)
+							.join(",");
+
+						const detailsURL =
+							`https://www.googleapis.com/youtube/v3/videos` +
+							`?part=contentDetails` +
+							`&id=${videoIds}` +
+							`&key=${apikulcs2}`;
+
+						fetch(detailsURL)
+							.then((v) => v.json())
+							.then((details) => {
+								const videok = adatok.items
+									.filter((item) => item.id.kind === "youtube#video")
+									.map((item, i) => ({
+										csatorna: item.id.kind,
+										videoId: item.id.videoId,
+										title: item.snippet.title,
+										img: item.snippet.thumbnails.medium.url,
+										nagyobbImg: item.snippet.thumbnails.high.url,
+										duration:
+											videoHosszAtAlakit(
+												details.items[i].contentDetails.duration,
+											) == 0
+												? "LIVE"
+												: videoHosszAtAlakit(
+													details.items[i].contentDetails.duration,
+												),
+										durationRaw: details.items[i].contentDetails.duration,
+									}))
+									.slice(0, 5);
+								vissza(videok);
+							});
+					});
+			}
+
+			lekerVideok(function (videok) {
+				eredmeny.innerHTML = "";
+
+				if (!videok.length) {
+					eredmeny.innerHTML = "<p>Nincs találat vagy hiba történt.</p>";
+					return;
+				}
+
+				for (let i = 0; i < videok.length; i++) {
+					let keret = document.createElement("div");
+					keret.classList.add("container");
+
+					let talalat = document.createElement("div");
+
+					talalat.innerHTML = `
+                    <div class="row mb-2 p-2 rounded video talalat">
                         <div class="col-4">
                             <img src="${videok[i].img}"  class="img-fluid rounded"/>
                         </div>
                         <div class="col-8 text-light">
-                            <h3 class="text-truncate">${videok[i].title} </h3>
-                            <h4>${keresettVideoIdo(videok[i].duration)}</h4>
+                            <h2 class="text-truncate">${videok[i].title} </h2>
+                            <h2>${keresettVideoIdo(videok[i].duration)}</h2>
                         </div>
                     </div>
                     `;
 
-                    talalat.onclick = () => {
-                        eredmenyTorol();
+					talalat.onclick = () => {
+						eredmenyTorol();
 
+						insertIntoMusic(
+							videok[i].videoId,
+							videok[i].title,
+							videok[i].duration,
+						).then((musicId) => insertIntoPlaylist(musicId));
+					};
 
-                        insertIntoMusic(videok[i].videoId, videok[i].title, videok[i].duration)
-                            .then(musicId => insertIntoPlaylist(musicId));
+					keret.appendChild(talalat);
+					eredmeny.appendChild(keret);
+				}
+			});
+		}
 
-
-                    };
-
-                    keret.appendChild(talalat);
-                    eredmeny.appendChild(keret);
-                }
-            });
-        }
-
-        function embedSearchItem(videoId, title, duration) {
-            return `<div class="row mb-3 p-2 rounded video talalat">
+		function embedSearchItem(videoId, title, duration) {
+			return `<div class="row mb-2 p-2 rounded video talalat">
                         <div class="col-4">
-                            <img src="https://img.youtube.com/vi/${videoId}/0.jpg"  class="img-fluid rounded"/>
+                            <img src="https://img.youtube.com/vi/${videoId}/mqdefault.jpg" class="img-fluid rounded"/>
                         </div>
                         <div class="col-8 text-light">
-                            <h3 class="text-truncate">${title} </h3>
-                            <h4>${keresettVideoIdo(duration)}</h4>
+                            <h2 class="text-truncate">${title} </h2>
+                            <h3>${keresettVideoIdo(duration)}</h3>
                         </div>
-                    </div>`
-        }
+                    </div>`;
+		}
 
-
-
-        function embedPlaylistItem(videoId, title, duration) {
-            return `<li>
-                <div class="row m-2 mb-3 p-2 rounded video talalat">
+		function embedPlaylistItem(videoId, title, duration) {
+			return `<li>
+                <div class="row m-2 mb-1 p-2 rounded video talalat">
                     <div class="col-4">
-                        <img src="https://img.youtube.com/vi/${videoId}/0.jpg"
+                        <img src="https://img.youtube.com/vi/${videoId}/mqdefault.jpg"
                             class="img-fluid rounded" />
                     </div>
                     <div class="col-8 text-light">
@@ -544,510 +735,879 @@
                         <h4>${keresettVideoIdo(duration)}</h4>
                     </div>
                 </div>
-            </li>`
-        }
-
-        //a videó id alapján belerakja a zeneét a music táblába
-        function insertIntoMusic(videoId, title, length) {
-            return fetch("../index.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    muvelet: "insertIntoMusic",
-                    video_id: videoId,
-                    title: title,
-                    length: length
-                })
-            })
-                .then(response => response.json())
-                .then(data => data.music_id);
-        }
-
-        //a zenét id alapján belerakja a playlistbe
-        function insertIntoPlaylist(musicId) {
-            return fetch("../index.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    muvelet: "insertIntoPlaylist",
-                    music_id: musicId,
-                    token: cookieStore.get("token").value
-                })
-            });
-        }
-
-        //megnézi hogy a playlist tábla üres e
-        function isPlaylistEmpty() {
-            return fetch("../index.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    muvelet: "isPlaylistEmpty"
-                })
-            })
-                .then(response => response.json())
-                .then(data => data.empty);
-        }
-
-        function isPlaying() {
-            return fetch("../index.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    muvelet: "isPlaying"
-                })
-            })
-                .then(response => response.json())
-                .then(data => data.status);
-        }
-
-        //ezt meg kell majd hivni ha vége van egy számnak
-        function checkLejatszo() {
-            if (document.getElementById("lejatszo").childNodes.length == 0) {
-                setInterval(isPlaylistEmpty, 1000);
-            }
-        }
-
-        //kiüriti a currently_playing táblát
-        function emptyCurrentlyPlaying() {
-            return fetch("../index.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    muvelet: "emptyCurrentlyPlaying"
-                })
-            });
-        }
-
-        //true ha a vieonak a currently palyingben vége van
-        function isVideoEnded() {
-            return fetch("../index.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    muvelet: "isVideoEnded"
-                })
-            })
-                .then(response => response.json())
-                .then(data => data.ended);
-        }
-
-
-        function loadCurrentlyPlaying() {
-            return fetch("../index.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    muvelet: "loadCurrentlyPlaying"
-                })
-            })
-                .then(response => response.json())
-                .then(data => data);
-        }
-
-
-        loadCurrentlyPlaying().then(data => {
-            console.log(data);
-            videoId = data.video_id;
-            embedVideo(data.video_id, "https://img.youtube.com/vi/" + data.video_id + "/hqdefault.jpg", data.title);
-            seekSlider = document.querySelector("#seekSlider");
-            volumeSlider = document.querySelector("#volumeSlider");
-
-            getLength();
-
-            // Húzás kezdetén
-            seekSlider.addEventListener("pointerdown", () => felhasznaloSeek = true);
-            seekSlider.addEventListener("pointerleave", () => felhasznaloSeek = false);
-
-            // Hangerő kezdetén
-            volumeSlider.addEventListener("pointerdown", () => felhasznaloVolume = true);
-            volumeSlider.addEventListener("pointerleave", () => felhasznaloVolume = false);
-
-
-            // Húzás közben tároljuk az értéket
-            seekSlider.addEventListener("input", function () {
-                if (felhasznaloSeek) {
-                    porget = this.value;
-                }
-            });
-
-            volumeSlider.addEventListener("input", function () {
-                if (felhasznaloVolume) {
-                    volume = this.value;
-                }
-            });
-
-            volumeSlider.addEventListener("pointerup", function () {
-                if (!felhasznaloVolume) return;
-                felhasznaloVolume = false;
-                setVolume();
-            });
-
-            seekSlider.addEventListener("pointerup", function () {
-                if (!felhasznaloSeek) return;
-                felhasznaloSeek = false;
-                setPorget();
-            });
-
-        });
-
-
-        function loadPlaylist() {
-            return fetch("../index.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    muvelet: "getPlaylist"
-                })
-            })
-                .then(response => response.json())
-                .then(data => data.playlist);
-        }
-
-        loadPlaylist().then(data => {
-            data.forEach(e => {
-                document.getElementById("playlist").innerHTML += embedPlaylistItem(e.video_id, e.title, (e.length) == 0 ? "LIVE" : e.length);
-            });
-        })
-
-
-        //adatbázisban vált értéket az indításhoz
-        function inditas() {
-
-            fetch("../index.php", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    muvelet: "playPause",
-                })
-            })
-                .then(response => response.json())
-                .then(data => console.log(data));
-
-        }
-
-
-        function setVolume() {
-
-            //if (felhasznaloSeek) return;
-            fetch("../index.php", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    muvelet: "setVolume",
-                    volume: volume
-                })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    //console.log(data);
-                })
-        }
-
-        function getVolume() {
-            if (felhasznaloVolume) return;
-            fetch("../index.php", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    muvelet: "getVolume"
-                })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    volume = data.volume;
-
-                    if (volumeSlider) {
-                        volumeSlider.value = volume;
-                    }
-                });
-        }
-
-
-        function setPorget() {
-
-            fetch("../index.php", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    muvelet: "setPorget",
-                    time: porget
-                })
-            })
-                .then(response => response.json())
-                .then(data => {
-                });
-        }
-
-        function getCurrentTime() {
-            if (felhasznaloSeek) return;
-
-            fetch("../index.php", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    muvelet: "getCurrentTime"
-                })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    seekSlider.value = data.current_time;
-                });
-        }
-
-
-        function getLength() {
-            fetch("../index.php", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    muvelet: "getLength"
-                })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    seekSlider.max = data.length;
-                    hossz = data.length;
-                });
-        }
-
-        function search() {
-            fetch("../index.php", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    muvelet: "search",
-                    search: document.getElementById("search").value
-                })
-
-            })
-
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-
-                    let eredmeny = document.getElementById("eredmeny");
-                    let videok = data.results;
-
-                    eredmeny.innerHTML = "";
-
-                    console.log("EREDMENY TOROLVE");
-
-                    if (!videok.length) {
-                        eredmeny.innerHTML = "<p>Nincs találat vagy hiba történt.</p>";
-                        return;
-                    }
-
-                    for (let i = 0; i < videok.length; i++) {
-                        let keret = document.createElement("div");
-                        keret.classList.add("container");
-
-                        let talalat = document.createElement("div");
-
-                        talalat.innerHTML = embedSearchItem(videok[i].video_id, videok[i].title, (videok[i].length) == 0 ? "LIVE" : videok[i].length);
-
-                        console.log(videok[i].video_id);
-
-
-                        talalat.onclick = () => {
-                            eredmenyTorol();
-
-                            insertIntoMusic(videok[i].video_id, videok[i].title, videok[i].length)
-                                .then(musicId => insertIntoPlaylist(musicId));
-                        };
-
-                        keret.appendChild(talalat);
-                        eredmeny.appendChild(keret);
-                    }
-
-
-                });
-        }
-
-
-        function isPlaylistEmpty() {
-            fetch("../index.php", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    muvelet: "isPlaylistEmpty"
-                })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.empty) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                })
-                .catch(error => console.error("Fetch hiba:", error));
-        }
-
-
-        function kovetkezo() {
-
-            if (isPlaylistEmpty()) {
-                return;
-            } else {
-                fetch("../index.php", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        muvelet: "moveFirstToCurrentlyPlaying"
-                    })
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data);
-                    })
-                    .catch(error => console.error("Fetch hiba:", error));
-            }
-
-
-
-            /*
-            let length = seekSlider.max;
-            console.log("max: ", seekSlider.max);
-            console.log("elotte time", porget);
-            porget = length-1.7; 
-            console.log("utana", length);
-            console.log("utana time", porget)
-            setPorget();
-            */
-        }
-
-        function update() {
-            getCurrentTime();
-            getVolume();
-            ido();
-
-            isPlaying().then(status => {
-                if (status == 0) {
-                    document.getElementById("play").classList.remove("d-none");
-                    document.getElementById("pause").classList.add("d-none");
-                } else {
-                    document.getElementById("pause").classList.remove("d-none");
-                    document.getElementById("play").classList.add("d-none");
-                }
-            })
-
-            loadPlaylist().then(data => {
-                document.getElementById("playlist").innerHTML = "";
-                data.forEach(e => {
-                    document.getElementById("playlist").innerHTML += embedPlaylistItem(e.video_id, e.title, (e.length) == 0 ? "LIVE" : e.length);
-                });
-            })
-
-            loadCurrentlyPlaying().then(data => {
-                if (videoId != data.video_id) {
-                    console.log(data);
-                    videoId = data.video_id;
-                    embedVideo(data.video_id, "https://img.youtube.com/vi/" + data.video_id + "/maxresdefault.jpg", data.title);
-                    seekSlider = document.querySelector("#seekSlider");
-                    volumeSlider = document.querySelector("#volumeSlider");
-
-                    getLength();
-
-                    // Húzás kezdetén
-                    seekSlider.addEventListener("pointerdown", () => felhasznaloSeek = true);
-                    seekSlider.addEventListener("pointerleave", () => felhasznaloSeek = false);
-
-                    // Hangerő kezdetén
-                    volumeSlider.addEventListener("pointerdown", () => felhasznaloVolume = true);
-                    volumeSlider.addEventListener("pointerleave", () => felhasznaloVolume = false);
-
-
-                    // Húzás közben tároljuk az értéket
-                    seekSlider.addEventListener("input", function () {
-                        if (felhasznaloSeek) {
-                            porget = this.value;
-                        }
-                    });
-
-                    volumeSlider.addEventListener("input", function () {
-                        if (felhasznaloVolume) {
-                            volume = this.value;
-                        }
-                    });
-
-                    volumeSlider.addEventListener("pointerup", function () {
-                        if (!felhasznaloVolume) return;
-                        felhasznaloVolume = false;
-                        setVolume();
-                    });
-
-                    seekSlider.addEventListener("pointerup", function () {
-                        if (!felhasznaloSeek) return;
-                        felhasznaloSeek = false;
-                        setPorget();
-                    });
-                }
-            })
-        }
-
-
-        setInterval(update, 1000);
-
-        document.getElementById("search").addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') {
-                keres();
-                search();
-                eredmenyVisszahoz();
-                //console.log("asdasd");
-
-            }
-        });
-
-
-
-
-    </script>
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-        crossorigin="anonymous"></script>
-    <script>
-        //background kép változtatása másodpercenként
-        function bgChange() {
-            const bgImages = [
-                'bg1.jpg',
-                'bg2.jpg',
-                'bg3.png',
-                'bg4.jpg',
-                'bg5.jpg',
-                'bg6.jpg',
-                '7.jpg',
-                '8.jpg',
-                '9.jpg',
-                '10.jpg',
-                '11.jpg',
-                '12.jpg',
-                '13.jpg',
-                '14.jpg'
-            ];
-            const index = Math.floor(Math.random() * bgImages.length);
-            document.body.style.backgroundImage = `url(../backgrounds/${bgImages[index]})`;
-            console.log("Background changed to: " + bgImages[index]);
-        }
-        //setInterval(bgChange, 3000);
-    </script>
+            </li>`;
+		}
+
+
+		function kedvencKiir(videoId, title, duration, id) {
+			return `
+				<li>
+						<div class="row m-2 mb-1 p-2 rounded video talalat">
+							<div class="col-4">
+								<img src="https://img.youtube.com/vi/${videoId}/mqdefault.jpg"
+									class="img-fluid rounded" />
+							</div>
+							<div class="col-8 text-light">
+								<h2 class="text-truncate">${title}</h2>
+								<h3>${keresettVideoIdo(duration)}</h3>
+								
+							</div>
+						</div>
+						<div class="row m-2 mb-3 mt-3 rounded">
+							<div class="col-6">
+								<button class="btn btn-success w-100 action-btn" onclick="kedvencToPlaylist(${id})">
+                            		Lejátszás
+                        		</button>
+							</div>
+							<div class="col-6">	
+								<button class="btn btn-danger w-100 action-btn" onclick="DeleteFromFavList(${id},this)">
+                            		Törlés
+                        		</button>
+							</div>
+						</div>
+					</li>
+			`
+		}
+
+		//a videó id alapján belerakja a zeneét a music táblába
+		function insertIntoMusic(videoId, title, length) {
+			return fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "insertIntoMusic",
+					video_id: videoId,
+					title: title,
+					length: length,
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => data.music_id);
+		}
+
+		//a zenét id alapján belerakja a playlistbe
+		function insertIntoPlaylist(musicId) {
+			return fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "insertIntoPlaylist",
+					music_id: musicId,
+					token: localStorage.getItem("token"),
+				}),
+			});
+		}
+
+		//megnézi hogy a playlist tábla üres e
+		function isPlaylistEmpty() {
+			return fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "isPlaylistEmpty",
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => data.empty);
+		}
+
+		function isPlaying() {
+			return fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "isPlaying",
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => data.status);
+		}
+
+		//ezt meg kell majd hivni ha vége van egy számnak
+		function checkLejatszo() {
+			if (document.getElementById("lejatszo").childNodes.length == 0) {
+				setInterval(isPlaylistEmpty, 1000);
+			}
+		}
+
+		//kiüriti a currently_playing táblát
+		function emptyCurrentlyPlaying() {
+			return fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "emptyCurrentlyPlaying",
+				}),
+			});
+		}
+
+		//true ha a vieonak a currently palyingben vége van
+		function isVideoEnded() {
+			return fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "isVideoEnded",
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => data.ended);
+		}
+
+		function loadCurrentlyPlaying() {
+			return fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "loadCurrentlyPlaying",
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => data);
+		}
+
+		setTimeout(() => {
+			loadCurrentlyPlaying().then((data) => {
+				//console.log(data);
+				currentlPlayingUserId = data.user_id;
+				videoId = data.video_id;
+				embedVideo(
+					data.video_id,
+					"https://img.youtube.com/vi/" + data.video_id + "/mqdefault.jpg",
+					data.title,
+					data.music_id,
+				);
+				seekSlider = document.querySelector("#seekSlider");
+				volumeSlider = document.querySelector("#volumeSlider");
+
+				getLength();
+
+				// Húzás kezdetén
+				seekSlider.addEventListener(
+					"pointerdown",
+					() => (felhasznaloSeek = true),
+				);
+				seekSlider.addEventListener(
+					"pointerleave",
+					() => (felhasznaloSeek = false),
+				);
+
+				// Hangerő kezdetén
+				volumeSlider.addEventListener(
+					"pointerdown",
+					() => (felhasznaloVolume = true),
+				);
+				volumeSlider.addEventListener(
+					"pointerleave",
+					() => (felhasznaloVolume = false),
+				);
+
+				// Húzás közben tároljuk az értéket
+				seekSlider.addEventListener("input", function () {
+					if (felhasznaloSeek) {
+						porget = this.value;
+					}
+				});
+
+				volumeSlider.addEventListener("input", function () {
+					if (felhasznaloVolume) {
+						volume = this.value;
+					}
+				});
+
+				volumeSlider.addEventListener("pointerup", function () {
+					if (!felhasznaloVolume) return;
+					felhasznaloVolume = false;
+					setVolume();
+				});
+
+				seekSlider.addEventListener("pointerup", function () {
+					if (!felhasznaloSeek) return;
+					felhasznaloSeek = false;
+					setPorget();
+				});
+
+
+				if (data.user_id == localStorage.getItem("user_id") || localStorage.getItem("isadmin") === "1") {
+					document.getElementById("lejátszásgomb").classList.remove("disabled");
+					document.getElementById("kovetkezoBtn").classList.remove("disabled");
+					document.getElementById("volumeSlider").removeAttribute("disabled");
+					document.getElementById("seekSlider").removeAttribute("disabled");
+					document.getElementById("mobile-play-pause").classList.remove("disabled");
+					document.getElementById("mobile-volume-slider").removeAttribute("disabled");
+					document.getElementById("mobile-seek-slider").removeAttribute("disabled");
+					document.getElementById("mobile-kovetkezoBtn").classList.remove("disabled");
+				}
+				else {
+					document.getElementById("lejátszásgomb").classList.add("disabled");
+					document.getElementById("kovetkezoBtn").classList.add("disabled");
+					document.getElementById("volumeSlider").setAttribute("disabled", "disabled");
+					document.getElementById("seekSlider").setAttribute("disabled", "disabled");
+					document.getElementById("mobile-play-pause").classList.add("disabled");
+					document.getElementById("mobile-volume-slider").setAttribute("disabled", "disabled");
+					document.getElementById("mobile-seek-slider").setAttribute("disabled", "disabled");
+					document.getElementById("mobile-kovetkezoBtn").classList.add("disabled");
+				}
+			});
+		}, 400);
+
+
+		function loadPlaylist() {
+			return fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "getPlaylist",
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => data.playlist);
+		}
+
+		loadPlaylist().then((data) => {
+			data.forEach((e) => {
+				document.getElementById("playlist").innerHTML += embedPlaylistItem(
+					e.video_id,
+					e.title,
+					e.length == 0 ? "LIVE" : e.length,
+				);
+			});
+		});
+
+
+
+		//adatbázisban vált értéket az indításhoz
+		function inditas() {
+			fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "playPause",
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					//console.log(data)
+				});
+		}
+
+		function setVolume() {
+			//if (felhasznaloSeek) return;
+			fetch("../index.php", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					muvelet: "setVolume",
+					volume: volume,
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					//console.log(data);
+				});
+		}
+
+		function getVolume() {
+			if (felhasznaloVolume) return;
+			fetch("../index.php", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					muvelet: "getVolume",
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					volume = data.volume;
+
+					if (volumeSlider) {
+						volumeSlider.value = volume;
+					}
+				});
+		}
+
+		function setPorget() {
+			fetch("../index.php", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					muvelet: "setPorget",
+					time: porget,
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => { });
+		}
+
+		function getCurrentTime() {
+			if (felhasznaloSeek) return;
+
+			fetch("../index.php", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					muvelet: "getCurrentTime",
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					if (seekSlider) seekSlider.value = data.current_time;
+					if (mobileSeekSlider && !felhasznaloSeek) {
+						mobileSeekSlider.value = data.current_time;
+					}
+				});
+		}
+
+		function getLength() {
+			fetch("../index.php", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					muvelet: "getLength",
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					seekSlider.max = data.length;
+					if (mobileSeekSlider) mobileSeekSlider.max = data.length;
+					hossz = data.length;
+				});
+		}
+
+		function search() {
+			fetch("../index.php", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					muvelet: "search",
+					search: document.getElementById("search").value,
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					//console.log(data);
+
+					let eredmeny = document.getElementById("eredmeny");
+					let videok = data.results;
+
+					eredmeny.innerHTML = "";
+
+					//console.log("EREDMENY TOROLVE");
+
+					if (!videok.length) {
+						eredmeny.innerHTML = "<p>Nincs találat vagy hiba történt.</p>";
+						return;
+					}
+
+					for (let i = 0; i < videok.length; i++) {
+						let keret = document.createElement("div");
+						keret.classList.add("container");
+
+						let talalat = document.createElement("div");
+
+						talalat.innerHTML = embedSearchItem(
+							videok[i].video_id,
+							videok[i].title,
+							videok[i].length == 0 ? "LIVE" : videok[i].length,
+						);
+
+						//console.log(videok[i].video_id);
+
+						talalat.onclick = () => {
+							eredmenyTorol();
+
+							insertIntoMusic(
+								videok[i].video_id,
+								videok[i].title,
+								videok[i].length,
+							).then((musicId) => insertIntoPlaylist(musicId));
+						};
+
+						keret.appendChild(talalat);
+						eredmeny.appendChild(keret);
+					}
+				});
+		}
+
+		function isPlaylistEmpty() {
+			fetch("../index.php", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					muvelet: "isPlaylistEmpty",
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					if (data.empty) {
+						return true;
+					} else {
+						return false;
+					}
+				})
+				.catch((error) => console.error("Fetch hiba:", error));
+		}
+
+		function kovetkezo() {
+			if (isPlaylistEmpty()) {
+				return;
+			} else {
+				fetch("../index.php", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						muvelet: "moveFirstToCurrentlyPlaying",
+					}),
+				})
+					.then((response) => response.json())
+					.then((data) => {
+						//console.log(data);
+					})
+					.catch((error) => console.error("Fetch hiba:", error));
+			}
+
+			/*
+				let length = seekSlider.max;
+				console.log("max: ", seekSlider.max);
+				console.log("elotte time", porget);
+				porget = length-1.7; 
+				console.log("utana", length);
+				console.log("utana time", porget)
+				setPorget();
+				*/
+		}
+
+
+
+		function kedvenc() {
+			fetch("../index.php", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					muvelet: "kedvencHozzaad",
+					id: videoId,
+					user_id: localStorage.getItem("user_id"),
+
+
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					document.getElementById("kedvenc").onclick = deletekedvenc;
+					document.getElementById("kedvenc").innerHTML = `
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16" id="filled-heart">
+  						<path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/>
+					</svg>
+					`;
+
+					const mobilSziv = document.querySelector(".mobile-controls .mobile-btn:first-child");
+					if (mobilSziv) {
+						mobilSziv.onclick = deletekedvenc;
+						mobilSziv.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314"/></svg>`;
+					}
+					var favs = JSON.parse(localStorage.getItem("tomb")) || [];
+
+					favs.push({ music_id: data.music_id });
+					localStorage.setItem("tomb", JSON.stringify(favs));
+
+				})
+				.catch((error) => console.error("Fetch hiba:", error));
+		}
+
+		function deletekedvenc() {
+			const musicIdToDelete = currentMusicId; // ← elmentjük mielőtt bármi változna
+
+			fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "kedvencElvesz",
+					id: videoId,
+					user_id: localStorage.getItem("user_id"),
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					document.getElementById("kedvenc").onclick = kedvenc;
+					document.getElementById("kedvenc").innerHTML = `
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+							<path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
+						</svg>`;
+
+					const mobilSziv = document.querySelector(".mobile-controls .mobile-btn:first-child");
+					if (mobilSziv) {
+						mobilSziv.onclick = kedvenc;
+						mobilSziv.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" /></svg>`;
+					}
+
+					let favs = JSON.parse(localStorage.getItem("tomb")) || [];
+					favs = favs.filter(f => String(f.music_id) !== String(musicIdToDelete));
+					localStorage.setItem("tomb", JSON.stringify(favs));
+				});
+		}
+
+
+
+
+		function kedvenceim() {
+			document.getElementById("kedvencDoboz").innerHTML = "";
+			fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "favList",
+					user_id: localStorage.getItem("user_id"),
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					//console.log(data);
+					data.fav_music.forEach((e) => {
+						document.getElementById("kedvencDoboz").innerHTML += kedvencKiir(
+							e.video_id,
+							e.title,
+							e.length == 0 ? "LIVE" : e.length,
+							e.id
+						);
+					});
+				});
+		}
+
+
+
+
+		function kedvencToPlaylist(id) {
+			fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "insertIntoPlaylist",
+					music_id: id,
+					token: localStorage.getItem("token"),
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					//console.log(data);
+				});
+		}
+
+		function DeleteFromFavList(id, element) {
+			fetch("../index.php", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					muvelet: "DeleteFromFavList",
+					id: id,
+					user_id: localStorage.getItem("user_id"),
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					//console.log(data);
+					element.closest("li").remove();
+					let favs = JSON.parse(localStorage.getItem("tomb")) || [];
+					favs = favs.filter(f => String(f.music_id) !== String(id));
+					localStorage.setItem("tomb", JSON.stringify(favs));
+
+					document.getElementById("kedvenc").onclick = kedvenc;
+					document.getElementById("kedvenc").innerHTML = `
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+							<path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q0 .083.176-.17a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
+						</svg>`;
+					const mobilSziv = document.querySelector(".mobile-controls .mobile-btn:first-child");
+					if (mobilSziv) {
+						mobilSziv.onclick = kedvenc;
+						mobilSziv.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q0 .083.176-.17a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" /></svg>`;
+					}
+				});
+		}
+
+
+
+		let utolsoPlaylist = "";
+
+		function update() {
+			getCurrentTime();
+			getVolume();
+			if (seekSlider && hossz) ido();
+
+			isPlaying().then((status) => {
+				const isPlay = status == 0;
+				// Asztali gombok
+				const playBtn = document.getElementById("play");
+				const pauseBtn = document.getElementById("pause");
+
+				if (playBtn && pauseBtn) {
+					if (isPlay) {
+						playBtn.classList.remove("d-none");
+						pauseBtn.classList.add("d-none");
+					} else {
+						pauseBtn.classList.remove("d-none");
+						playBtn.classList.add("d-none");
+					}
+				}
+				// Mobil gombok
+				const mp = document.getElementById("mobile-play-icon");
+				const mpa = document.getElementById("mobile-pause-icon");
+				if (mp && mpa) {
+					if (isPlay) {
+						mp.classList.remove("d-none");
+						mpa.classList.add("d-none");
+					} else {
+						mpa.classList.remove("d-none");
+						mp.classList.add("d-none");
+					}
+				}
+			});
+
+			loadPlaylist().then((data) => {
+				const ujPlaylist = data.map(e => e.video_id).join(",");
+
+				if (ujPlaylist === utolsoPlaylist) return; // nem változott, ne csináljunk semmit
+				utolsoPlaylist = ujPlaylist;
+
+				const playlist = document.getElementById("playlist");
+				playlist.innerHTML = "";
+				data.forEach((e) => {
+					playlist.insertAdjacentHTML("beforeend", embedPlaylistItem(
+						e.video_id,
+						e.title,
+						e.length == 0 ? "LIVE" : e.length,
+					));
+				});
+			});
+
+			loadCurrentlyPlaying().then((data) => {
+				if (videoId != data.video_id) {
+					//console.log(data);
+					videoId = data.video_id;
+					embedVideo(
+						data.video_id,
+						"https://img.youtube.com/vi/" +
+						data.video_id +
+						"/mqdefault.jpg",
+						data.title,
+						data.music_id,
+					);
+					seekSlider = document.querySelector("#seekSlider");
+					volumeSlider = document.querySelector("#volumeSlider");
+
+					getLength();
+
+					// Húzás kezdetén
+					seekSlider.addEventListener(
+						"pointerdown",
+						() => (felhasznaloSeek = true),
+					);
+					seekSlider.addEventListener(
+						"pointerleave",
+						() => (felhasznaloSeek = false),
+					);
+
+					// Hangerő kezdetén
+					volumeSlider.addEventListener(
+						"pointerdown",
+						() => (felhasznaloVolume = true),
+					);
+					volumeSlider.addEventListener(
+						"pointerleave",
+						() => (felhasznaloVolume = false),
+					);
+
+					// Húzás közben tároljuk az értéket
+					seekSlider.addEventListener("input", function () {
+						if (felhasznaloSeek) {
+							porget = this.value;
+						}
+					});
+
+					volumeSlider.addEventListener("input", function () {
+						if (felhasznaloVolume) {
+							volume = this.value;
+						}
+					});
+
+					volumeSlider.addEventListener("pointerup", function () {
+						if (!felhasznaloVolume) return;
+						felhasznaloVolume = false;
+						setVolume();
+					});
+
+					seekSlider.addEventListener("pointerup", function () {
+						if (!felhasznaloSeek) return;
+						felhasznaloSeek = false;
+						setPorget();
+					});
+				}
+			});
+		}
+
+		setInterval(update, 200);
+
+		document
+			.getElementById("search")
+			.addEventListener("keydown", function (e) {
+				if (e.key === "Enter") {
+					keres();
+					search();
+					eredmenyVisszahoz();
+					//console.log("asdasd");
+				}
+			});
+	</script>
+
+	<!-- ─── MOBIL MINI PLAYER BAR (Spotify-stílus) ─── -->
+
+	<div id="mobile-player-bar">
+		<!-- Seek progress csík a tetején -->
+
+		<input type="range" id="mobile-seek-slider" min="0" max="1000" value="0" />
+
+		<div id="mobile-player-inner">
+			<!-- Borítókép + cím -->
+			<div class="mobile-info">
+				<img id="mobile-thumb" src="" alt="" />
+				<span id="mobile-title">–</span>
+			</div>
+			<!-- Gombok -->
+			<div class="mobile-controls player-controls">
+				<button onclick="kedvenc()" class="mobile-btn">
+					<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
+						viewBox="0 0 16 16">
+						<path
+							d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143q.09.083.176.171a3 3 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15" />
+					</svg>
+				</button>
+				<button onclick="inditas()" class="mobile-btn btn mobile-play-btn" id="mobile-play-pause">
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+						viewBox="0 0 16 16" id="mobile-play-icon">
+						<path
+							d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z" />
+					</svg>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="d-none"
+						viewBox="0 0 16 16" id="mobile-pause-icon">
+						<path
+							d="M6 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5m4 0a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V4a.5.5 0 0 1 .5-.5" />
+					</svg>
+				</button>
+				<button onclick="kovetkezo()" class="mobile-btn btn" id="mobile-kovetkezoBtn">
+					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+						viewBox="0 0 16 16">
+						<path
+							d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.752l-6.267 3.636c-.52.302-1.233-.043-1.233-.696v-2.94l-6.267 3.636C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696L7.5 7.248v-2.94c0-.653.713-.998 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5" />
+					</svg>
+				</button>
+			</div>
+			<!-- Hangerő -->
+			<div class="mobile-volume">
+				<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="rgba(255,255,255,0.7)"
+					viewBox="0 0 24 24">
+					<path
+						d="M18.36 19.36a1 1 0 0 1-.705-1.71C19.167 16.148 20 14.142 20 12s-.833-4.148-2.345-5.65a1 1 0 1 1 1.41-1.419C20.958 6.812 22 9.322 22 12s-1.042 5.188-2.935 7.069a.997.997 0 0 1-.705.291z" />
+					<path
+						d="M15.53 16.53a.999.999 0 0 1-.703-1.711C15.572 14.082 16 13.054 16 12s-.428-2.082-1.173-2.819a1 1 0 1 1 1.406-1.422A6 6 0 0 1 18 12a6 6 0 0 1-1.767 4.241.996.996 0 0 1-.703.289zM12 22a1 1 0 0 1-.707-.293L6.586 17H4c-1.103 0-2-.897-2-2V9c0-1.103.897-2 2-2h2.586l4.707-4.707A.998.998 0 0 1 13 3v18a1 1 0 0 1-1 1z" />
+				</svg>
+				<input type="range" id="mobile-volume-slider" max="100" value="50" />
+			</div>
+		</div>
+	</div>
+	<script src="https://www.youtube.com/iframe_api"></script>
+	<script>
+		// Mobil seek szinkronizálása
+		//console.log(window.innerWidth);
+
+		const _origGetCurrentTime = getCurrentTime;
+		// Patch: seekSlider.value változtatása után frissítjük a mobil csúszkát is
+		const mobileSeekSlider = document.getElementById("mobile-seek-slider");
+		const mobileVolumeSlider = document.getElementById("mobile-volume-slider");
+
+		if (mobileSeekSlider) {
+			mobileSeekSlider.addEventListener(
+				"pointerdown",
+				() => (felhasznaloSeek = true),
+			);
+			mobileSeekSlider.addEventListener(
+				"pointerleave",
+				() => (felhasznaloSeek = false),
+			);
+			mobileSeekSlider.addEventListener("input", function () {
+				if (felhasznaloSeek) {
+					porget = this.value;
+					if (seekSlider) seekSlider.value = this.value;
+				}
+			});
+			mobileSeekSlider.addEventListener("pointerup", function () {
+				if (!felhasznaloSeek) return;
+				felhasznaloSeek = false;
+				setPorget();
+			});
+		}
+
+		if (mobileVolumeSlider) {
+			mobileVolumeSlider.addEventListener(
+				"pointerdown",
+				() => (felhasznaloVolume = true),
+			);
+			mobileVolumeSlider.addEventListener(
+				"pointerleave",
+				() => (felhasznaloVolume = false),
+			);
+			mobileVolumeSlider.addEventListener("input", function () {
+				if (felhasznaloVolume) {
+					volume = this.value;
+					if (volumeSlider) volumeSlider.value = this.value;
+				}
+			});
+			mobileVolumeSlider.addEventListener("pointerup", function () {
+				if (!felhasznaloVolume) return;
+				felhasznaloVolume = false;
+				setVolume();
+			});
+		}
+
+		// Seek és volume értékek tükrözése a mobil csúszkákra
+		const _origUpdate = update;
+		function update() {
+			_origUpdate();
+			// Szinkronizálás késleltetéssel (a fetch-ek async-ok)
+			setTimeout(() => {
+				if (mobileSeekSlider && seekSlider && !felhasznaloSeek) {
+					mobileSeekSlider.max = seekSlider.max;
+					mobileSeekSlider.value = seekSlider.value;
+				}
+				if (mobileVolumeSlider && volumeSlider && !felhasznaloVolume) {
+					mobileVolumeSlider.value = volumeSlider.value;
+				}
+			}, 300);
+		}
+
+		function toggleNav() {
+			const menu = document.getElementById("navbarMobil");
+			const icon = document.getElementById("nav-hamburger-icon");
+			const open = menu.classList.contains("d-none");
+			menu.classList.toggle("d-none", !open);
+			icon.className = open ? "bi bi-x" : "bi bi-list";
+		}
+	</script>
 </body>
 
 </html>

@@ -1,6 +1,6 @@
 <?php
 
-//==========================> main.html <==========================
+//---------------main.html------------------
 //beszúrja az adatbázisba, music táblába
 function insertIntoMusic($conn, $video_id, $title, $length)
 {
@@ -66,7 +66,7 @@ function insertIntoMusicRequest($conn, $music_id)
     }
 }
 
-//megnéyi a playlist üres-e
+//megnézi a playlist üres-e
 function isPlaylistEmpty($conn)
 {
     $sql = "SELECT id FROM playlist LIMIT 1";
@@ -97,7 +97,7 @@ function getPlaylist($conn)
     if ($stmt = $conn->prepare($sql)) {
         $stmt->execute();
 
-        $result = $stmt->get_result(); // mysqli_result
+        $result = $stmt->get_result();
         $rows = $result->fetch_all(MYSQLI_ASSOC);
 
         echo json_encode([
@@ -158,19 +158,19 @@ function search($conn, $search)
 
 
 
-//==========================> currently playing video <==========================
+//---------------cuurently_playing_video------------------
 
 function loadCurrentlyPlaying($conn)
 {
     $sql = "SELECT currently_playing.*, music.video_id, music.id, music.title, music.length
             FROM currently_playing
             JOIN music ON currently_playing.music_id = music.id
-            LIMIT 1"; // csak az aktuális sort kérjük
+            LIMIT 1";
 
     if ($stmt = $conn->prepare($sql)) {
         $stmt->execute();
 
-        $result = $stmt->get_result(); // mysqli_result
+        $result = $stmt->get_result();
         $row = $result->fetch_assoc();
 
         echo json_encode([
@@ -212,7 +212,7 @@ function isPlaying($conn)
     if ($stmt = $conn->prepare($sql)) {
         $stmt->execute();
 
-        $result = $stmt->get_result(); // mysqli_result
+        $result = $stmt->get_result();
         $row = $result->fetch_assoc();
 
         echo json_encode([
@@ -263,7 +263,7 @@ function getVolume($conn)
     if ($stmt = $conn->prepare($sql)) {
         $stmt->execute();
 
-        $result = $stmt->get_result(); // mysqli_result
+        $result = $stmt->get_result();
         $row = $result->fetch_assoc();
 
         echo json_encode([
@@ -282,7 +282,7 @@ function getCurrentTime($conn)
     if ($stmt = $conn->prepare($sql)) {
         $stmt->execute();
 
-        $result = $stmt->get_result(); // mysqli_result
+        $result = $stmt->get_result();
         $row = $result->fetch_assoc();
 
         echo json_encode([
@@ -301,7 +301,7 @@ function getLength($conn)
     if ($stmt = $conn->prepare($sql)) {
         $stmt->execute();
 
-        $result = $stmt->get_result(); // mysqli_result
+        $result = $stmt->get_result();
         $row = $result->fetch_assoc();
 
         echo json_encode([
@@ -447,19 +447,19 @@ function favList($conn, $user_id){
 }
 
 
-//==========================> server.html <==========================
+//--------------------------- server.html ---------------------------
 function getVideoData($conn)
 {
     $sql = "SELECT music.video_id, music.title, music.length, 
     currently_playing.status, currently_playing.current_time, currently_playing.volume, currently_playing.porget
     FROM currently_playing
     JOIN music ON currently_playing.music_id = music.id
-    LIMIT 1"; // csak az aktuális sort kérjük
+    LIMIT 1";
 
     if ($stmt = $conn->prepare($sql)) {
         $stmt->execute();
 
-        $result = $stmt->get_result(); // mysqli_result
+        $result = $stmt->get_result();
         $row = $result->fetch_assoc();
 
         if ($result->num_rows == 0) {
