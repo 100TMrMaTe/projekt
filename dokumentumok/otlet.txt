@@ -90,6 +90,20 @@ playlist legkisebb eleme
 
 
 
+=============================================================
+
+Teszteles utan:
+
+A telefonos es a gepes nezetbe levo hangeroszabajzo nincs osszhangban, a telefonos nezetes hangero szabalyozo nem mindig mukodik
+
+Az oldal frissitese amikor egy uj zene kezdodik hogy a felhasznalonak a jogai frissuljenek. 
+
+A regisztracio tovabbi tesztelese lehet nem mindig frissul le ugy ahogy kellene.
+
+
+
+
+
 
 
 
