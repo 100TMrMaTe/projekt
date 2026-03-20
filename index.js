@@ -59,7 +59,7 @@ function bgChange() {
   ];
   const randomIndex = Math.floor(Math.random() * bgImages.length);
   document.body.style.backgroundImage = `url(${bgImages[randomIndex]})`;
-  console.log("Background changed to: " + bgImages[randomIndex]);
+  //console.log("Background changed to: " + bgImages[randomIndex]);
 }
 
 function suc_reg() {
@@ -96,7 +96,7 @@ function adminpageLog() {
   })
     .then((r) => r.json())
     .then((d) => {
-      console.log(d);
+      //console.log(d);
       //ugy irasd ki hogy a gombnak oncliknek meghivod ezeket a fugvenyeket es az id-t atadod parameterkent
       if (d.status === "success_adminpage") {
         document.getElementById("reg").innerHTML = "";
@@ -148,7 +148,7 @@ function approveUser($id) {
   })
     .then((r) => r.json())
     .then((d) => {
-      console.log(d);
+      //console.log(d);
       init();
       //toltse be ujra az egesz oszlopot
     });
@@ -165,7 +165,7 @@ function denyUser($id) {
   })
     .then((r) => r.json())
     .then((d) => {
-      console.log(d);
+      //console.log(d);
       init();
       //toltse be ujra az egesz oszlopot
     });
@@ -182,7 +182,7 @@ function deleteUser($id) {
   })
     .then((r) => r.json())
     .then((d) => {
-      console.log(d);
+      //console.log(d);
       init();
       //toltse be ujra az egesz oszlopot
     });
@@ -198,7 +198,7 @@ function makeAdmin($id) {
   })
     .then((r) => r.json())
     .then((d) => {
-      console.log(d);
+      //console.log(d);
       init();
       //toltse be ujra az egesz oszlopot
     });
@@ -215,7 +215,7 @@ function revokeAdmin($id) {
   })
     .then((r) => r.json())
     .then((d) => {
-      console.log(d);
+      //console.log(d);
       localStorage.removeItem("isadmin");
       init();
       //toltse be ujra az egesz oszlopot
@@ -424,7 +424,7 @@ function login() {
   })
     .then((r) => r.json())
     .then((d) => {
-      console.log(d);
+      //console.log(d);
       if (d.status == "error_login_no_user") {
         //registraljal ||| vagy elirtad az email cimed
         document.getElementById("error-message").innerText = "Hibás email cím vagy még nem regisztráltál.";
@@ -444,7 +444,7 @@ function login() {
         const collapseList = [...collapseElementList].map(collapseEl => new bootstrap.Collapse(collapseEl))
         errorTimer();
       } else if (d.status == "error_login_wrong_password") {
-        console.log("rossz jelszo");
+        //console.log("rossz jelszo");
         //rossz jelszo
         document.getElementById("error-message").innerText = "Hibás jelszó.";
         const collapseElementList = document.querySelectorAll('.collapse')
