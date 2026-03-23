@@ -1,6 +1,7 @@
 <?php
 include_once "database/database_login.php";
 include_once "database/database_music.php";
+include_once "mailer/sendVerification.php";
 //include_once "database/otthon.php";
 $conn = Connect_to_server();
 $data = (json_decode(file_get_contents("php://input"), true));

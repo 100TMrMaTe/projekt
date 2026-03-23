@@ -75,6 +75,38 @@ function confirmReg($toEmail)
     }
 }
 
+function denyreg($toEmail)
+{
+    $mail = new PHPMailer(true);
+
+    try {
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'konyhasimatemail@gmail.com';
+        $mail->Password   = 'repa qaey hhhy zxnw';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = 587;
+        $mail->CharSet = 'UTF-8_hungarian_ci';
+
+        $mail->setFrom('konyhasimatemail@gmail.com', 'regisztraciod elfogadva');
+        $mail->addAddress($toEmail);
+
+        $mail->isHTML(true);
+        $mail->Subject = "Regisztraciod elutasitva";
+
+        $mail->Body = "<p>Regisztrációd elutasításra került.</p>
+                       <p>Ha úgy gondolod, hogy ez hiba, kérlek vedd fel velünk a kapcsolatot.</p>
+                       <p>Köszönjük, hogy érdeklődtél az oldalunk iránt!</p>";
+
+
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        return false;
+    }
+}
+
 function sendPasswordResetEmail($toEmail, $token)
 {
     $verifyLink = "http://localhost/suliscucc/projekt/forgot/forgot.html?token=$token";
