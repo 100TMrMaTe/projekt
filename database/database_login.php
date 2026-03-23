@@ -135,6 +135,7 @@ function denyUser($conn, $id)
   $stmt = $conn->prepare("DELETE FROM users WHERE id = ? AND approved = 0");
   $stmt->bind_param("s", $id);
   if ($stmt->execute()) {
+    //deny reg email lekell kerni az emailt mielott trolod
     echo json_encode(array("status" => "success_denyuser"));
   } else {
     echo json_encode(array("status" => "error_denyuser"));

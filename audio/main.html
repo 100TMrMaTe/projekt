@@ -152,8 +152,13 @@
 			window.location.href = "../login/login.html";
 		}
 
-		let felhasznaloSeek = false;
-		let felhasznaloVolume = false;
+		// Egyetlen flag-pár mindkét nézethez
+		let felhasznaloSeek = false;    // seek húzás folyamatban (bármely slider)
+		let felhasznaloVolume = false;  // volume húzás folyamatban (bármely slider)
+
+		// Alias-ok a régi kód kompatibilitásához
+		Object.defineProperty(window, 'seeking',        { get: () => felhasznaloSeek,   set: v => { felhasznaloSeek = v; }   });
+		Object.defineProperty(window, 'changingVolume', { get: () => felhasznaloVolume, set: v => { felhasznaloVolume = v; } });
 
 		let porget = 0;
 		let volume = 0;
@@ -434,7 +439,7 @@
 			//console.log(music_id);
 			if (currentFavs.some(f => f.music_id == music_id)) {
 				document.getElementById("lejatszo").innerHTML = `
-				<div class="talalat rounded-3 m-2">
+				<div class="talalat rounded-3">
 					<div class="p-3 text-light">
 
 						<div class="ratio ratio-16x9 mb-3">
@@ -490,7 +495,7 @@
 				</div>`;
 			} else {
 				document.getElementById("lejatszo").innerHTML = `
-				<div class="talalat rounded-3 m-2">
+				<div class="talalat rounded-3">
 					<div class="p-3 text-light">
 
 						<div class="ratio ratio-16x9 mb-3">
@@ -882,50 +887,39 @@
 
 				getLength();
 
-				// Húzás kezdetén
-				seekSlider.addEventListener(
-					"pointerdown",
-					() => (felhasznaloSeek = true),
-				);
-				seekSlider.addEventListener(
-					"pointerleave",
-					() => (felhasznaloSeek = false),
-				);
+				// ─── Desktop seekSlider ───
+				seekSlider.addEventListener("pointerdown", () => { felhasznaloSeek = true; });
 
-				// Hangerő kezdetén
-				volumeSlider.addEventListener(
-					"pointerdown",
-					() => (felhasznaloVolume = true),
-				);
-				volumeSlider.addEventListener(
-					"pointerleave",
-					() => (felhasznaloVolume = false),
-				);
-
-				// Húzás közben tároljuk az értéket
 				seekSlider.addEventListener("input", function () {
-					if (felhasznaloSeek) {
-						porget = this.value;
-					}
+					felhasznaloSeek = true;
+					porget = this.value;
+					if (mobileSeekSlider) mobileSeekSlider.value = this.value;
 				});
+
+				// ─── Desktop volumeSlider ───
+				volumeSlider.addEventListener("pointerdown", () => { felhasznaloVolume = true; });
 
 				volumeSlider.addEventListener("input", function () {
-					if (felhasznaloVolume) {
-						volume = this.value;
+					felhasznaloVolume = true;
+					volume = this.value;
+					if (mobileVolumeSlider) mobileVolumeSlider.value = this.value;
+				});
+
+				// document-szintű pointerup: ha az egér a slidertől távol engedi el
+				document.addEventListener("pointerup", function () {
+					if (felhasznaloSeek) {
+						porget = seekSlider.value;
+						if (mobileSeekSlider) mobileSeekSlider.value = seekSlider.value;
+						felhasznaloSeek = false;
+						setPorget();
 					}
-				});
-
-				volumeSlider.addEventListener("pointerup", function () {
-					if (!felhasznaloVolume) return;
-					felhasznaloVolume = false;
-					setVolume();
-				});
-
-				seekSlider.addEventListener("pointerup", function () {
-					if (!felhasznaloSeek) return;
-					felhasznaloSeek = false;
-					setPorget();
-				});
+					if (felhasznaloVolume) {
+						volume = volumeSlider.value;
+						if (mobileVolumeSlider) mobileVolumeSlider.value = volumeSlider.value;
+						felhasznaloVolume = false;
+						setVolume();
+					}
+});
 
 
 				if (data.user_id == localStorage.getItem("user_id") || localStorage.getItem("isadmin") === "1") {
@@ -1010,27 +1004,32 @@
 		}
 
 		function getVolume() {
-			if (felhasznaloVolume) return;
+			if (felhasznaloVolume) return; // Ne írja felül, amíg a felhasználó húzza a slidert
+
 			fetch("../index.php", {
 				method: "POST",
 				headers: {
-					"Content-Type": "application/json",
+					"Content-Type": "application/json"
 				},
 				body: JSON.stringify({
-					muvelet: "getVolume",
+					muvelet: "getVolume"
 				}),
 			})
-				.then((response) => response.json())
+				.then((r) => r.json())
 				.then((data) => {
 					volume = data.volume;
 
-					if (volumeSlider) {
-						volumeSlider.value = volume;
-					}
+					if (volumeSlider) volumeSlider.value = volume;
+					if (mobileVolumeSlider) mobileVolumeSlider.value = volume;
 				});
 		}
 
 		function setPorget() {
+			// Cooldown: 1.5 másodpercig nem olvassuk vissza a szerver értékét
+			seekCooldown = true;
+			clearTimeout(window._seekCooldownTimer);
+			window._seekCooldownTimer = setTimeout(() => { seekCooldown = false; }, 1500);
+
 			fetch("../index.php", {
 				method: "POST",
 				headers: {
@@ -1045,24 +1044,25 @@
 				.then((data) => { });
 		}
 
+		let seekCooldown = false; // rövid tiltás setPorget után
+
 		function getCurrentTime() {
-			if (felhasznaloSeek) return;
+			if (felhasznaloSeek) return; // Ne írja felül, amíg a felhasználó húzza a slidert
+			if (seekCooldown) return;   // Ne írja felül közvetlenül a seek után sem
 
 			fetch("../index.php", {
 				method: "POST",
 				headers: {
-					"Content-Type": "application/json",
+					"Content-Type": "application/json"
 				},
 				body: JSON.stringify({
-					muvelet: "getCurrentTime",
+					muvelet: "getCurrentTime"
 				}),
 			})
-				.then((response) => response.json())
+				.then((r) => r.json())
 				.then((data) => {
 					if (seekSlider) seekSlider.value = data.current_time;
-					if (mobileSeekSlider && !felhasznaloSeek) {
-						mobileSeekSlider.value = data.current_time;
-					}
+					if (mobileSeekSlider) mobileSeekSlider.value = data.current_time;
 				});
 		}
 
@@ -1413,49 +1413,52 @@
 
 					getLength();
 
-					// Húzás kezdetén
-					seekSlider.addEventListener(
-						"pointerdown",
-						() => (felhasznaloSeek = true),
-					);
-					seekSlider.addEventListener(
-						"pointerleave",
-						() => (felhasznaloSeek = false),
-					);
+					// ─── Desktop seekSlider ───
+					seekSlider.addEventListener("pointerdown", () => { felhasznaloSeek = true; });
 
-					// Hangerő kezdetén
-					volumeSlider.addEventListener(
-						"pointerdown",
-						() => (felhasznaloVolume = true),
-					);
-					volumeSlider.addEventListener(
-						"pointerleave",
-						() => (felhasznaloVolume = false),
-					);
-
-					// Húzás közben tároljuk az értéket
 					seekSlider.addEventListener("input", function () {
-						if (felhasznaloSeek) {
-							porget = this.value;
-						}
+						felhasznaloSeek = true; // biztosítjuk, ha pointerdown lemaradt
+						porget = this.value;
+						if (mobileSeekSlider) mobileSeekSlider.value = this.value;
 					});
 
-					volumeSlider.addEventListener("input", function () {
-						if (felhasznaloVolume) {
-							volume = this.value;
+					// document-szintű pointerup: ha az egér a slidertől távol engedi el
+					document.addEventListener("pointerup", function () {
+						if (felhasznaloSeek) {
+							porget = seekSlider.value;
+							if (mobileSeekSlider) mobileSeekSlider.value = seekSlider.value;
+							felhasznaloSeek = false;
+							setPorget();
 						}
+						if (felhasznaloVolume) {
+							volume = volumeSlider.value;
+							if (mobileVolumeSlider) mobileVolumeSlider.value = volumeSlider.value;
+							felhasznaloVolume = false;
+							setVolume();
+						}
+					}, { once: false });
+
+					// ─── Desktop volumeSlider ───
+					volumeSlider.addEventListener("pointerdown", () => { felhasznaloVolume = true; });
+
+					volumeSlider.addEventListener("input", function () {
+						felhasznaloVolume = true;
+						volume = this.value;
+						if (mobileVolumeSlider) mobileVolumeSlider.value = this.value;
 					});
 
 					volumeSlider.addEventListener("pointerup", function () {
 						if (!felhasznaloVolume) return;
 						felhasznaloVolume = false;
+						volume = this.value;
+						if (mobileVolumeSlider) mobileVolumeSlider.value = this.value;
 						setVolume();
 					});
 
-					seekSlider.addEventListener("pointerup", function () {
-						if (!felhasznaloSeek) return;
-						felhasznaloSeek = false;
-						setPorget();
+					volumeSlider.addEventListener("pointercancel", function () {
+						if (!felhasznaloVolume) return;
+						felhasznaloVolume = false;
+						setVolume();
 					});
 				}
 			});
@@ -1532,72 +1535,59 @@
 	</div>
 	<script src="https://www.youtube.com/iframe_api"></script>
 	<script>
-		// Mobil seek szinkronizálása
-		//console.log(window.innerWidth);
-
-		const _origGetCurrentTime = getCurrentTime;
-		// Patch: seekSlider.value változtatása után frissítjük a mobil csúszkát is
 		const mobileSeekSlider = document.getElementById("mobile-seek-slider");
 		const mobileVolumeSlider = document.getElementById("mobile-volume-slider");
 
+		// Segédfüggvény: touch + pointer eseményekre egyszerre regisztrál
+		function onDragStart(el, fn) {
+			el.addEventListener("pointerdown", fn);
+			el.addEventListener("touchstart", fn, { passive: true });
+		}
+		function onDragEnd(el, fn) {
+			el.addEventListener("pointerup", fn);
+			el.addEventListener("pointercancel", fn);
+			el.addEventListener("touchend", fn, { passive: true });
+			el.addEventListener("touchcancel", fn, { passive: true });
+		}
+
+		// ===== MOBIL SEEK =====
 		if (mobileSeekSlider) {
-			mobileSeekSlider.addEventListener(
-				"pointerdown",
-				() => (felhasznaloSeek = true),
-			);
-			mobileSeekSlider.addEventListener(
-				"pointerleave",
-				() => (felhasznaloSeek = false),
-			);
+			onDragStart(mobileSeekSlider, () => { felhasznaloSeek = true; });
+
+			// input: csak UI frissítés, nincs szerver hívás
 			mobileSeekSlider.addEventListener("input", function () {
-				if (felhasznaloSeek) {
-					porget = this.value;
-					if (seekSlider) seekSlider.value = this.value;
-				}
+				felhasznaloSeek = true; // biztosítjuk, hogy be van állítva
+				porget = this.value;
+				if (seekSlider) seekSlider.value = this.value;
 			});
-			mobileSeekSlider.addEventListener("pointerup", function () {
+
+			// Húzás vége: szerver hívás
+			onDragEnd(mobileSeekSlider, function () {
 				if (!felhasznaloSeek) return;
+				porget = mobileSeekSlider.value;
+				if (seekSlider) seekSlider.value = mobileSeekSlider.value;
 				felhasznaloSeek = false;
 				setPorget();
 			});
 		}
 
+		// ===== MOBIL VOLUME =====
 		if (mobileVolumeSlider) {
-			mobileVolumeSlider.addEventListener(
-				"pointerdown",
-				() => (felhasznaloVolume = true),
-			);
-			mobileVolumeSlider.addEventListener(
-				"pointerleave",
-				() => (felhasznaloVolume = false),
-			);
+			onDragStart(mobileVolumeSlider, () => { felhasznaloVolume = true; });
+
 			mobileVolumeSlider.addEventListener("input", function () {
-				if (felhasznaloVolume) {
-					volume = this.value;
-					if (volumeSlider) volumeSlider.value = this.value;
-				}
+				felhasznaloVolume = true;
+				volume = this.value;
+				if (volumeSlider) volumeSlider.value = this.value;
 			});
-			mobileVolumeSlider.addEventListener("pointerup", function () {
+
+			onDragEnd(mobileVolumeSlider, function () {
 				if (!felhasznaloVolume) return;
+				volume = mobileVolumeSlider.value;
+				if (volumeSlider) volumeSlider.value = mobileVolumeSlider.value;
 				felhasznaloVolume = false;
 				setVolume();
 			});
-		}
-
-		// Seek és volume értékek tükrözése a mobil csúszkákra
-		const _origUpdate = update;
-		function update() {
-			_origUpdate();
-			// Szinkronizálás késleltetéssel (a fetch-ek async-ok)
-			setTimeout(() => {
-				if (mobileSeekSlider && seekSlider && !felhasznaloSeek) {
-					mobileSeekSlider.max = seekSlider.max;
-					mobileSeekSlider.value = seekSlider.value;
-				}
-				if (mobileVolumeSlider && volumeSlider && !felhasznaloVolume) {
-					mobileVolumeSlider.value = volumeSlider.value;
-				}
-			}, 300);
 		}
 
 		function toggleNav() {
