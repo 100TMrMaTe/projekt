@@ -145,20 +145,56 @@ function denyUser($conn, $id)
 
 function deleteUser($conn, $id)
 {
-  $tables = ["active_users", "user_handler", "playlist", "currently_playing", "fav"];
+  $stmt_iscurrentlyplaying = $conn->prepare("SELECT id FROM currently_playing WHERE user_id = ? LIMIT 1");
+  $stmt_iscurrentlyplaying->bind_param("i", $id);
+  $stmt_iscurrentlyplaying->execute();
+  $result_currentlyplaying = $stmt_iscurrentlyplaying->get_result();
+  $stmt_iscurrentlyplaying->close();
+
+  if ($result_currentlyplaying->num_rows > 0) {
+    $stmt_update_currentlyplaying = $conn->prepare("
+    UPDATE currently_playing 
+    SET music_id = ?, status = ?, `current_time` = ?, volume = ?, porget = ?, user_id = ?
+    WHERE user_id = ?
+");
+
+    $music_id    = 604;
+    $status      = 1;
+    $current_time = 0;
+    $volume      = 0;
+    $porget      = 0;
+    $default_user_id = 96;
+
+    $stmt_update_currentlyplaying->bind_param(
+      "iiiiiii",
+      $music_id,
+      $status,
+      $current_time,
+      $volume,
+      $porget,
+      $default_user_id,
+      $id  // WHERE user_id = ?
+    );
+
+    $stmt_update_currentlyplaying->execute();
+    $stmt_update_currentlyplaying->close();
+  }
+
+  // Töröljük a kapcsolódó adatokat az összes táblából
+  $tables = ["active_users", "user_handler", "playlist", "fav"];
   foreach ($tables as $table) {
     $stmt = $conn->prepare("DELETE FROM $table WHERE user_id = ?");
-    $stmt->bind_param("s", $id);
+    $stmt->bind_param("i", $id);
     $stmt->execute();
     $stmt->close();
   }
 
   $stmt = $conn->prepare("DELETE FROM users WHERE id = ?");
-  $stmt->bind_param("s", $id);
+  $stmt->bind_param("i", $id);
   if ($stmt->execute()) {
-    echo json_encode(array("status" => "success_deleteuser"));
+    echo json_encode(["status" => "success_deleteuser"]);
   } else {
-    echo json_encode(array("status" => "error_deleteuser"));
+    echo json_encode(["status" => "error_deleteuser"]);
   }
   $stmt->close();
 }
