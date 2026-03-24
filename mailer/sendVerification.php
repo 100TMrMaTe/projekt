@@ -7,10 +7,12 @@ require_once __DIR__ . "/../PHPMailer-master/src/PHPMailer.php";
 require_once __DIR__ . "/../PHPMailer-master/src/SMTP.php";
 require_once __DIR__ . "/../PHPMailer-master/src/Exception.php";
 
-function sendVerificationEmail($toEmail, $token)
+$config = require __DIR__ . "/../config.php";
+
+function sendVerificationEmail($toEmail, $token,  array $config)
 {
 
-    $verifyLink = "http://localhost/suliscucc/projekt/suc_reg/suc_reg.html?email_token=$token";
+    $verifyLink = $config['domains']['regemail'] . $token;
 
     $mail = new PHPMailer(true);
 
@@ -18,13 +20,13 @@ function sendVerificationEmail($toEmail, $token)
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'konyhasimatemail@gmail.com';
-        $mail->Password   = 'repa qaey hhhy zxnw';
+        $mail->Username   = $config['mail']['username'];
+        $mail->Password   = $config['mail']['password'];
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
         $mail->CharSet = 'UTF-8_hungarian_ci';
 
-        $mail->setFrom('konyhasimatemail@gmail.com', 'regisztaracio');
+        $mail->setFrom($config['mail']['from'], 'regisztaracio');
         $mail->addAddress($toEmail);
 
         $mail->isHTML(true);
@@ -44,7 +46,7 @@ function sendVerificationEmail($toEmail, $token)
     }
 }
 
-function confirmReg($toEmail)
+function confirmReg($toEmail, array $config)
 {
     $mail = new PHPMailer(true);
 
@@ -52,13 +54,13 @@ function confirmReg($toEmail)
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'konyhasimatemail@gmail.com';
-        $mail->Password   = 'repa qaey hhhy zxnw';
+        $mail->Username   = $config['mail']['username'];
+        $mail->Password   = $config['mail']['password'];
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
         $mail->CharSet = 'UTF-8_hungarian_ci';
 
-        $mail->setFrom('konyhasimatemail@gmail.com', 'regisztraciod elfogadva');
+        $mail->setFrom($config['mail']['from'], 'regisztraciod elfogadva');
         $mail->addAddress($toEmail);
 
         $mail->isHTML(true);
@@ -75,7 +77,7 @@ function confirmReg($toEmail)
     }
 }
 
-function denyreg($toEmail)
+function denyreg($toEmail, array $config)
 {
     $mail = new PHPMailer(true);
 
@@ -83,13 +85,13 @@ function denyreg($toEmail)
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'konyhasimatemail@gmail.com';
-        $mail->Password   = 'repa qaey hhhy zxnw';
+        $mail->Username   = $config['mail']['username'];
+        $mail->Password   = $config['mail']['password'];
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
         $mail->CharSet = 'UTF-8_hungarian_ci';
 
-        $mail->setFrom('konyhasimatemail@gmail.com', 'regisztraciod elfogadva');
+        $mail->setFrom($config['mail']['from'], 'regisztraciod elfogadva');
         $mail->addAddress($toEmail);
 
         $mail->isHTML(true);
@@ -107,9 +109,9 @@ function denyreg($toEmail)
     }
 }
 
-function sendPasswordResetEmail($toEmail, $token)
+function sendPasswordResetEmail($toEmail, $token, array $config)
 {
-    $verifyLink = "http://localhost/suliscucc/projekt/forgot/forgot.html?token=$token";
+    $verifyLink = $config['domains']['passwordemail'] . $token;
 
     $mail = new PHPMailer(true);
 
@@ -117,13 +119,13 @@ function sendPasswordResetEmail($toEmail, $token)
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'konyhasimatemail@gmail.com';
-        $mail->Password   = 'repa qaey hhhy zxnw';
+        $mail->Username   = $config['mail']['username'];
+        $mail->Password   = $config['mail']['password'];
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
         $mail->CharSet = 'UTF-8_hungarian_ci';
 
-        $mail->setFrom('konyhasimatemail@gmail.com', 'elfelejtett jelszo');
+        $mail->setFrom($config['mail']['from'], 'elfelejtett jelszo');
         $mail->addAddress($toEmail);
 
         $mail->isHTML(true);
