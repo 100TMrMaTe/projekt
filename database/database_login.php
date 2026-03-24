@@ -1,6 +1,8 @@
 <?php
 
 include_once __DIR__ . "/../mailer/sendVerification.php";
+
+$config = require __DIR__ . "/../config.php";
 function Connect_to_server()
 {
   $servername = "172.16.2.100";
@@ -18,7 +20,7 @@ function Connect_to_server()
   mysqli_set_charset($conn, "utf8mb4");
   return $conn;
 }
-function registration($conn, $username, $password, $email, $class)
+function registration($conn, $username, $password, $email, $class, array $config)
 {
   $password = password_hash($password, PASSWORD_BCRYPT);
 
@@ -42,7 +44,7 @@ function registration($conn, $username, $password, $email, $class)
     $vissza["message"] = "aktiváld az emailed!";
     $vissza["long_message"] = "Kerlek ellenorizd az emailed a megerosito linkert!";
     echo json_encode($vissza);
-    sendVerificationEmail($email, $token);
+    sendVerificationEmail($email, $token, $config);
   } else {
     $vissza["status"] = "error_registration";
     $vissza["message"] = "Az email mar foglalt!";
@@ -109,7 +111,7 @@ function adminpage($conn)
   echo json_encode($vissza);
 }
 
-function approveUser($conn, $id)
+function approveUser($conn, $id, array $config)
 {
   $stmt_email = $conn->prepare("SELECT email FROM users WHERE id = ? LIMIT 1");
   $stmt_email->bind_param("s", $id);
@@ -123,27 +125,34 @@ function approveUser($conn, $id)
     echo json_encode(array("status" => "success_approveuser"));
     $user_email_row = $user_email_result->fetch_assoc();
     $user_email = $user_email_row['email'];
-    confirmReg($user_email);
+    confirmReg($user_email, $config);
   } else {
     echo json_encode(array("status" => "error_approveuser"));
   }
   $stmt->close();
 }
 
-function denyUser($conn, $id)
+function denyUser($conn, $id, array $config)
 {
-  $stmt = $conn->prepare("DELETE FROM users WHERE id = ? AND approved = 0");
-  $stmt->bind_param("s", $id);
-  if ($stmt->execute()) {
-    //deny reg email lekell kerni az emailt mielott trolod
-    echo json_encode(array("status" => "success_denyuser"));
-  } else {
-    echo json_encode(array("status" => "error_denyuser"));
-  }
-  $stmt->close();
+    // Email lekérése törlés ELŐTT
+    $stmt_email = $conn->prepare("SELECT email FROM users WHERE id = ? LIMIT 1");
+    $stmt_email->bind_param("i", $id);
+    $stmt_email->execute();
+    $row = $stmt_email->get_result()->fetch_assoc();
+    $stmt_email->close();
+
+    $stmt = $conn->prepare("DELETE FROM users WHERE id = ? AND approved = 0");
+    $stmt->bind_param("i", $id);
+    if ($stmt->execute()) {
+        denyreg($row['email'], $config);
+        echo json_encode(["status" => "success_denyuser"]);
+    } else {
+        echo json_encode(["status" => "error_denyuser"]);
+    }
+    $stmt->close();
 }
 
-function deleteUser($conn, $id)
+function deleteUser($conn, $id, array $config)
 {
   $stmt_iscurrentlyplaying = $conn->prepare("SELECT id FROM currently_playing WHERE user_id = ? LIMIT 1");
   $stmt_iscurrentlyplaying->bind_param("i", $id);
@@ -163,7 +172,7 @@ function deleteUser($conn, $id)
     $current_time = 0;
     $volume      = 0;
     $porget      = 0;
-    $default_user_id = 96;
+    $default_user_id = $config['admin']['id'];
 
     $stmt_update_currentlyplaying->bind_param(
       "iiiiiii",
@@ -223,7 +232,7 @@ function deleteuseradmin($conn, $id)
   $stmt->close();
 }
 
-function checkEmail($conn, $email)
+function checkEmail($conn, $email, array $config)
 {
   $stmt = $conn->prepare("SELECT id FROM users WHERE email = ? AND approved = 1");
   $stmt->bind_param("s", $email);
@@ -238,7 +247,7 @@ function checkEmail($conn, $email)
     $stmt_update->bind_param("ss", $token, $email);
     $stmt_update->execute();
     $stmt_update->close();
-    sendPasswordResetEmail($email, $token);
+    sendPasswordResetEmail($email, $token, $config);
   } else {
     echo json_encode(array("status" => "email_not_exists"));
   }

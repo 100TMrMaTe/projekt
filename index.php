@@ -2,25 +2,26 @@
 include_once "database/database_login.php";
 include_once "database/database_music.php";
 include_once "mailer/sendVerification.php";
+$config = require __DIR__ . "/config.php";
 //include_once "database/otthon.php";
 $conn = Connect_to_server();
 $data = (json_decode(file_get_contents("php://input"), true));
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     switch ($data["muvelet"]) {
         case "registration":
-            registration($conn, $data["username"], $data["password"], $data["email"], $data["class"]);
+            registration($conn, $data["username"], $data["password"], $data["email"], $data["class"], $config);
             break;
         case "verified":
             verifyEmail($conn, $data["email_token"]);
             break;
         case "approve_user":
-            approveUser($conn, $data["id"]);
+            approveUser($conn, $data["id"], $config);
             break;
         case "deny_user":
-            denyUser($conn, $data["id"]);
+            denyUser($conn, $data["id"], $config);
             break;
         case "delete_user":
-            deleteUser($conn, $data["id"]);
+            deleteUser($conn, $data["id"], $config);
             break;
         case "useradmin":
             useradmin($conn, $data["id"]);
@@ -29,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             deleteuseradmin($conn, $data["id"]);
             break;
         case "reset_password_request":
-            checkEmail($conn, $data["email"]);
+            checkEmail($conn, $data["email"], $config);
             break;
         case "reset_password":
             resetPassword($conn, $data["token"], $data["new_password"]);
