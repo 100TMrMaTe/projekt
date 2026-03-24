@@ -126,7 +126,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         case "setLength":
             setLength($conn, $data["length"]);
             break;
-
+        case "addToCurrentlyPlaying":
+            addToCurrentlyPlaying($conn);
+            break;
 
         default:
             echo json_encode(array("status" => "error", "message" => "Ismeretlen muvelet"));
