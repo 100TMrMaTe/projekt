@@ -94,13 +94,30 @@ playlist legkisebb eleme
 
 Teszteles utan:
 
-A telefonos es a gepes nezetbe levo hangeroszabajzo nincs osszhangban, a telefonos nezetes hangero szabalyozo nem mindig mukodik
+1. A telefonos es a gepes nezetbe levo hangeroszabajzo nincs osszhangban, a telefonos nezetes hangero szabalyozo nem mindig mukodik
 
-Az oldal frissitese amikor egy uj zene kezdodik hogy a felhasznalonak a jogai frissuljenek. 
+2. Az oldal frissitese amikor egy uj zene kezdodik hogy a felhasznalonak a jogai frissuljenek. 
 
-A regisztracio tovabbi tesztelese lehet nem mindig frissul le ugy ahogy kellene.
+3. A regisztracio tovabbi tesztelese lehet nem mindig frissul le ugy ahogy kellene.
 
 
+
+
+
+========================================================================
+
+megoldas
+
+1. Kesz.
+2. Ha kitoroljuk a felhasznalot akkor a currently_playing-bol kitorlodik a zene ezert be kell rakni egy zenet a plyaylistbol a currently_playing-be
+   ha ures a playlist, akkor eltuntetjuk a lejatszot a felhasznalo elol es akkor jelenitjuk meg ha playlistbol van betoltheto zene.
+
+
+
+
+
+
+Fatal error: Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'current_time, volume, porget, user_id) VALUES (?, ?, ?, ?, ?, ?)' at line 1 in C:\xampp\htdocs\suliscucc\projekt\database\database_music.php:589 Stack trace: #0 C:\xampp\htdocs\suliscucc\projekt\database\database_music.php(589): mysqli->prepare('INSERT INTO cur...') #1 C:\xampp\htdocs\suliscucc\projekt\index.php(130): addToCurrentlyPlaying(Object(mysqli)) #2 {main} thrown in C:\xampp\htdocs\suliscucc\projekt\database\database_music.php on line 589
 
 
 

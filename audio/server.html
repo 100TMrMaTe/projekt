@@ -235,15 +235,39 @@
         }
 
 
+        function currentyPlayingIsNull() {
+            console.log(videoFromDB)
+            if (videoFromDB == null) {
+                fetch("../index.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        muvelet: "addToCurrentlyPlaying"
+                    })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+
+                    })
+                    .catch(error => console.error("Fetch hiba:", error));
+            }
+        }
+
         function update() {
             getVideoData();
+            currentyPlayingIsNull();
             if (player) {
-
+                if(videoFromDB == null || player.getVideoData().video_id == null){
+                    return;
+                }
                 const currentVideoId = player.getVideoData().video_id;
                 if (currentVideoId !== videoFromDB) {
                     player.loadVideoById(videoFromDB);
                     return;
                 }
+
 
                 current_time = Math.floor(player.getCurrentTime());
                 length = Math.floor(player.getDuration());

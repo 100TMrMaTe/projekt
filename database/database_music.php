@@ -119,7 +119,7 @@ function getMusicRequest($conn)
     if ($stmt = $conn->prepare($sql)) {
         $stmt->execute();
 
-        $result = $stmt->get_result(); 
+        $result = $stmt->get_result();
         $rows = $result->fetch_all(MYSQLI_ASSOC);
 
         echo json_encode([
@@ -314,7 +314,8 @@ function getLength($conn)
 
 
 
-function kedvenc($conn){
+function kedvenc($conn)
+{
     $sql = "SELECT fav.id, fav.user_id, fav.music_id from fav";
 
     if ($stmt = $conn->prepare($sql)) {
@@ -331,7 +332,6 @@ function kedvenc($conn){
 
         $stmt->close();
     }
-    
 }
 
 
@@ -342,7 +342,7 @@ function insertIntoFav($conn, $video_id, $user_id)
 
     if ($stmt = $conn->prepare($sql)) {
         $stmt->bind_param("si", $video_id, $user_id);
-        $stmt->execute();      
+        $stmt->execute();
 
         $stmt->close();
 
@@ -408,7 +408,8 @@ function DeleteFromFavList($conn, $music_id, $user_id)
     }
 }
 
-function favLeker($conn, $user_id){
+function favLeker($conn, $user_id)
+{
     $sql = "SELECT fav.music_id from fav WHERE fav.user_id = ?";
 
     if ($stmt = $conn->prepare($sql)) {
@@ -427,8 +428,9 @@ function favLeker($conn, $user_id){
     }
 }
 
-function favList($conn, $user_id){
-    $sql ="SELECT music.* from music JOIN fav ON music.id = fav.music_id WHERE fav.user_id = ?";
+function favList($conn, $user_id)
+{
+    $sql = "SELECT music.* from music JOIN fav ON music.id = fav.music_id WHERE fav.user_id = ?";
 
     if ($stmt = $conn->prepare($sql)) {
         $stmt->bind_param("i", $user_id);
@@ -562,6 +564,51 @@ function moveFirstToCurrentlyPlaying($conn)
     echo json_encode(["status" => "success"]);
 }
 
+
+
+function addToCurrentlyPlaying($conn)
+{
+    $result = $conn->query("SELECT id, music_id, user_id FROM playlist ORDER BY id ASC LIMIT 1");
+
+    if ($result->num_rows == 0) {
+        echo json_encode(["status" => "empty"]);
+        return;
+    }
+
+    $row = $result->fetch_assoc();
+    $playlistId = $row['id'];
+    $musicId = $row['music_id'];
+    $userId = $row['user_id'];
+    $status = 0;
+    $current_time = 0;
+    $volume = 0;
+    $porget = -1;
+
+
+
+    $stmt = $conn->prepare("INSERT INTO currently_playing (`music_id`, `status`, `current_time`, `volume`, `porget`, `user_id`) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param(
+        "iiiiii",
+        $musicId,
+        $status,
+        $current_time,
+        $volume,
+        $porget,
+        $userId
+    );
+    $stmt->execute();
+    $stmt->close();
+
+
+    $stmt = $conn->prepare("DELETE FROM playlist WHERE id = ?");
+    $stmt->bind_param("i", $playlistId);
+    $stmt->execute();
+    $stmt->close();
+
+    echo json_encode(["status" => "success"]);
+}
+
+
 function InsertIntoLog($conn, $music_id, $token)
 {
     $log = [];
@@ -588,7 +635,6 @@ function InsertIntoLog($conn, $music_id, $token)
     $stmt->bind_param("iss", $log["id"], $log["date"], $log["title"]);
     $stmt->execute();
     $stmt->close();
-
 }
 
 
