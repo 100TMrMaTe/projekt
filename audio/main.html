@@ -157,7 +157,7 @@
 		let felhasznaloVolume = false;  // volume húzás folyamatban (bármely slider)
 
 		// Alias-ok a régi kód kompatibilitásához
-		Object.defineProperty(window, 'seeking',        { get: () => felhasznaloSeek,   set: v => { felhasznaloSeek = v; }   });
+		Object.defineProperty(window, 'seeking', { get: () => felhasznaloSeek, set: v => { felhasznaloSeek = v; } });
 		Object.defineProperty(window, 'changingVolume', { get: () => felhasznaloVolume, set: v => { felhasznaloVolume = v; } });
 
 		let porget = 0;
@@ -919,7 +919,7 @@
 						felhasznaloVolume = false;
 						setVolume();
 					}
-});
+				});
 
 
 				if (data.user_id == localStorage.getItem("user_id") || localStorage.getItem("isadmin") === "1") {
@@ -1343,15 +1343,15 @@
 
 
 
-		
+
 
 
 
 		let utolsoPlaylist = "";
 
 		function update() {
-			getCurrentTime();
-			getVolume();
+		//	getCurrentTime();
+			//getVolume();
 			if (seekSlider && hossz) ido();
 
 			isPlaying().then((status) => {
@@ -1383,22 +1383,7 @@
 				}
 			});
 
-			loadPlaylist().then((data) => {
-				const ujPlaylist = data.map(e => e.video_id).join(",");
 
-				if (ujPlaylist === utolsoPlaylist) return; // nem változott, ne csináljunk semmit
-				utolsoPlaylist = ujPlaylist;
-
-				const playlist = document.getElementById("playlist");
-				playlist.innerHTML = "";
-				data.forEach((e) => {
-					playlist.insertAdjacentHTML("beforeend", embedPlaylistItem(
-						e.video_id,
-						e.title,
-						e.length == 0 ? "LIVE" : e.length,
-					));
-				});
-			});
 
 			loadCurrentlyPlaying().then((data) => {
 				if (videoId != data.video_id) {
@@ -1467,6 +1452,29 @@
 				}
 			});
 		}
+
+		setInterval(() => {	
+			loadPlaylist().then((data) => {
+				const ujPlaylist = data.map(e => e.video_id).join(",");
+
+				if (ujPlaylist === utolsoPlaylist) return; // nem változott, ne csináljunk semmit
+				utolsoPlaylist = ujPlaylist;
+
+				const playlist = document.getElementById("playlist");
+				playlist.innerHTML = "";
+				data.forEach((e) => {
+					playlist.insertAdjacentHTML("beforeend", embedPlaylistItem(
+						e.video_id,
+						e.title,
+						e.length == 0 ? "LIVE" : e.length,
+					));
+				});
+			});
+		}, 1500);
+
+		setInterval(getCurrentTime, 500);
+		setInterval(getVolume, 1000);
+
 
 		setInterval(update, 200);
 
