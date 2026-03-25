@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("csengo")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e983edf9bdb319f858546a8c71b0a4b47b113df5")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b801861b38b74e232b1bf6ec7afa3d2e9efd35ba")]
 [assembly: System.Reflection.AssemblyProductAttribute("csengo")]
 [assembly: System.Reflection.AssemblyTitleAttribute("csengo")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
