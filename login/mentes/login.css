@@ -1,4 +1,5 @@
 #doboz {
+    /*background-color: rgba(255, 255, 255, 1);*/
     background: transparent;
     backdrop-filter: blur(10px);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -15,13 +16,20 @@ body {
 }
 
 body {
+    /*background: linear-gradient(to bottom right, blue, cyan);*/
+
     background-image: url("../backgrounds/11.jpg");
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+
 }
 
 .email {
+    /*
+            background-color: rgb(50, 50, 50);
+            border-color: white;
+            */
     background: rgba(255, 255, 255, 0.075);
     border: 2px solid rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(5px);
@@ -33,6 +41,11 @@ body {
 }
 
 .email:focus {
+    /*
+            background-color: rgb(50, 50, 50);
+            box-shadow: none;
+            border-color: white;
+            */
     background: rgba(255, 255, 255, 0.1);
     border: 2px solid rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(5px);
@@ -40,6 +53,10 @@ body {
 }
 
 .jelszo {
+    /*
+            background-color: rgb(50, 50, 50);
+            border-color: white;
+            */
     background: rgba(255, 255, 255, 0.075);
     border: 2px solid rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(5px);
@@ -51,6 +68,11 @@ body {
 }
 
 .jelszo:focus {
+    /*
+            background-color: rgb(50, 50, 50);
+            box-shadow: none;
+            border-color: white;
+            */
     background: rgba(255, 255, 255, 0.1);
     border: 2px solid rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(5px);
@@ -64,6 +86,7 @@ body {
 .btn-link {
     text-decoration: none;
 }
+
 
 .btn {
     background: rgba(255, 255, 255, 0.2);
@@ -92,53 +115,15 @@ body {
     fill: rgba(255, 0, 0, 0.6);
 }
 
-/* ===== RESZPONZIVITÁS ===== */
 
-/* Asztali: az eredeti position:absolute helyett flexbox centering */
-.login-center {
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 16px 0;
-}
-
-/* Tablet / kis képernyő */
 @media screen and (max-width: 842px) {
     #doboz {
         width: 420.58px;
     }
 }
 
-/* Kis telefon */
 @media screen and (max-width: 450px) {
     #doboz {
-        width: 100%;
-    }
-
-    .red {
-        width: 100%;
-    }
-}
-
-/* Nagyon kis telefon */
-@media screen and (max-width: 360px) {
-    #doboz .p-4 {
-        padding: 16px !important;
-    }
-
-    #doboz .ps-4,
-    #doboz .pe-4 {
-        padding-left: 16px !important;
-        padding-right: 16px !important;
-    }
-}
-
-/* Landscape mód – hogy ne kelljen görgetni */
-@media screen and (max-height: 500px) and (orientation: landscape) {
-    .login-center {
-        justify-content: flex-start;
-        padding: 12px 0;
+        width: 90%;
     }
 }
