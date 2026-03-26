@@ -8,34 +8,58 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <TabControl SelectionChanged="TabControl_SelectionChanged">
+
             <TabItem Header="Csengés" FontSize="20px">
-                <DockPanel Background="#FFE5E5E5">
-                    <StackPanel Width="220" DockPanel.Dock="Left" Margin="10">
+                <Grid Background="#FFE5E5E5" Margin="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <Ellipse x:Name="dot1" Width="14" Height="14" Fill="#F44336"
-                         VerticalAlignment="Center" Margin="0,0,8,0"/>
-                            <Button Content="Normál" Width="160" Height="40" FontSize="15"
-                        Click="BtnCsengo1_Click"/>
+                    <Border Grid.Column="0" Background="White" CornerRadius="10"
+                            BorderBrush="#E0E0E0" BorderThickness="1" Margin="0,0,8,0" Padding="16">
+                        <StackPanel VerticalAlignment="Center">
+
+                            <TextBlock Text="Csengetések" FontSize="15" Foreground="#9E9E9E"
+                                       Margin="0,0,0,12"/>
+
+                            <Button x:Name="btn1" Click="BtnCsengo1_Click" Margin="0,0,0,10"
+                                    HorizontalContentAlignment="Left" Padding="14,12"
+                                    Background="#F5F5F5" BorderBrush="#E0E0E0" BorderThickness="1">
+                                <StackPanel Orientation="Horizontal">
+                                    <Ellipse x:Name="dot1" Width="10" Height="10" Fill="#F44336"
+                                             VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Normál" FontSize="15" Foreground="#212121"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button x:Name="btn2" Click="BtnCsengo2_Click" Margin="0,0,0,10"
+                                    HorizontalContentAlignment="Left" Padding="14,12"
+                                    Background="#F5F5F5" BorderBrush="#E0E0E0" BorderThickness="1">
+                                <StackPanel Orientation="Horizontal">
+                                    <Ellipse x:Name="dot2" Width="10" Height="10" Fill="#F44336"
+                                             VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Rövidített" FontSize="15" Foreground="#212121"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button x:Name="btn3" Click="BtnCsengo3_Click"
+                                    HorizontalContentAlignment="Left" Padding="14,12"
+                                    Background="#F5F5F5" BorderBrush="#E0E0E0" BorderThickness="1">
+                                <StackPanel Orientation="Horizontal">
+                                    <Ellipse x:Name="dot3" Width="10" Height="10" Fill="#F44336"
+                                             VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                    <TextBlock Text="Rendkívüli" FontSize="15" Foreground="#212121"/>
+                                </StackPanel>
+                            </Button>
+
                         </StackPanel>
+                    </Border>
 
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <Ellipse x:Name="dot2" Width="14" Height="14" Fill="#F44336"
-                         VerticalAlignment="Center" Margin="0,0,8,0"/>
-                            <Button Content="Röviditett" Width="160" Height="40" FontSize="15"
-                        Click="BtnCsengo2_Click"/>
-                        </StackPanel>
-
-                        <StackPanel Orientation="Horizontal">
-                            <Ellipse x:Name="dot3" Width="14" Height="14" Fill="#F44336"
-                         VerticalAlignment="Center" Margin="0,0,8,0"/>
-                            <Button Content="Rendkivüli" Width="160" Height="40" FontSize="15"
-                        Click="BtnCsengo3_Click"/>
-                        </StackPanel>
-
-                    </StackPanel>
-                </DockPanel>
+                    <Grid Grid.Column="1"/>
+                </Grid>
             </TabItem>
+
             <TabItem Header="Normál" FontSize="20px">
                 <DockPanel Background="#FFE5E5E5">
                     <Button Content="Mentés" DockPanel.Dock="Bottom" HorizontalAlignment="Right"
@@ -44,22 +68,25 @@
                               Margin="10" CanUserAddRows="False"/>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="Röviditett" FontSize="20px">
+
+            <TabItem Header="Rövidített" FontSize="20px">
                 <DockPanel Background="#FFE5E5E5">
                     <Button Content="Mentés" DockPanel.Dock="Bottom" HorizontalAlignment="Right"
-                Margin="10" Padding="20,5" Click="MentesRöviditett_Click"/>
+                            Margin="10" Padding="20,5" Click="MentesRöviditett_Click"/>
                     <DataGrid x:Name="datagridRöviditett" AutoGenerateColumns="True" FontSize="15px"
-                  Margin="10" CanUserAddRows="False"/>
+                              Margin="10" CanUserAddRows="False"/>
                 </DockPanel>
             </TabItem>
-            <TabItem Header="Rendkivüli" FontSize="20px">
+
+            <TabItem Header="Rendkívüli" FontSize="20px">
                 <DockPanel Background="#FFE5E5E5">
                     <Button Content="Mentés" DockPanel.Dock="Bottom" HorizontalAlignment="Right"
-                            Margin="10" Padding="20,5" Click="MentesRendkivuli_Click" FontSize="30px"/>
+                            Margin="10" Padding="20,5" Click="MentesRendkivuli_Click"/>
                     <DataGrid x:Name="datagridRendkivuli" AutoGenerateColumns="True" FontSize="15px"
                               Margin="10" CanUserAddRows="False"/>
                 </DockPanel>
             </TabItem>
+
         </TabControl>
     </Grid>
 </Window>

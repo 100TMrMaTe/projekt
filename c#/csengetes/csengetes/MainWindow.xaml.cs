@@ -1,26 +1,18 @@
 ﻿using MySql.Data.MySqlClient;
 using System.Data;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace csengetes
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+            Toggle(dot1, btn1);
         }
 
         private MySqlDataAdapter adapterNormal;
@@ -30,14 +22,14 @@ namespace csengetes
         private DataTable dtRendkivuli;
         private DataTable dtRöviditett;
 
-        private string connectionString = "Server=172.16.2.100;Database=projekt;User=root;Password=admin;";
+        private string connectionString = "Server=localhost;Database=projekt;User=root;Password=;";
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var tab = sender as TabControl;
             if (tab == null) return;
 
-            if (tab.SelectedIndex == 0 && dtNormal == null)
+            if (tab.SelectedIndex == 1 && dtNormal == null)
             {
                 MySqlConnection con = new MySqlConnection(connectionString);
                 adapterNormal = new MySqlDataAdapter("SELECT c.oraszam, jelzo.idopont AS jelzo, becsengetes.idopont AS becsengetes, kicsengetes.idopont AS kicsengetes FROM csengetes c, orak jelzo, orak becsengetes, orak kicsengetes WHERE c.nap_id = 1 AND c.jelzo_id = jelzo.id AND c.becsengetes_id = becsengetes.id AND c.kicsengetes_id = kicsengetes.id ORDER BY c.oraszam", con);
@@ -46,7 +38,7 @@ namespace csengetes
                 adapterNormal.Fill(dtNormal);
                 datagridNormal.ItemsSource = dtNormal.DefaultView;
             }
-            else if (tab.SelectedIndex == 1 && dtRöviditett == null)
+            else if (tab.SelectedIndex == 2 && dtRöviditett == null)
             {
                 MySqlConnection con = new MySqlConnection(connectionString);
                 adapterRöviditett = new MySqlDataAdapter("SELECT c.oraszam, jelzo.idopont AS jelzo, becsengetes.idopont AS becsengetes, kicsengetes.idopont AS kicsengetes FROM csengetes c, orak jelzo, orak becsengetes, orak kicsengetes WHERE c.nap_id = 2 AND c.jelzo_id = jelzo.id AND c.becsengetes_id = becsengetes.id AND c.kicsengetes_id = kicsengetes.id ORDER BY c.oraszam", con);
@@ -55,7 +47,7 @@ namespace csengetes
                 adapterRöviditett.Fill(dtRöviditett);
                 datagridRöviditett.ItemsSource = dtRöviditett.DefaultView;
             }
-            else if (tab.SelectedIndex == 2 && dtRendkivuli == null)
+            else if (tab.SelectedIndex == 3 && dtRendkivuli == null)
             {
                 MySqlConnection con = new MySqlConnection(connectionString);
                 adapterRendkivuli = new MySqlDataAdapter("SELECT c.oraszam, jelzo.idopont AS jelzo, becsengetes.idopont AS becsengetes, kicsengetes.idopont AS kicsengetes FROM csengetes c, orak jelzo, orak becsengetes, orak kicsengetes WHERE c.nap_id = 3 AND c.jelzo_id = jelzo.id AND c.becsengetes_id = becsengetes.id AND c.kicsengetes_id = kicsengetes.id ORDER BY c.oraszam", con);
@@ -96,9 +88,9 @@ namespace csengetes
                         int kicsId = GetOrInsertOraId(con, row["kicsengetes"].ToString());
 
                         MySqlCommand cmd = new MySqlCommand(@"
-                    UPDATE csengetes 
-                    SET jelzo_id = @jelzo_id, becsengetes_id = @becs_id, kicsengetes_id = @kics_id
-                    WHERE nap_id = 1 AND oraszam = @oraszam", con);
+                            UPDATE csengetes 
+                            SET jelzo_id = @jelzo_id, becsengetes_id = @becs_id, kicsengetes_id = @kics_id
+                            WHERE nap_id = 1 AND oraszam = @oraszam", con);
 
                         cmd.Parameters.AddWithValue("@jelzo_id", jelzoId);
                         cmd.Parameters.AddWithValue("@becs_id", becsId);
@@ -134,9 +126,9 @@ namespace csengetes
                         int kicsId = GetOrInsertOraId(con, row["kicsengetes"].ToString());
 
                         MySqlCommand cmd = new MySqlCommand(@"
-                    UPDATE csengetes 
-                    SET jelzo_id = @jelzo_id, becsengetes_id = @becs_id, kicsengetes_id = @kics_id
-                    WHERE nap_id = 2 AND oraszam = @oraszam", con);
+                            UPDATE csengetes 
+                            SET jelzo_id = @jelzo_id, becsengetes_id = @becs_id, kicsengetes_id = @kics_id
+                            WHERE nap_id = 2 AND oraszam = @oraszam", con);
 
                         cmd.Parameters.AddWithValue("@jelzo_id", jelzoId);
                         cmd.Parameters.AddWithValue("@becs_id", becsId);
@@ -172,9 +164,9 @@ namespace csengetes
                         int kicsId = GetOrInsertOraId(con, row["kicsengetes"].ToString());
 
                         MySqlCommand cmd = new MySqlCommand(@"
-                    UPDATE csengetes 
-                    SET jelzo_id = @jelzo_id, becsengetes_id = @becs_id, kicsengetes_id = @kics_id
-                    WHERE nap_id = 3 AND oraszam = @oraszam", con);
+                            UPDATE csengetes 
+                            SET jelzo_id = @jelzo_id, becsengetes_id = @becs_id, kicsengetes_id = @kics_id
+                            WHERE nap_id = 3 AND oraszam = @oraszam", con);
 
                         cmd.Parameters.AddWithValue("@jelzo_id", jelzoId);
                         cmd.Parameters.AddWithValue("@becs_id", becsId);
@@ -194,16 +186,24 @@ namespace csengetes
             }
         }
 
-        private void BtnCsengo1_Click(object sender, RoutedEventArgs e) => Toggle(dot1);
-        private void BtnCsengo2_Click(object sender, RoutedEventArgs e) => Toggle(dot2);
-        private void BtnCsengo3_Click(object sender, RoutedEventArgs e) => Toggle(dot3);
-
-        private void Toggle(Ellipse clicked)
+        private void Toggle(Ellipse clicked, Button activeBtn)
         {
-            foreach (var dot in new[] { dot1, dot2, dot3 })
-                dot.Fill = new SolidColorBrush(Color.FromRgb(0xF4, 0x43, 0x36));
+            var red = new SolidColorBrush(Color.FromRgb(0xF4, 0x43, 0x36));
+            var green = new SolidColorBrush(Color.FromRgb(0x4C, 0xAF, 0x50));
+            var borderDefault = new SolidColorBrush(Color.FromRgb(0xE0, 0xE0, 0xE0));
 
-            clicked.Fill = new SolidColorBrush(Color.FromRgb(0x4C, 0xAF, 0x50));
+            foreach (var (d, b) in new[] { (dot1, btn1), (dot2, btn2), (dot3, btn3) })
+            {
+                d.Fill = red;
+                b.BorderBrush = borderDefault;
+            }
+
+            clicked.Fill = green;
+            activeBtn.BorderBrush = green;
         }
+
+        private void BtnCsengo1_Click(object sender, RoutedEventArgs e) => Toggle(dot1, btn1);
+        private void BtnCsengo2_Click(object sender, RoutedEventArgs e) => Toggle(dot2, btn2);
+        private void BtnCsengo3_Click(object sender, RoutedEventArgs e) => Toggle(dot3, btn3);
     }
 }
