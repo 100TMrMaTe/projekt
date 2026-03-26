@@ -1400,7 +1400,7 @@
 					seekSlider = document.querySelector("#seekSlider");
 					volumeSlider = document.querySelector("#volumeSlider");
 
-					getLength();
+					//getLength();
 
 					// ─── Desktop seekSlider ───
 					seekSlider.addEventListener("pointerdown", () => { felhasznaloSeek = true; });
@@ -1472,11 +1472,13 @@
 			});
 		}, 1500);
 
-		setInterval(getCurrentTime, 500);
+		setInterval(getLength, 1000);
+
+		setInterval(getCurrentTime, 1000);
 		setInterval(getVolume, 1000);
 
 
-		setInterval(update, 200);
+		setInterval(update, 500);
 
 		document
 			.getElementById("search")
