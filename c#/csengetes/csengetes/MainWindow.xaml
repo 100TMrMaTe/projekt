@@ -6,49 +6,153 @@
         xmlns:local="clr-namespace:csengetes"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="10"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#E0E0E0"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#BDBDBD"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="DataGrid">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="RowBackground" Value="White"/>
+            <Setter Property="AlternatingRowBackground" Value="#FAFAFA"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#F0F0F0"/>
+            <Setter Property="VerticalGridLinesBrush" Value="#F0F0F0"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="RowHeight" Value="38"/>
+            <Setter Property="ColumnHeaderHeight" Value="42"/>
+        </Style>
+
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#F5F5F5"/>
+            <Setter Property="Foreground" Value="#616161"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="0,0,0,2"/>
+        </Style>
+
+        <Style TargetType="DataGridCell">
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DataGridCell">
+                        <Border Padding="{TemplateBinding Padding}"
+                                Background="{TemplateBinding Background}">
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#E3F2FD"/>
+                    <Setter Property="Foreground" Value="#1565C0"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="DataGridRow">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#F5F5F5"/>
+                </Trigger>
+                <Trigger Property="IsSelected" Value="True">
+                    <Setter Property="Background" Value="#E3F2FD"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style TargetType="TabItem">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="Foreground" Value="#757575"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border x:Name="border"
+                        BorderThickness="0,0,0,3"
+                        BorderBrush="Transparent"
+                        Padding="{TemplateBinding Padding}">
+                            <ContentPresenter ContentSource="Header"
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="#212121"/>
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="border" Property="BorderBrush" Value="#1976D2"/>
+                                <Setter Property="Foreground" Value="#1976D2"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+    </Window.Resources>
+
     <Grid>
         <TabControl SelectionChanged="TabControl_SelectionChanged">
 
             <TabItem Header="Csengés" FontSize="20px">
-                <Grid Background="#FFE5E5E5" Margin="16">
+                <Grid Background="White" Margin="16">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <Border Grid.Column="0" Background="White" CornerRadius="10"
-                            BorderBrush="#E0E0E0" BorderThickness="1" Margin="0,0,8,0" Padding="16">
+                    <Border Grid.Column="0" Background="White" CornerRadius="10" BorderBrush="#E0E0E0" BorderThickness="1" Margin="0,0,8,0" Padding="16">
                         <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Csengetések" FontSize="15" Foreground="#9E9E9E" Margin="0,0,0,12"/>
 
-                            <TextBlock Text="Csengetések" FontSize="15" Foreground="#9E9E9E"
-                                       Margin="0,0,0,12"/>
-
-                            <Button x:Name="btn1" Click="BtnCsengo1_Click" Margin="0,0,0,10"
-                                    HorizontalContentAlignment="Left" Padding="14,12"
-                                    Background="#F5F5F5" BorderBrush="#E0E0E0" BorderThickness="1">
+                            <Button x:Name="btn1" Click="BtnCsengo1_Click" Margin="0,0,0,10" HorizontalContentAlignment="Left" Padding="14,12" Background="#F5F5F5" BorderBrush="#E0E0E0" BorderThickness="1">
                                 <StackPanel Orientation="Horizontal">
-                                    <Ellipse x:Name="dot1" Width="10" Height="10" Fill="#F44336"
-                                             VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                    <Ellipse x:Name="dot1" Width="10" Height="10" Fill="#F44336" VerticalAlignment="Center" Margin="0,0,10,0"/>
                                     <TextBlock Text="Normál" FontSize="15" Foreground="#212121"/>
                                 </StackPanel>
                             </Button>
 
-                            <Button x:Name="btn2" Click="BtnCsengo2_Click" Margin="0,0,0,10"
-                                    HorizontalContentAlignment="Left" Padding="14,12"
-                                    Background="#F5F5F5" BorderBrush="#E0E0E0" BorderThickness="1">
+                            <Button x:Name="btn2" Click="BtnCsengo2_Click" Margin="0,0,0,10" HorizontalContentAlignment="Left" Padding="14,12" Background="#F5F5F5" BorderBrush="#E0E0E0" BorderThickness="1">
                                 <StackPanel Orientation="Horizontal">
-                                    <Ellipse x:Name="dot2" Width="10" Height="10" Fill="#F44336"
-                                             VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                    <Ellipse x:Name="dot2" Width="10" Height="10" Fill="#F44336" VerticalAlignment="Center" Margin="0,0,10,0"/>
                                     <TextBlock Text="Rövidített" FontSize="15" Foreground="#212121"/>
                                 </StackPanel>
                             </Button>
 
-                            <Button x:Name="btn3" Click="BtnCsengo3_Click"
-                                    HorizontalContentAlignment="Left" Padding="14,12"
-                                    Background="#F5F5F5" BorderBrush="#E0E0E0" BorderThickness="1">
+                            <Button x:Name="btn3" Click="BtnCsengo3_Click" HorizontalContentAlignment="Left" Padding="14,12" Background="#F5F5F5" BorderBrush="#E0E0E0" BorderThickness="1">
                                 <StackPanel Orientation="Horizontal">
-                                    <Ellipse x:Name="dot3" Width="10" Height="10" Fill="#F44336"
-                                             VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                    <Ellipse x:Name="dot3" Width="10" Height="10" Fill="#F44336" VerticalAlignment="Center" Margin="0,0,10,0"/>
                                     <TextBlock Text="Rendkívüli" FontSize="15" Foreground="#212121"/>
                                 </StackPanel>
                             </Button>
@@ -61,29 +165,53 @@
             </TabItem>
 
             <TabItem Header="Normál" FontSize="20px">
-                <DockPanel Background="#FFE5E5E5">
-                    <Button Content="Mentés" DockPanel.Dock="Bottom" HorizontalAlignment="Right"
-                            Margin="10" Padding="20,5" Click="MentesNormal_Click"/>
-                    <DataGrid x:Name="datagridNormal" AutoGenerateColumns="True" FontSize="15px"
-                              Margin="10" CanUserAddRows="False"/>
+                <DockPanel Background="#F5F5F5" Margin="16">
+                    <Button Content="💾  Mentés" DockPanel.Dock="Bottom" HorizontalAlignment="Right"
+                            Margin="0,12,0,0" Padding="24,10"
+                            Background="#1976D2" Foreground="White"
+                            BorderThickness="0" FontSize="14"
+                            Click="MentesNormal_Click"/>
+                    <Border Background="White" CornerRadius="10" BorderBrush="#E0E0E0" BorderThickness="1"
+                            ClipToBounds="True">
+                        <DataGrid x:Name="datagridNormal" AutoGenerateColumns="True"
+                                  Margin="0" CanUserAddRows="False"
+                                  HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Auto"/>
+                    </Border>
                 </DockPanel>
             </TabItem>
 
             <TabItem Header="Rövidített" FontSize="20px">
-                <DockPanel Background="#FFE5E5E5">
-                    <Button Content="Mentés" DockPanel.Dock="Bottom" HorizontalAlignment="Right"
-                            Margin="10" Padding="20,5" Click="MentesRöviditett_Click"/>
-                    <DataGrid x:Name="datagridRöviditett" AutoGenerateColumns="True" FontSize="15px"
-                              Margin="10" CanUserAddRows="False"/>
+                <DockPanel Background="#F5F5F5" Margin="16">
+                    <Button Content="💾  Mentés" DockPanel.Dock="Bottom" HorizontalAlignment="Right"
+                            Margin="0,12,0,0" Padding="24,10"
+                            Background="#1976D2" Foreground="White"
+                            BorderThickness="0" FontSize="14"
+                            Click="MentesRöviditett_Click"/>
+                    <Border Background="White" CornerRadius="10" BorderBrush="#E0E0E0" BorderThickness="1"
+                            ClipToBounds="True">
+                        <DataGrid x:Name="datagridRöviditett" AutoGenerateColumns="True"
+                                  Margin="0" CanUserAddRows="False"
+                                  HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Auto"/>
+                    </Border>
                 </DockPanel>
             </TabItem>
 
             <TabItem Header="Rendkívüli" FontSize="20px">
-                <DockPanel Background="#FFE5E5E5">
-                    <Button Content="Mentés" DockPanel.Dock="Bottom" HorizontalAlignment="Right"
-                            Margin="10" Padding="20,5" Click="MentesRendkivuli_Click"/>
-                    <DataGrid x:Name="datagridRendkivuli" AutoGenerateColumns="True" FontSize="15px"
-                              Margin="10" CanUserAddRows="False"/>
+                <DockPanel Background="#F5F5F5" Margin="16">
+                    <Button Content="💾  Mentés" DockPanel.Dock="Bottom" HorizontalAlignment="Right"
+                            Margin="0,12,0,0" Padding="24,10"
+                            Background="#1976D2" Foreground="White"
+                            BorderThickness="0" FontSize="14"
+                            Click="MentesRendkivuli_Click"/>
+                    <Border Background="White" CornerRadius="10" BorderBrush="#E0E0E0" BorderThickness="1"
+                            ClipToBounds="True">
+                        <DataGrid x:Name="datagridRendkivuli" AutoGenerateColumns="True"
+                                  Margin="0" CanUserAddRows="False"
+                                  HorizontalScrollBarVisibility="Auto"
+                                  VerticalScrollBarVisibility="Auto"/>
+                    </Border>
                 </DockPanel>
             </TabItem>
 
