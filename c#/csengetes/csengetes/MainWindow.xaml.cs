@@ -22,7 +22,7 @@ namespace csengetes
         private DataTable dtRendkivuli;
         private DataTable dtRöviditett;
 
-        private string connectionString = "Server=localhost;Database=projekt;User=root;Password=;";
+        private string connectionString = "Server=172.16.2.100;Database=projekt;User=root;Password=admin;";
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

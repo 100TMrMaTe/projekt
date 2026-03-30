@@ -10,14 +10,14 @@
         "projectUniqueName": "C:\\xampp\\htdocs\\suliscucc\\projekt\\c#\\csengetes\\csengetes\\csengetes.csproj",
         "projectName": "csengetes",
         "projectPath": "C:\\xampp\\htdocs\\suliscucc\\projekt\\c#\\csengetes\\csengetes\\csengetes.csproj",
-        "packagesPath": "C:\\Users\\konyh_filicoj\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\Konyhási Máté\\.nuget\\packages\\",
         "outputPath": "C:\\xampp\\htdocs\\suliscucc\\projekt\\c#\\csengetes\\csengetes\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\konyh_filicoj\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Konyhási Máté\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,7 +26,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -45,7 +44,7 @@
           "auditLevel": "low",
           "auditMode": "all"
         },
-        "SdkAnalysisLevel": "10.0.200"
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net10.0-windows7.0": {
@@ -75,7 +74,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.102/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
