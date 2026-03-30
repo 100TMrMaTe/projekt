@@ -98,12 +98,12 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="TabItem">
                         <Border x:Name="border"
-                        BorderThickness="0,0,0,3"
-                        BorderBrush="Transparent"
-                        Padding="{TemplateBinding Padding}">
+                                BorderThickness="0,0,0,3"
+                                BorderBrush="Transparent"
+                                Padding="{TemplateBinding Padding}">
                             <ContentPresenter ContentSource="Header"
-                                      HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"/>
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -119,10 +119,13 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
     </Window.Resources>
 
     <Grid>
+        <!-- MediaElement a TabControl-on KÍVÜL – tab váltáskor nem töltődik újra -->
+        <MediaElement x:Name="mediaPlayer" Visibility="Collapsed"
+                      LoadedBehavior="Manual" UnloadedBehavior="Stop"/>
+
         <TabControl SelectionChanged="TabControl_SelectionChanged">
 
             <TabItem Header="Csengés" FontSize="20px">
@@ -132,6 +135,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
+                    <!-- Bal oldal: csengetés típusok -->
                     <Border Grid.Column="0" Background="White" CornerRadius="10" BorderBrush="#E0E0E0" BorderThickness="1" Margin="0,0,8,0" Padding="16">
                         <StackPanel VerticalAlignment="Center">
                             <TextBlock Text="Csengetések" FontSize="15" Foreground="#9E9E9E" Margin="0,0,0,12"/>
@@ -156,11 +160,46 @@
                                     <TextBlock Text="Rendkívüli" FontSize="15" Foreground="#212121"/>
                                 </StackPanel>
                             </Button>
-
                         </StackPanel>
                     </Border>
 
-                    <Grid Grid.Column="1"/>
+                    <!-- Jobb oldal: MP3 fájl beállítás -->
+                    <Border Grid.Column="1" Background="White" CornerRadius="10" BorderBrush="#E0E0E0" BorderThickness="1" Margin="8,0,0,0" Padding="16">
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Csengetési hang" FontSize="15" Foreground="#9E9E9E" Margin="0,0,0,16"/>
+
+                            <Border Background="#F5F5F5" CornerRadius="8" Padding="14,12" Margin="0,0,0,12">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="🎵" FontSize="22" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock x:Name="txtMp3Name" Text="Nincs fájl kiválasztva" FontSize="13" Foreground="#424242" TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock x:Name="txtMp3Status" Text="–" FontSize="11" Foreground="#9E9E9E" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <Button Content="📂  Fájl kiválasztása" Click="BtnBrowseMp3_Click"
+                                    HorizontalContentAlignment="Center"
+                                    Padding="14,10" Background="#E3F2FD"
+                                    BorderBrush="#90CAF9" BorderThickness="1"
+                                    Foreground="#1565C0" FontSize="13"
+                                    Margin="0,0,0,8"/>
+
+                            <Button x:Name="btnTestPlay" Content="▶  Lejátszás teszt" Click="BtnTestPlay_Click"
+                                    HorizontalContentAlignment="Center"
+                                    Padding="14,10" Background="#F5F5F5"
+                                    BorderBrush="#E0E0E0" BorderThickness="1"
+                                    Foreground="#424242" FontSize="13"
+                                    Margin="0,0,0,8"/>
+
+                            <Button Content="⏹  Stop" Click="BtnStop_Click"
+                                    HorizontalContentAlignment="Center"
+                                    Padding="14,10" Background="#F5F5F5"
+                                    BorderBrush="#E0E0E0" BorderThickness="1"
+                                    Foreground="#424242" FontSize="13"/>
+                        </StackPanel>
+                    </Border>
+
                 </Grid>
             </TabItem>
 
@@ -171,8 +210,7 @@
                             Background="#1976D2" Foreground="White"
                             BorderThickness="0" FontSize="14"
                             Click="MentesNormal_Click"/>
-                    <Border Background="White" CornerRadius="10" BorderBrush="#E0E0E0" BorderThickness="1"
-                            ClipToBounds="True">
+                    <Border Background="White" CornerRadius="10" BorderBrush="#E0E0E0" BorderThickness="1" ClipToBounds="True">
                         <DataGrid x:Name="datagridNormal" AutoGenerateColumns="True"
                                   Margin="0" CanUserAddRows="False"
                                   HorizontalScrollBarVisibility="Auto"
@@ -188,8 +226,7 @@
                             Background="#1976D2" Foreground="White"
                             BorderThickness="0" FontSize="14"
                             Click="MentesRöviditett_Click"/>
-                    <Border Background="White" CornerRadius="10" BorderBrush="#E0E0E0" BorderThickness="1"
-                            ClipToBounds="True">
+                    <Border Background="White" CornerRadius="10" BorderBrush="#E0E0E0" BorderThickness="1" ClipToBounds="True">
                         <DataGrid x:Name="datagridRöviditett" AutoGenerateColumns="True"
                                   Margin="0" CanUserAddRows="False"
                                   HorizontalScrollBarVisibility="Auto"
@@ -205,8 +242,7 @@
                             Background="#1976D2" Foreground="White"
                             BorderThickness="0" FontSize="14"
                             Click="MentesRendkivuli_Click"/>
-                    <Border Background="White" CornerRadius="10" BorderBrush="#E0E0E0" BorderThickness="1"
-                            ClipToBounds="True">
+                    <Border Background="White" CornerRadius="10" BorderBrush="#E0E0E0" BorderThickness="1" ClipToBounds="True">
                         <DataGrid x:Name="datagridRendkivuli" AutoGenerateColumns="True"
                                   Margin="0" CanUserAddRows="False"
                                   HorizontalScrollBarVisibility="Auto"

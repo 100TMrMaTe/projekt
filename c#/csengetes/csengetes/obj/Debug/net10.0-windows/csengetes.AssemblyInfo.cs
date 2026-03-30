@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("csengetes")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c8d1d9d0046cf3b46bba865b93491792cb697e92")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b4cbb3ba419b4da38ee071d178d86e694dee491b")]
 [assembly: System.Reflection.AssemblyProductAttribute("csengetes")]
 [assembly: System.Reflection.AssemblyTitleAttribute("csengetes")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
