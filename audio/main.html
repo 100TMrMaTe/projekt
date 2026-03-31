@@ -1450,7 +1450,31 @@
 						setVolume();
 					});
 				}
+
+				
+				if (data.user_id == localStorage.getItem("user_id") || localStorage.getItem("isadmin") === "1") {
+					document.getElementById("lejátszásgomb").classList.remove("disabled");
+					document.getElementById("kovetkezoBtn").classList.remove("disabled");
+					document.getElementById("volumeSlider").removeAttribute("disabled");
+					document.getElementById("seekSlider").removeAttribute("disabled");
+					document.getElementById("mobile-play-pause").classList.remove("disabled");
+					document.getElementById("mobile-volume-slider").removeAttribute("disabled");
+					document.getElementById("mobile-seek-slider").removeAttribute("disabled");
+					document.getElementById("mobile-kovetkezoBtn").classList.remove("disabled");
+				}
+				else {
+					document.getElementById("lejátszásgomb").classList.add("disabled");
+					document.getElementById("kovetkezoBtn").classList.add("disabled");
+					document.getElementById("volumeSlider").setAttribute("disabled", "disabled");
+					document.getElementById("seekSlider").setAttribute("disabled", "disabled");
+					document.getElementById("mobile-play-pause").classList.add("disabled");
+					document.getElementById("mobile-volume-slider").setAttribute("disabled", "disabled");
+					document.getElementById("mobile-seek-slider").setAttribute("disabled", "disabled");
+					document.getElementById("mobile-kovetkezoBtn").classList.add("disabled");
+				}
 			});
+
+
 		}
 
 		setInterval(() => {	

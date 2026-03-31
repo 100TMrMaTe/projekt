@@ -277,6 +277,11 @@ function songlog(id, email, user_class, date, title) {
     `;
 }
 
+
+
+
+
+
 // Enhanced action functions with animations and toast notifications
 
 function approveUserWithAnimation(id, button) {

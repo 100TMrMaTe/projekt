@@ -104,10 +104,23 @@ function adminpage($conn)
     return;
   }
 
+
+  $sql_csengetesi = "SELECT idopont FROM orak where aktive = 1 ORDER BY idopont asc";
+
+  if ($result = mysqli_query($conn, $sql_csengetesi)) {
+    while ($row = mysqli_fetch_assoc($result)) {
+      $csengetesi[] = $row;
+    }
+  } else {
+    echo json_encode(array("status" => "error_adminpage"));
+    return;
+  }
+
   $vissza["status"] = "success_adminpage";
   $vissza["approvedusers"] = $approvedusers;
   $vissza["waitinglist"] = $waitinglist;
   $vissza["log"] = $log;
+  $vissza["csengetesi"] = $csengetesi;
   echo json_encode($vissza);
 }
 

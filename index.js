@@ -133,6 +133,13 @@ function adminpageLog() {
             element.title,
           );
         });
+        console.log(d.csengetesi)
+        d.csengetesi.forEach((element) => {
+          document.getElementById("csengetesi").innerHTML += csengetes(
+            element
+          );
+
+        });
       }
     });
 }
@@ -349,6 +356,11 @@ function songlog(id, email, user_class, date, title) {
                             </div>
                         </li>`;
 }
+function csengetes() {
+  return `                        div id="csengetesi">`
+}
+
+
 
 function sendEmail() {
   let email = document.getElementById("email1").value;

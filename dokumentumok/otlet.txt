@@ -114,14 +114,18 @@ megoldas
 
 
 
-
-
-
 Fatal error: Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'current_time, volume, porget, user_id) VALUES (?, ?, ?, ?, ?, ?)' at line 1 in C:\xampp\htdocs\suliscucc\projekt\database\database_music.php:589 Stack trace: #0 C:\xampp\htdocs\suliscucc\projekt\database\database_music.php(589): mysqli->prepare('INSERT INTO cur...') #1 C:\xampp\htdocs\suliscucc\projekt\index.php(130): addToCurrentlyPlaying(Object(mysqli)) #2 {main} thrown in C:\xampp\htdocs\suliscucc\projekt\database\database_music.php on line 589
 
 
 
 
+===========================================================================
+
+Az aktiv kicsengetest kell megjeleniteni az admin oldalon egy tablazatban. Az aktiv vizsgalat az orak tablaban agtiv oszloppal.
+Fejlec: jelzo, becsengetes, kicsengetes, szunet hossza
+orak oldalt 
+
+Az adatbazisban 3 sor az egy orat jelent.
 
 
 
