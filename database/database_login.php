@@ -109,7 +109,7 @@ function adminpage($conn)
 
   if ($result = mysqli_query($conn, $sql_csengetesi)) {
     while ($row = mysqli_fetch_assoc($result)) {
-      $csengetesi[] = $row;
+      $csengetesi[] = $row['idopont'];
     }
   } else {
     echo json_encode(array("status" => "error_adminpage"));

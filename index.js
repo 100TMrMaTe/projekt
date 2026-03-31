@@ -133,15 +133,69 @@ function adminpageLog() {
             element.title,
           );
         });
-        console.log(d.csengetesi)
-        d.csengetesi.forEach((element) => {
-          document.getElementById("csengetesi").innerHTML += csengetes(
-            element
-          );
 
+        d.csengetesi.forEach((element) => {
+          console.log(element.idopont);
         });
+        /*console.log(document.getElementById("csengetesi"));
+        let elso =  document.createElement("td");
+        elso.innerText = element.idopont;
+ 
+        document.getElementById("csengetesi").appendChild(elso);
+        document.getElementById("csengetesi").innerHTML += csengetes(element.idopont);
+        /*document.getElementById("csengetesi").innerHTML += csengetes(
+          element[0].idopont
+        );
+ 
+      });
+*/
+
+        const tbody = document.getElementById("csengetesi");
+        tbody.innerHTML = "";
+
+        let html = "";
+
+        function toMinutes(t) {
+          const [h, m] = t.split(":").map(Number);
+          return h * 60 + m;
+        }
+
+        // perc -> szép formátum
+        function formatMinutes(min) {
+          return min + " perc";
+        }
+
+        for (let i = 0; i < d.csengetesi.length; i += 3) {
+          const jelzo = d.csengetesi[i] ?? "-";
+          const be = d.csengetesi[i + 1] ?? "-";
+          const ki = d.csengetesi[i + 2] ?? "-";
+
+
+          console.log(d.csengetesi[i + 2]);
+
+          if (d.csengetesi[i + 3]) {
+            const jelenlegiVege = toMinutes(ki);
+            const kovetkezoKezdete = toMinutes(d.csengetesi[i + 3]);
+
+            szunet = formatMinutes(kovetkezoKezdete - jelenlegiVege + 2);
+          }
+
+
+          html += `
+    <tr>
+      <td><b>${i / 3}</b></td>
+      <td>${jelzo}</td>
+      <td>${be}</td>
+      <td>${ki}</td>
+      <td>${szunet}</td>
+    </tr>
+  `;
+        }
+        tbody.innerHTML = html;
+
       }
     });
+
 }
 
 function approveUser($id) {
@@ -356,10 +410,6 @@ function songlog(id, email, user_class, date, title) {
                             </div>
                         </li>`;
 }
-function csengetes() {
-  return `                        div id="csengetesi">`
-}
-
 
 
 function sendEmail() {
