@@ -12,4 +12,10 @@ return [
         'password' => 'repa qaey hhhy zxnw', // ideálisan .env-ből
         'from'     => 'konyhasimatemail@gmail.com',
     ],
+    'db' => [
+        'host' => '172.16.2.100',
+        'dbname' => 'projekt',
+        'username' => 'root',
+        'password' => 'admin',
+    ],
 ];

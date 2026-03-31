@@ -3,12 +3,12 @@
 include_once __DIR__ . "/../mailer/sendVerification.php";
 
 $config = require __DIR__ . "/../config.php";
-function Connect_to_server()
+function Connect_to_server(array $config)
 {
-  $servername = "172.16.2.100";
-  $username = "root";
-  $password = "admin";
-  $dbname = "projekt";
+  $servername = $config['db']['host'];
+  $username = $config['db']['username'];
+  $password = $config['db']['password'];
+  $dbname = $config['db']['dbname'];
 
   // Create connection
   $conn = mysqli_connect($servername, $username, $password, $dbname, 3306);
