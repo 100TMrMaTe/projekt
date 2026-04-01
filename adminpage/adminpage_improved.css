@@ -447,6 +447,124 @@ body {
     display: none !important;
 }
 
+/* ── Csengetési Glass Táblázat ── */
+.glass-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.glass-table thead tr {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.glass-table thead th {
+    padding: 0.85rem 1.1rem;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--glass-border);
+    text-align: center;
+    white-space: nowrap;
+}
+
+.glass-table thead th:first-child {
+    text-align: center;
+    padding-left: 1.4rem;
+}
+
+.glass-table tbody tr {
+    transition: background 0.18s ease;
+    animation: slideIn 0.3s ease both;
+}
+
+.glass-table tbody tr:nth-child(odd) {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.glass-table tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.glass-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.11);
+}
+
+.glass-table tbody td {
+    padding: 0.7rem 1.1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    text-align: center;
+    vertical-align: middle;
+}
+
+.glass-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Óra sorszám badge */
+.glass-table tbody td:first-child b {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--text-primary);
+}
+
+/* Idő cellák */
+.glass-table .time-cell {
+    font-family: 'Courier New', monospace;
+    font-size: 0.92rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+}
+
+.glass-table .time-jelzo {
+    color: rgba(255, 193, 7, 0.9);
+}
+
+.glass-table .time-be {
+    color: rgba(40, 220, 120, 0.9);
+}
+
+.glass-table .time-ki {
+    color: rgba(255, 100, 100, 0.9);
+}
+
+/* Szünet badge */
+.glass-table .szunet-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 0.25rem 0.7rem;
+    background: rgba(23, 162, 184, 0.18);
+    border: 1px solid rgba(23, 162, 184, 0.35);
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: rgba(100, 220, 240, 0.95);
+    white-space: nowrap;
+}
+
+.glass-table .szunet-badge::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(100, 220, 240, 0.8);
+    flex-shrink: 0;
+}
+
 
 #logoutbutton {
     display: flex;
