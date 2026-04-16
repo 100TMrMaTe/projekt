@@ -505,6 +505,7 @@ function setCurrentTime($conn, $time)
         $stmt->close();
     }
 }
+ 
 
 function setLength($conn, $length)
 {
@@ -575,6 +576,8 @@ function addToCurrentlyPlaying($conn)
         return;
     }
 
+
+
     $row = $result->fetch_assoc();
     $playlistId = $row['id'];
     $musicId = $row['music_id'];
@@ -584,8 +587,7 @@ function addToCurrentlyPlaying($conn)
     $volume = 0;
     $porget = -1;
 
-
-
+    
     $stmt = $conn->prepare("INSERT INTO currently_playing (`music_id`, `status`, `current_time`, `volume`, `porget`, `user_id`) VALUES (?, ?, ?, ?, ?, ?)");
     $stmt->bind_param(
         "iiiiii",
@@ -598,6 +600,8 @@ function addToCurrentlyPlaying($conn)
     );
     $stmt->execute();
     $stmt->close();
+
+    $stmt = $conn->prepare("DELETE FROM currently_playing WHERE id <> 1");
 
 
     $stmt = $conn->prepare("DELETE FROM playlist WHERE id = ?");
