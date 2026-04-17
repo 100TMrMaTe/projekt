@@ -1,8 +1,8 @@
 <?php
 return [
     'domains' => [
-        'regemail'      => 'http://localhost/suliscucc/projekt/suc_reg/suc_reg.html?email_token=',
-        'passwordemail' => 'http://localhost/suliscucc/projekt/forgot/forgot.html?token=',
+        'regemail'      => 'http://localhost/projekt/suc_reg/suc_reg.html?email_token=',
+        'passwordemail' => 'http://localhost/projekt/forgot/forgot.html?token=',
     ],
     'admin' => [
         'id' => 96,
@@ -13,7 +13,7 @@ return [
         'from'     => 'konyhasimatemail@gmail.com',
     ],
     'db' => [
-        'host' => '172.16.2.100',
+        'host' => 'localhost',
         'dbname' => 'projekt',
         'username' => 'root',
         'password' => 'admin',

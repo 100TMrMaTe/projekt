@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("csengetes")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b4841d913557aa1fd255059fd5d1c222b0a0aa1c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7addb810b368345bc3c74e96978637ebf982fd72")]
 [assembly: System.Reflection.AssemblyProductAttribute("csengetes")]
 [assembly: System.Reflection.AssemblyTitleAttribute("csengetes")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
