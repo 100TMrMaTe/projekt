@@ -1,0 +1,73 @@
+
+
+A szoftver célját, komponenseinek technikai leírását, működésének műszaki feltételeit és
+használatának rövid bemutatását tartalmazó dokumentáció is része a csomagnak. 
+
+
+
+felhasználoi dokumentáció
+
+LOGIN
+-bejelentkezés (@ady-nagyatad.hu email, jelszó)
+-elfelejtett jelszo (ha rányomsz kapsz egy emailt amivel át állíthatod a jelszavadat)
+-regisztracio ha nincs profil
+-zenekeres bejelentkezes nélkül
+
+REGISZTRACIO
+-adatok (név, osztály, @ady-nagyatad.hu email, jelszó)
+-regisztracio
+-bejelentkezes ha van profil
+
+EMAIL MEGEROSITES
+-kapsz egy email amiben van egy link amivel megerősíted az emailedet
+
+ADMIN ELFOGADAS/ELUTASITAS
+-egy adminnak az admin oldalon el kell fogadnia a bejelentkezésedet
+
+ADMIN OLDAL
+fejlec
+-föoldal
+-téma
+-refresh gomb   
+-logout
+tartalom
+-kérelmek
+-felhasználok
+    -adminá tétel és ennek elvétele
+    -felhasználó törlés
+-felhasználoi naplok
+-csengetés
+    -órák
+    -jelző
+    -becsengő
+    -kicsengő
+    -szünet hossza
+
+MAIN OLDAL
+fejlec
+-email 
+-token time
+-admin oldal (ha admin vagy)
+-zenekérés
+-téma
+-logout
+tartalom
+-kereső és találatok
+-kedvencek gomb (ilyenkor a zene lejátszo helyére kerül a kedvencek listája)
+-lejátszo
+    -kép
+    -cím
+    -seek (ha van jogod hozzá akkor használhatod)
+    -hangerő (ha van jogod hozzá akkor használhatod)
+    -kedvencekhez adás
+    -play/pause (ha van jogod hozzá akkor használhatod)
+    -skip (ha van jogod hozzá akkor használhatod)
+-lejátszási lista (a soron következő zenék)
+
+ZENEKÉRÉS 
+-kereső és találatok
+-kívánságlista (ehhez adódik hozzá amit itt kérsz)
+    -lejátszás gomb (ha van tokened akkor ezzel a gombbal hozzá tudod adni a lejátszási listához)
+
+
+
