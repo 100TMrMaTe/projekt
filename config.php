@@ -1,8 +1,8 @@
 <?php
 return [
     'domains' => [
-        'regemail'      => 'http://adysound.hu/projekt/suc_reg/suc_reg.html?email_token=',
-        'passwordemail' => 'http://adysound.hu/projekt/forgot/forgot.html?token=',
+        'regemail'      => 'http://localhost/suliscucc/projekt/suc_reg/suc_reg.html?email_token=',
+        'passwordemail' => 'http://localhost/suliscucc/projekt/forgot/forgot.html?token=',
     ],
     'admin' => [
         'id' => 96,
