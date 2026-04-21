@@ -633,3 +633,27 @@ body {
 #logoutbutton:active {
     transform: scale(0.96);
 }
+
+
+/* ─── ANIMATED BACKGROUND ─── */
+.background {
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    background:
+        radial-gradient(circle at 15% 25%, #7858a3 0%, transparent 45%),
+        radial-gradient(circle at 85% 20%, #4d9dc5 0%, transparent 45%),
+        radial-gradient(circle at 70% 75%, #51c17c 0%, transparent 50%),
+        linear-gradient(135deg, #8849cf, #1fbf6c);
+    animation: bgShift 12s ease-in-out infinite alternate;
+}
+
+@keyframes bgShift {
+    0% {
+        filter: hue-rotate(0deg) brightness(1);
+    }
+
+    100% {
+        filter: hue-rotate(25deg) brightness(1.08);
+    }
+}
