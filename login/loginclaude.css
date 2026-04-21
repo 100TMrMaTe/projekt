@@ -151,10 +151,10 @@ body {
     inset: 0;
     z-index: -2;
     background:
-        radial-gradient(circle at 15% 25%, #7858a3 0%, transparent 45%),
-        radial-gradient(circle at 85% 20%, #4d9dc5 0%, transparent 45%),
-        radial-gradient(circle at 70% 75%, #51c17c 0%, transparent 50%),
-        linear-gradient(135deg, #8849cf, #1fbf6c);
+        radial-gradient(circle at 15% 25%, #4a8fd4 0%, transparent 45%),
+        radial-gradient(circle at 85% 20%, #2a6fbb 0%, transparent 45%),
+        radial-gradient(circle at 70% 75%, #8a7abf 0%, transparent 50%),
+        linear-gradient(135deg, #3a7fd0, #7a6ab8);
     animation: bgShift 12s ease-in-out infinite alternate;
 }
 
@@ -164,6 +164,6 @@ body {
     }
 
     100% {
-        filter: hue-rotate(25deg) brightness(1.08);
+        filter: hue-rotate(15deg) brightness(1.05);
     }
 }

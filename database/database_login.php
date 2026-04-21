@@ -28,8 +28,8 @@ function registration($conn, $username, $password, $email, $class, array $config
 
   if (str_ends_with($email, "@ady-nagyatad.hu") == false) {
     $vissza["status"] = "error_sulisemail";
-    $vissza["long_message"] = "Csak sulis email cimmel lehet regisztralni!";
-    $vissza["message"] = "Hibas email cimmel probalsz regisztralni!";
+    $vissza["long_message"] = "Csak Ady-s email címmel lehet regisztrálni! (Nem @ady-nagyatad.hu végződésű email cím szükséges)";
+    $vissza["message"] = "Hibás email cimmel probálsz regisztrálni!";
     echo json_encode($vissza);
     return;
   }
@@ -41,14 +41,14 @@ function registration($conn, $username, $password, $email, $class, array $config
 
   if ($stmt->execute()) {
     $vissza["status"] = "success_registration";
-    $vissza["message"] = "aktiváld az emailed!";
-    $vissza["long_message"] = "Kerlek ellenorizd az emailed a megerosito linkert!";
+    $vissza["message"] = "Aktiváld az email címedet!";
+    $vissza["long_message"] = "Kérlek ellenőrizd az emailed a megerősítő linkért!";
     echo json_encode($vissza);
     sendVerificationEmail($email, $token, $config);
   } else {
     $vissza["status"] = "error_registration";
-    $vissza["message"] = "Az email mar foglalt!";
-    $vissza["long_message"] = "Amennyiben te még nem regisztrátál vedd fel a kapcsolatot a rendszer gazdával!";
+    $vissza["message"] = "Ez az email már foglalt!";
+    $vissza["long_message"] = "Amennyiben te még nem regisztráltál vedd fel a kapcsolatot a rendszer gazdával!";
     echo json_encode($vissza);
   }
   $stmt->close();

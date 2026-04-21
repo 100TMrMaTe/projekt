@@ -1350,7 +1350,7 @@
 		let utolsoPlaylist = "";
 
 		function update() {
-		//	getCurrentTime();
+			//	getCurrentTime();
 			//getVolume();
 			if (seekSlider && hossz) ido();
 
@@ -1451,7 +1451,7 @@
 					});
 				}
 
-				
+
 				if (data.user_id == localStorage.getItem("user_id") || localStorage.getItem("isadmin") === "1") {
 					document.getElementById("lejátszásgomb").classList.remove("disabled");
 					document.getElementById("kovetkezoBtn").classList.remove("disabled");
@@ -1477,7 +1477,7 @@
 
 		}
 
-		setInterval(() => {	
+		setInterval(() => {
 			loadPlaylist().then((data) => {
 				const ujPlaylist = data.map(e => e.video_id).join(",");
 

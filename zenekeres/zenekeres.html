@@ -58,23 +58,23 @@
         <div class="row g-3">
             <!-- Bal: kereső -->
             <div class="col-12 col-lg-6">
-                <div class="d-flex gap-2 mb-2">
-                    <input type="text" oninput="(eredmenyVisszahoz(), search())"
-                        class="form-control text-light kereso flex-grow-1" style="height: 46px"
-                        placeholder="🔍  Keresés..." id="search" name="kereso" />
-                    <button onclick="(keres(), eredmenyVisszahoz())" class="btn text-white px-4"
-                        style="height: 46px; white-space: nowrap">
-                        Keresés
-                    </button>
-                    <div id="kedvencGomb">
-                        
-                    </div>
-                    <div id="kedvencEltuntetGomb">
-                    </div>
+                <div class="kereso-sor">
 
+                    <div class="d-flex gap-2">
+                        <input type="text" oninput="(eredmenyVisszahoz(), search())"
+                            class="form-control text-light kereso flex-grow-1" style="height: 46px"
+                            placeholder="🔍  Keresés..." id="search" name="kereso" />
+                        <button onclick="(keres(), eredmenyVisszahoz())" class="btn text-white px-4"
+                            style="height: 46px; white-space: nowrap">
+                            Keresés
+                        </button>
+
+
+                    </div>
                 </div>
 
-                <div class="eredmenyDoboz me-3" id="eredmenyDoboz">
+
+                <div class="eredmenyDoboz" id="eredmenyDoboz">
                     <div id="eredmeny" class="eredmeny text-light"></div>
                 </div>
             </div>
