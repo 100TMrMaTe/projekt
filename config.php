@@ -13,7 +13,7 @@ return [
         'from'     => 'konyhasimatemail@gmail.com',
     ],
     'db' => [
-        'host' => 'localhost',
+        'host' => '172.16.2.100',
         'dbname' => 'projekt',
         'username' => 'root',
         'password' => 'admin',
