@@ -5,6 +5,12 @@ include_once "mailer/sendVerification.php";
 $config = require __DIR__ . "/config.php";
 //include_once "database/otthon.php";
 $conn = Connect_to_server($config);
+
+if ($_SERVER['REQUEST_METHOD'] == "GET" && !isset($_GET["muvelet"])) {
+    header("Location: /login/login.html");
+    exit();
+}
+
 $data = (json_decode(file_get_contents("php://input"), true));
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     switch ($data["muvelet"]) {
