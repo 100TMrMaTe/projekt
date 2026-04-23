@@ -62,16 +62,10 @@ hang
 böngésző megölése
 pkill chromium
 
-
+futtatni kell ha ssh-n keresztüé inditod a chromiumot
 export DISPLAY=:0
 
 
-
-
-length: 60
-current_time: 30
-seek: 40
-probléma: nem seekel
 
 
 

@@ -45,13 +45,6 @@ function logout() {
         .catch((error) => console.error("Error refreshing token:", error));
 }
 
-
-
-
-
-
-
-
 function toggleTheme() {
     const body = document.body;
     const icon = document.getElementById('theme-icon');
@@ -277,11 +270,6 @@ function songlog(id, email, user_class, date, title) {
     `;
 }
 
-
-
-
-
-
 // Enhanced action functions with animations and toast notifications
 
 function approveUserWithAnimation(id, button) {
@@ -409,26 +397,12 @@ function revokeAdminWithAnimation(id, button) {
     // The init() function will reload the list
 }
 
-// Background Change (from original)
-function bgChange() {
-    const bgImages = [
-        'bg1.jpg', 'bg2.jpg', 'bg3.png', 'bg4.jpg', 'bg5.jpg', 'bg6.jpg',
-        '7.jpg', '8.jpg', '9.jpg', '10.jpg', '11.jpg', '12.jpg', '13.jpg', '14.jpg'
-    ];
-    const index = Math.floor(Math.random() * bgImages.length);
-    document.body.style.backgroundImage = `url(../backgrounds/${bgImages[index]})`;
-    //console.log("Background changed to: " + bgImages[index]);
-}
-
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function () {
     loadTheme();
 
     // Auto-refresh can be enabled here
-    // setInterval(init, 5000);
-
-    // Background change can be enabled here
-    // setInterval(bgChange, 30000);
+    setInterval(init, 30000);
 });
 
 // Override the original adminpageLog to include stats update
@@ -454,6 +428,5 @@ window.adminPanel = {
     waitingApproval,
     usersAdmin,
     usersNotAdmin,
-    songlog,
-    bgChange
+    songlog
 };

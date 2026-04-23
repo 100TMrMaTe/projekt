@@ -1,5 +1,4 @@
 #doboz {
-    /*background-color: rgba(255, 255, 255, 1);*/
     background: transparent;
     backdrop-filter: blur(10px);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -15,21 +14,7 @@ body {
     user-select: none;
 }
 
-body {
-    /*background: linear-gradient(to bottom right, blue, cyan);*/
-
-    background-image: url("../backgrounds/14.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-
-}
-
 .jelszo {
-    /*
-            background-color: rgb(50, 50, 50);
-            border-color: white;
-            */
     background: rgba(255, 255, 255, 0.075);
     border: 2px solid rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(5px);
@@ -41,11 +26,6 @@ body {
 }
 
 .jelszo:focus {
-    /*
-            background-color: rgb(50, 50, 50);
-            box-shadow: none;
-            border-color: white;
-            */
     background: rgba(255, 255, 255, 0.1);
     border: 2px solid rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(5px);

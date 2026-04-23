@@ -3,7 +3,6 @@ include_once "database/database_login.php";
 include_once "database/database_music.php";
 include_once "mailer/sendVerification.php";
 $config = require __DIR__ . "/config.php";
-//include_once "database/otthon.php";
 $conn = Connect_to_server($config);
 
 if ($_SERVER['REQUEST_METHOD'] == "GET" && !isset($_GET["muvelet"])) {

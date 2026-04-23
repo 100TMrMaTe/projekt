@@ -211,9 +211,6 @@
 		document.body.addEventListener("click", startTimer);
 		document.body.addEventListener("click", tokenRefresh);
 
-		//document.body.addEventListener("pointer", startTimer);
-		//document.body.addEventListener("pointer", tokenRefresh);
-
 		updateDisplay();
 
 		function init() {
@@ -276,11 +273,9 @@
 
 		function ido() {
 			if (!seekSlider || !hossz) return;
-			//if (!player || !player.getDuration) return;
-			//console.log(seekSlider.value);
 			let jelenlegi = Math.floor(seekSlider.value);
 			let teljes = Math.floor(hossz);
-			//console.log(teljes);
+
 			let perc = Math.floor(jelenlegi / 60);
 			let masodperc = Math.floor(jelenlegi % 60);
 			let ora = Math.floor(perc / 60);
@@ -295,13 +290,10 @@
 			if (teljesOra > 0) {
 				teljesPerc = teljesPerc % 60;
 			}
-			// document.getElementById("jelenlegiIdo").innerText = perc + ":" + masodperc;
-			//console.log(teljesOra + ":" + teljesPerc + ":" + teljesMasodperc);
 
 			if (teljesOra === 0) {
 				egeszIdo.innerText = `${teljesPerc}:${teljesMasodperc < 10 ? "0" : ""}${teljesMasodperc}`;
 			}
-			//console.log(ora);
 
 			if (teljesOra != 0) {
 				if (teljesPerc < 10) {
@@ -309,7 +301,6 @@
 						`${teljesOra}:` +
 						`0` +
 						`${teljesPerc}:${teljesMasodperc < 10 ? "0" : ""}${teljesMasodperc}`;
-					//console.log("cadsd");
 				}
 				egeszIdo.innerText = `${teljesOra}:${teljesPerc}:${teljesMasodperc < 10 ? "0" : ""}${teljesMasodperc}`;
 			}
@@ -317,13 +308,9 @@
 			if (ora > 0) {
 				perc = perc % 60;
 			}
-			// document.getElementById("jelenlegiIdo").innerText = perc + ":" + masodperc;
 
 			if (ora === 0) {
 				jelenlegiIdo.innerText = `${perc}:${masodperc < 10 ? "0" : ""}${masodperc}`;
-				//egeszIdo.innerText = `${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
-
-				//console.log(ora);
 			}
 			if (ora != 0) {
 				if (perc < 10) {
@@ -331,14 +318,10 @@
 						`${ora}:` +
 						`0` +
 						`${perc}:${masodperc < 10 ? "0" : ""}${masodperc}`;
-					//egeszIdo.innerText = `${ora}:` + `0` + `${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
 				} else {
 					jelenlegiIdo.innerText = `${ora}:${perc}:${masodperc < 10 ? "0" : ""}${masodperc}`;
-					//egeszIdo.innerText = `${ora}:${perc}:${masodperc < 10 ? '0' : ''}${masodperc}`;
 				}
 			}
-
-			//document.getElementById("egeszIdo").innerText = Math.floor(teljes / 60) + ":" + Math.floor(teljes % 60);
 
 			//math.floor ataliitasa (round-ra)
 		}
@@ -353,10 +336,6 @@
 			if (ora > 0) {
 				perc = perc % 60;
 			}
-
-			//console.log(seconds);
-
-			//console.log(`${mins}:${secs < 10 ? '0' : ''}${secs}`);
 
 			if (ora === 0) {
 				return `${perc}:${masodperc < 10 ? "0" : ""}${masodperc}`;
@@ -385,7 +364,6 @@
 			const ora = parseInt(illik[1]) || 0;
 			const perc = parseInt(illik[2]) || 0;
 			const masodperc = parseInt(illik[3]) || 0;
-			//console.log(ora, perc, masodperc);
 			return ora * 3600 + perc * 60 + masodperc;
 		}
 
@@ -428,13 +406,10 @@
 			document.getElementById("kedvencEltuntetGomb").classList.remove("d-none");
 		}
 
-		//console.log(player.getCurrentTime());
-
 		function embedVideo(id, kep, cim, music_id) {
 			let currentFavs = JSON.parse(localStorage.getItem("tomb")) || [];
 			currentMusicId = music_id;
-			//console.log(currentFavs);
-			//console.log(music_id);
+
 			if (currentFavs.some(f => f.music_id == music_id)) {
 				document.getElementById("lejatszo").innerHTML = `
 				<div class="talalat rounded-3">
@@ -577,10 +552,7 @@
 
 		function vane() {
 			if (!player || !player.getDuration) return;
-
 			let hello = player.getDuration();
-			//console.log(hello);
-			//console.log(typeof hello);
 			return hello;
 		}
 
@@ -614,7 +586,6 @@
 		}
 
 		function keres() {
-			//console.log("anyad");
 			const search = document.getElementById("search").value;
 			const eredmeny = document.getElementById("eredmeny");
 
@@ -634,7 +605,6 @@
 				fetch(URL)
 					.then((valasz) => valasz.json())
 					.then((adatok) => {
-						//console.log(adatok);
 						const videoIds = adatok.items
 							.map((item) => item.id.videoId)
 							.join(",");
@@ -871,7 +841,6 @@
 
 		setTimeout(() => {
 			loadCurrentlyPlaying().then((data) => {
-				//console.log(data);
 				currentlPlayingUserId = data.user_id;
 				videoId = data.video_id;
 				embedVideo(
@@ -979,12 +948,10 @@
 			})
 				.then((response) => response.json())
 				.then((data) => {
-					//console.log(data)
 				});
 		}
 
 		function setVolume() {
-			//if (felhasznaloSeek) return;
 			fetch("../index.php", {
 				method: "POST",
 				headers: {
@@ -997,7 +964,6 @@
 			})
 				.then((response) => response.json())
 				.then((data) => {
-					//console.log(data);
 				});
 		}
 
@@ -1095,14 +1061,11 @@
 			})
 				.then((response) => response.json())
 				.then((data) => {
-					//console.log(data);
 
 					let eredmeny = document.getElementById("eredmeny");
 					let videok = data.results;
 
 					eredmeny.innerHTML = "";
-
-					//console.log("EREDMENY TOROLVE");
 
 					if (!videok.length) {
 						eredmeny.innerHTML = "<p>Nincs találat vagy hiba történt.</p>";
@@ -1120,8 +1083,6 @@
 							videok[i].title,
 							videok[i].length == 0 ? "LIVE" : videok[i].length,
 						);
-
-						//console.log(videok[i].video_id);
 
 						talalat.onclick = () => {
 							eredmenyTorol();
@@ -1175,20 +1136,9 @@
 				})
 					.then((response) => response.json())
 					.then((data) => {
-						//console.log(data);
 					})
 					.catch((error) => console.error("Fetch hiba:", error));
 			}
-
-			/*
-				let length = seekSlider.max;
-				console.log("max: ", seekSlider.max);
-				console.log("elotte time", porget);
-				porget = length-1.7; 
-				console.log("utana", length);
-				console.log("utana time", porget)
-				setPorget();
-				*/
 		}
 
 
@@ -1277,7 +1227,6 @@
 			})
 				.then((response) => response.json())
 				.then((data) => {
-					//console.log(data);
 					data.fav_music.forEach((e) => {
 						document.getElementById("kedvencDoboz").innerHTML += kedvencKiir(
 							e.video_id,
@@ -1304,7 +1253,6 @@
 			})
 				.then((response) => response.json())
 				.then((data) => {
-					//console.log(data);
 				});
 		}
 
@@ -1320,7 +1268,6 @@
 			})
 				.then((response) => response.json())
 				.then((data) => {
-					//console.log(data);
 					element.closest("li").remove();
 					let favs = JSON.parse(localStorage.getItem("tomb")) || [];
 					favs = favs.filter(f => String(f.music_id) !== String(id));
@@ -1348,8 +1295,6 @@
 		let utolsoPlaylist = "";
 
 		function update() {
-			//	getCurrentTime();
-			//getVolume();
 			if (seekSlider && hossz) ido();
 
 			isPlaying().then((status) => {
@@ -1385,7 +1330,6 @@
 
 			loadCurrentlyPlaying().then((data) => {
 				if (videoId != data.video_id) {
-					//console.log(data);
 					videoId = data.video_id;
 					embedVideo(
 						data.video_id,
@@ -1398,7 +1342,6 @@
 					seekSlider = document.querySelector("#seekSlider");
 					volumeSlider = document.querySelector("#volumeSlider");
 
-					//getLength();
 
 					// ─── Desktop seekSlider ───
 					seekSlider.addEventListener("pointerdown", () => { felhasznaloSeek = true; });
@@ -1509,7 +1452,6 @@
 					keres();
 					search();
 					eredmenyVisszahoz();
-					//console.log("asdasd");
 				}
 			});
 	</script>

@@ -40,28 +40,6 @@ function kuldes() {
 		});
 }
 
-function bgChange() {
-	const bgImages = [
-		"bg1.jpg",
-		"bg2.jpg",
-		"bg3.png",
-		"bg4.jpg",
-		"bg5.jpg",
-		"bg6.jpg",
-		"7.jpg",
-		"8.jpg",
-		"9.jpg",
-		"10.jpg",
-		"11.jpg",
-		"12.jpg",
-		"13.jpg",
-		"14.jpg",
-	];
-	const randomIndex = Math.floor(Math.random() * bgImages.length);
-	document.body.style.backgroundImage = `url(${bgImages[randomIndex]})`;
-	//console.log("Background changed to: " + bgImages[randomIndex]);
-}
-
 function suc_reg() {
 	const searchParams = new URLSearchParams(window.location.search);
 	const emailToken = searchParams.get("email_token");
@@ -96,7 +74,6 @@ function adminpageLog() {
 	})
 		.then((r) => r.json())
 		.then((d) => {
-			//console.log(d);
 			//ugy irasd ki hogy a gombnak oncliknek meghivod ezeket a fugvenyeket es az id-t atadod parameterkent
 			if (d.status === "success_adminpage") {
 				document.getElementById("reg").innerHTML = "";
@@ -137,18 +114,6 @@ function adminpageLog() {
 				d.csengetesi.forEach((element) => {
 					console.log(element.idopont);
 				});
-				/*console.log(document.getElementById("csengetesi"));
-				let elso =  document.createElement("td");
-				elso.innerText = element.idopont;
-		 
-				document.getElementById("csengetesi").appendChild(elso);
-				document.getElementById("csengetesi").innerHTML += csengetes(element.idopont);
-				/*document.getElementById("csengetesi").innerHTML += csengetes(
-				  element[0].idopont
-				);
-		 
-			  });
-		*/
 
 				const tbody = document.getElementById("csengetesi");
 				tbody.innerHTML = "";
@@ -209,7 +174,6 @@ function approveUser($id) {
 	})
 		.then((r) => r.json())
 		.then((d) => {
-			//console.log(d);
 			init();
 			//toltse be ujra az egesz oszlopot
 		});
@@ -226,7 +190,6 @@ function denyUser($id) {
 	})
 		.then((r) => r.json())
 		.then((d) => {
-			//console.log(d);
 			init();
 			//toltse be ujra az egesz oszlopot
 		});
@@ -243,7 +206,6 @@ function deleteUser($id) {
 	})
 		.then((r) => r.json())
 		.then((d) => {
-			//console.log(d);
 			init();
 			//toltse be ujra az egesz oszlopot
 		});
@@ -259,7 +221,6 @@ function makeAdmin($id) {
 	})
 		.then((r) => r.json())
 		.then((d) => {
-			//console.log(d);
 			init();
 			//toltse be ujra az egesz oszlopot
 		});
@@ -276,7 +237,6 @@ function revokeAdmin($id) {
 	})
 		.then((r) => r.json())
 		.then((d) => {
-			//console.log(d);
 			localStorage.removeItem("isadmin");
 			init();
 			//toltse be ujra az egesz oszlopot
@@ -463,8 +423,6 @@ function newpassword() {
 function errorTimer() {
 
 	setTimeout(() => {
-		//document.getElementById("error").classList.add("d-none");
-
 		const collapseElementList = document.querySelectorAll('.collapse')
 		const collapseList = [...collapseElementList].map(collapseEl => new bootstrap.Collapse(collapseEl))
 
@@ -486,7 +444,6 @@ function login() {
 	})
 		.then((r) => r.json())
 		.then((d) => {
-			//console.log(d);
 			if (d.status == "error_login_no_user") {
 				//registraljal ||| vagy elirtad az email cimed
 				document.getElementById("error-message").innerText = "Hibás email cím vagy még nem regisztráltál.";
@@ -506,7 +463,6 @@ function login() {
 				const collapseList = [...collapseElementList].map(collapseEl => new bootstrap.Collapse(collapseEl))
 				errorTimer();
 			} else if (d.status == "error_login_wrong_password") {
-				//console.log("rossz jelszo");
 				//rossz jelszo
 				document.getElementById("error-message").innerText = "Hibás jelszó.";
 				const collapseElementList = document.querySelectorAll('.collapse')
