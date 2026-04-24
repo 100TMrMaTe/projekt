@@ -6,7 +6,7 @@ $config = require __DIR__ . "/config.php";
 $conn = Connect_to_server($config);
 
 if ($_SERVER['REQUEST_METHOD'] == "GET" && !isset($_GET["muvelet"])) {
-    header("Location: /login/login.html");
+    header("Location: /login/");
     exit();
 }
 

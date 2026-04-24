@@ -39,11 +39,11 @@
 						<!-- Gombok -->
 						<div id="navbarGombok" class="d-none d-lg-flex align-items-center gap-2 flex-wrap">
 							<a class="btn text-white" id="adminpagebutton"
-								href="../adminpage/adminpage_integrated.html">
+								href="../adminpage/">
 								<i class="bi bi-shield-check me-1"></i>Admin oldal
 							</a>
 							<a class="btn text-white" id="zenekeresekbutton"
-								href="../zenekeres/zenekeres.html">Zenekeresek
+								href="../zenekeres/">Zenekeresek
 							</a>
 							<button class="btn btn-glass" id="theme-toggle" onclick="toggleTheme()">
 								<i class="bi bi-moon-stars-fill" id="theme-icon"></i>
@@ -64,10 +64,10 @@
 					<div id="navbarMobil" class="d-none d-lg-none mt-2">
 						<div class="d-flex flex-column gap-2">
 							<a class="btn text-white w-100 text-start" id="adminpagebutton-mob"
-								href="../adminpage/adminpage_integrated.html">
+								href="../adminpage/">
 								<i class="bi bi-shield-check me-1"></i>Admin oldal
 							</a>
-							<a class="btn text-white w-100 text-start" href="../zenekeres/zenekeres.html">Zenekérések
+							<a class="btn text-white w-100 text-start" href="../zenekeres/">Zenekérések
 							</a>
 							<div class="d-flex gap-2">
 								<button class="btn btn-glass" onclick="toggleTheme()">
@@ -148,7 +148,7 @@
 
 
 		if (localStorage.getItem("token") == null) {
-			window.location.href = "../login/login.html";
+			window.location.href = "../login/";
 		}
 
 		// Egyetlen flag-pár mindkét nézethez
@@ -232,7 +232,7 @@
 				.then((data) => {
 					if (data.status != "success_token_refresh") {
 						localStorage.clear();
-						window.location.href = "../login/login.html";
+						window.location.href = "../login/";
 					}
 				})
 				.catch((error) => console.error("Error refreshing token:", error));
@@ -265,7 +265,7 @@
 				.then((response) => response.json())
 				.then((data) => {
 					localStorage.clear();
-					window.location.href = "../login/login.html";
+					window.location.href = "../login/";
 				})
 				.catch((error) => console.error("Error refreshing token:", error));
 		}

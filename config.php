@@ -1,8 +1,8 @@
 <?php
 return [
     'domains' => [
-        'regemail'      => 'http://localhost/projekt/suc_reg/suc_reg.html?email_token=',
-        'passwordemail' => 'http://localhost/projekt/forgot/forgot.html?token=',
+        'regemail'      => 'https://'.$_SERVER['SERVER_NAME'].'/suc_reg/suc_reg.html?email_token=',
+        'passwordemail' => 'https://'.$_SERVER['SERVER_NAME'].'/forgot/forgot.html?token=',
     ],
     'admin' => [
         'id' => 96,

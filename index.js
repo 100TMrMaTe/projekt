@@ -415,7 +415,7 @@ function newpassword() {
 		.then((r) => r.json())
 		.then((d) => {
 			if (d.status == "success_reset_password") {
-				window.location.href = "../login/login.html";
+				window.location.href = "../login/";
 			}
 		});
 }
@@ -474,7 +474,7 @@ function login() {
 				localStorage.setItem("email", d.email);
 				localStorage.setItem("user_class", d.user_class);
 				localStorage.setItem("user_id", d.user_id);
-				window.location.href = "../audio/main.html";
+				window.location.href = "../audio/";
 			}
 		});
 

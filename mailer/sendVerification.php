@@ -26,7 +26,7 @@ function sendVerificationEmail($toEmail, $token,  array $config)
         $mail->Port       = 587;
         $mail->CharSet = 'UTF-8_hungarian_ci';
 
-        $mail->setFrom($config['mail']['from'], 'regisztaracio');
+        $mail->setFrom($config['mail']['from'], 'regisztráció megerősítése');
         $mail->addAddress($toEmail);
 
         $mail->isHTML(true);
@@ -60,11 +60,11 @@ function confirmReg($toEmail, array $config)
         $mail->Port       = 587;
         $mail->CharSet = 'UTF-8_hungarian_ci';
 
-        $mail->setFrom($config['mail']['from'], 'regisztraciod elfogadva');
+        $mail->setFrom($config['mail']['from'], 'regisztrációd elfogadva');
         $mail->addAddress($toEmail);
 
         $mail->isHTML(true);
-        $mail->Subject = "Regisztraciod elfogadasara kerult";
+        $mail->Subject = "Regisztrácód elfogadásra került";
 
         $mail->Body = "<p>Regisztrációd elfogadásra került. Most már bejelentkezhetsz az oldalunkra.</p>
                        <p>Köszönjük, hogy csatlakoztál hozzánk!</p>";
@@ -91,11 +91,11 @@ function denyreg($toEmail, array $config)
         $mail->Port       = 587;
         $mail->CharSet = 'UTF-8_hungarian_ci';
 
-        $mail->setFrom($config['mail']['from'], 'regisztraciod elfogadva');
+        $mail->setFrom($config['mail']['from'], 'regisztrációd elfogadva');
         $mail->addAddress($toEmail);
 
         $mail->isHTML(true);
-        $mail->Subject = "Regisztraciod elutasitva";
+        $mail->Subject = "Regisztrációd elutasítva";
 
         $mail->Body = "<p>Regisztrációd elutasításra került.</p>
                        <p>Ha úgy gondolod, hogy ez hiba, kérlek vedd fel velünk a kapcsolatot.</p>
@@ -125,11 +125,11 @@ function sendPasswordResetEmail($toEmail, $token, array $config)
         $mail->Port       = 587;
         $mail->CharSet = 'UTF-8_hungarian_ci';
 
-        $mail->setFrom($config['mail']['from'], 'elfelejtett jelszo');
+        $mail->setFrom($config['mail']['from'], 'elfelejtett jelszó');
         $mail->addAddress($toEmail);
 
         $mail->isHTML(true);
-        $mail->Subject = "Jelszo visszaallitasa";
+        $mail->Subject = "Jelszó visszaállítása";
 
         $mail->Body = "
             <p>A jelszavad visszaállításához kattints az alábbi linkre:</p>

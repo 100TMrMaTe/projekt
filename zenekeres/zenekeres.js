@@ -118,7 +118,7 @@ function logout() {
         .then((response) => response.json())
         .then((data) => {
             localStorage.clear();
-            window.location.href = "../login/login.html";
+            window.location.href = "../login/";
         })
         .catch((error) => console.error("Error refreshing token:", error));
 }
@@ -139,7 +139,7 @@ function tokenRefresh() {
         .then((data) => {
             if (data.status != "success_token_refresh") {
                 localStorage.clear();
-                window.location.href = "../login/login.html";
+                window.location.href = "../login/";
             }
         })
         .catch((error) => console.error("Error refreshing token:", error));

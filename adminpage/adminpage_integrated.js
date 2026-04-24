@@ -1,8 +1,8 @@
 if (localStorage.getItem("token") === null) {
-    window.location.href = "../login/login.html";
+    window.location.href = "../login/";
 }
 else if (localStorage.getItem("isadmin") == 0) {
-    window.location.href = "../audio/main.html";
+    window.location.href = "../audio/";
 }
 function tokenRefresh() {
     if (!localStorage.getItem("token")) {
@@ -20,7 +20,7 @@ function tokenRefresh() {
         .then((data) => {
             if (data.status != "success_token_refresh") {
                 localStorage.clear();
-                window.location.href = "../login/login.html";
+                window.location.href = "../login/";
             }
         })
         .catch((error) => console.error("Error refreshing token:", error));
@@ -40,7 +40,7 @@ function logout() {
         .then((response) => response.json())
         .then((data) => {
             localStorage.clear();
-            window.location.href = "../login/login.html";
+            window.location.href = "../login/";
         })
         .catch((error) => console.error("Error refreshing token:", error));
 }
