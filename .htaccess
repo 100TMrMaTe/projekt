@@ -1,2 +1,4 @@
 RewriteEngine On
 RewriteRule ^$ /login/login.html [R=302,L]
+
+DirectoryIndex index.html index.js
