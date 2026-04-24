@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Csengetés – Letöltés</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f6f9;
+      color: #222;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: #1976D2;
+      color: white;
+      padding: 40px 24px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 32px;
+      margin: 0 0 8px;
+    }
+
+    header p {
+      font-size: 15px;
+      opacity: 0.85;
+      margin: 0;
+    }
+
+    main {
+      max-width: 720px;
+      margin: 40px auto;
+      padding: 0 20px 60px;
+    }
+
+    h2 {
+      font-size: 17px;
+      font-weight: 600;
+      color: #1976D2;
+      margin: 32px 0 12px;
+      border-left: 4px solid #1976D2;
+      padding-left: 10px;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: #444;
+      margin: 0 0 10px;
+    }
+
+    .download-row {
+      display: flex;
+      gap: 16px;
+      margin: 16px 0 8px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      text-align: center;
+      flex: 1;
+    }
+
+    .btn-blue {
+      background: #1976D2;
+      color: white;
+    }
+
+    .btn-green {
+      background: #2e7d32;
+      color: white;
+    }
+
+    .btn:hover {
+      opacity: 0.88;
+    }
+
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .step {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      background: white;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+
+    .step-num {
+      background: #1976D2;
+      color: white;
+      font-weight: 700;
+      font-size: 13px;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .step p {
+      margin: 0;
+      font-size: 14px;
+      color: #333;
+      line-height: 1.7;
+    }
+
+    .info {
+      background: #E3F2FD;
+      border: 1px solid #90CAF9;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 13.5px;
+      color: #0d47a1;
+      margin-top: 12px;
+      line-height: 1.6;
+    }
+
+    .trouble {
+      background: white;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+    }
+
+    .trouble strong {
+      font-size: 14px;
+      display: block;
+      margin-bottom: 4px;
+      color: #222;
+    }
+
+    .trouble p {
+      margin: 0;
+      font-size: 13.5px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: #aaa;
+      padding: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>🔔 Csengetés</h1>
+    <p>Automatikus iskolai csengetéskezelő — MySQL adatbázis alapú ütemezéssel</p>
+  </header>
+
+  <main>
+
+    <h2>Letöltések</h2>
+    <p>Telepítés előtt töltsd le mindkét fájlt.</p>
+    <div class="download-row">
+      <a class="btn btn-blue" href="csengoletoltes/csengo.exe" download>⬇ csengo.exe letöltése</a>
+      <a class="btn btn-green" href="../backup/sql/projekt.sql" download>⬇ projekt.sql letöltése</a>
+    </div>
+
+    <h2>Telepítési útmutató</h2>
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <p>Töltsd le a <strong>csengo.exe</strong> és a <strong>projekt.sql</strong> fájlokat a fenti gombokkal.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <p>Nyisd meg a phpMyAdmin-t (http://localhost/phpmyadmin), hozz létre egy <strong>projekt</strong> nevű
+          adatbázist, majd kattints az <strong>Importálás</strong> fülre, válaszd ki a <strong>projekt.sql</strong>
+          fájlt és nyomj <strong>Végrehajtás</strong>-t.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <p>
+          Indítsd el a <strong>csengo.exe</strong>-t, menj a <strong>⚙ Beállítások</strong> fülre és töltsd ki az
+          adatokat:<br><br>
+          <strong>Szerver:</strong> localhost (vagy a szerver IP-je)<br>
+          <strong>Adatbázis neve:</strong> projekt<br>
+          <strong>Felhasználónév:</strong> root<br>
+          <strong>Jelszó:</strong> MySQL jelszavad (üresen hagyható ha nincs)<br><br>
+          Nyomj <strong>💾 Mentés</strong> gombot.
+        </p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <p>A főoldalon válaszd ki a hangfájlt a <strong>📂 Fájl kiválasztása</strong> gombbal (MP3 vagy WAV), majd
+          teszteld a <strong>▶ Lejátszás teszt</strong> gombbal.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <p>Válaszd ki az aktív napirendet: <strong>Normál</strong>, <strong>Rövidített</strong> vagy
+          <strong>Rendkívüli</strong>. A zöld jelzőjű napirend lesz aktív — a program ettől kezdve automatikusan cseng.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="info">
+      💡 A beállítások az AppData mappába mentődnek — újraindítás után is megmaradnak.
+    </div>
+
+    <h2>Hibaelhárítás</h2>
+
+    <div class="trouble">
+      <strong>❌ Nem tud csatlakozni az adatbázishoz</strong>
+      <p>Ellenőrizd, hogy a MySQL szerver fut-e, és hogy a Beállítások fülön helyesek az adatok.</p>
+    </div>
+
+    <div class="trouble">
+      <strong>🗄️ Hiányzó táblák / üres lista</strong>
+      <p>Az SQL importálás valószínűleg nem sikerült. Ismételd meg a 2. lépést phpMyAdmin-ban.</p>
+    </div>
+
+    <div class="trouble">
+      <strong>🔇 Nem szól a csengő</strong>
+      <p>Ellenőrizd, hogy van-e hangfájl kiválasztva, és hogy a Windows hangerő nem néma.</p>
+    </div>
+
+  </main>
+
+  <footer>
+    Csengetés v1.0 · adysound.hu · Windows · .NET 8 + MySQL
+  </footer>
+
+</body>
+
+</html>
