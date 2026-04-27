@@ -1,0 +1,36 @@
+
+7db html + js + css oldal
+(
+    main - a fö oldal, innen megy a zenék irányitása
+    server - ez fut a pi-n, youtube frameben megy a video amit irányitunk
+    login - ez az első oldal amit a felhasználó lát ha nincs belépve
+    reg - itt lehet regisztrálni
+    suc_reg - sikeres regisztáció után látható (email-böl nyilik meg a link, email megerösités után)
+    forgot - elfelejtett jelszo esetében itt adható meg uj (email-en keresztül)
+    zenekeres - bejelentkezés nélül itt lehet zenát kérni amit utána az adminok hozzá tudnak adni a lejátszási listához
+)
+
+
+php fileok
+-sok function
+-adatbázis kapcsolat és kezelés php- val
+
+sql adatbázis
+-6 tábla, mind összekötve
+(
+    currently_playing
+    music
+    playlist
+    users
+    active_users
+    user_handler
+)
+
+és az egész egy raspberry-n fut 
+
+
+
+a token rendszer csak a beléptetés miatt van, fél óra inaktivitás után logoutol és egyszerre csak egy eszközön lehetsz bejelentkezve
+
+
+
