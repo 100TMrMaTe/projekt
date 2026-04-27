@@ -13,7 +13,7 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 	<title>Főoldal</title>
 	<link rel="stylesheet" href="main.css" />
-    <link rel="icon" href="../favicon_gradient.ico">
+	<link rel="icon" href="../favicon_gradient.ico">
 </head>
 
 <body onload="init()">
@@ -38,12 +38,10 @@
 
 						<!-- Gombok -->
 						<div id="navbarGombok" class="d-none d-lg-flex align-items-center gap-2 flex-wrap">
-							<a class="btn text-white" id="adminpagebutton"
-								href="../adminpage/">
+							<a class="btn text-white" id="adminpagebutton" href="../adminpage/">
 								<i class="bi bi-shield-check me-1"></i>Admin oldal
 							</a>
-							<a class="btn text-white" id="zenekeresekbutton"
-								href="../zenekeres/">Zenekeresek
+							<a class="btn text-white" id="zenekeresekbutton" href="../zenekeres/">Zenekeresek
 							</a>
 							<button class="btn btn-glass" id="theme-toggle" onclick="toggleTheme()">
 								<i class="bi bi-moon-stars-fill" id="theme-icon"></i>
@@ -63,8 +61,7 @@
 					<!-- Mobil lenyíló rész -->
 					<div id="navbarMobil" class="d-none d-lg-none mt-2">
 						<div class="d-flex flex-column gap-2">
-							<a class="btn text-white w-100 text-start" id="adminpagebutton"
-								href="../adminpage/">
+							<a class="btn text-white w-100 text-start" id="adminpagebutton-mobil" href="../adminpage/">
 								<i class="bi bi-shield-check me-1"></i>Admin oldal
 							</a>
 							<a class="btn text-white w-100 text-start" href="../zenekeres/">Zenekérések
@@ -168,10 +165,11 @@
 		let currentMusicId = null;
 
 		if (localStorage.getItem("isadmin") === "1") {
-			document.getElementById("adminpagebutton").style.display =
-				"inline-block";
+			document.getElementById("adminpagebutton").style.display = "inline-block";
+			document.getElementById("adminpagebutton-mobil").style.display = "block";
 		} else {
 			document.getElementById("adminpagebutton").style.display = "none";
+			document.getElementById("adminpagebutton-mobil").style.display = "none";
 		}
 
 		document.getElementById("headerfelhasznalonev").innerText = localStorage.getItem("email");
