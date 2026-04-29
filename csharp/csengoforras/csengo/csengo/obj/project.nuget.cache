@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5G2KaE7kHlE=",
+  "dgSpecHash": "C6dLCx6gnhA=",
   "success": true,
-  "projectFilePath": "C:\\xampp\\htdocs\\suliscucc\\projekt\\c#\\csengoforras\\csengo\\csengo\\csengo.csproj",
+  "projectFilePath": "C:\\xampp\\htdocs\\suliscucc\\projekt\\csharp\\csengoforras\\csengo\\csengo\\csengo.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Konyhási Máté\\.nuget\\packages\\bouncycastle.cryptography\\2.6.2\\bouncycastle.cryptography.2.6.2.nupkg.sha512",
     "C:\\Users\\Konyhási Máté\\.nuget\\packages\\google.protobuf\\3.32.0\\google.protobuf.3.32.0.nupkg.sha512",

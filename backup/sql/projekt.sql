@@ -21,6 +21,9 @@ SET time_zone = "+00:00";
 -- Adatbázis: `projekt`
 --
 
+CREATE DATABASE IF NOT EXISTS `projekt` CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci;
+USE `projekt`;
+
 -- --------------------------------------------------------
 
 --
@@ -32,7 +35,7 @@ CREATE TABLE `active_users` (
   `user_id` int(11) NOT NULL,
   `token` varchar(255) NOT NULL,
   `expire` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_hungarian_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
 --
 -- A tábla adatainak kiíratása `active_users`
@@ -58,7 +61,7 @@ CREATE TABLE `csengetes` (
   `jelzo_id` int(11) NOT NULL,
   `becsengetes_id` int(11) NOT NULL,
   `kicsengetes_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
 --
 -- A tábla adatainak kiíratása `csengetes`
@@ -113,7 +116,7 @@ CREATE TABLE `currently_playing` (
   `volume` int(11) NOT NULL,
   `porget` int(11) NOT NULL,
   `user_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_hungarian_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
 --
 -- A tábla adatainak kiíratása `currently_playing`
@@ -132,7 +135,7 @@ CREATE TABLE `fav` (
   `id` int(10) NOT NULL,
   `user_id` int(10) NOT NULL,
   `music_id` int(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_hungarian_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
 --
 -- A tábla adatainak kiíratása `fav`
@@ -159,7 +162,7 @@ CREATE TABLE `music` (
   `video_id` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
   `length` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_hungarian_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
 --
 -- A tábla adatainak kiíratása `music`
@@ -400,7 +403,7 @@ CREATE TABLE `music_request` (
   `id` int(11) NOT NULL,
   `music_id` int(11) NOT NULL,
   `expire` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_hungarian_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
 --
 -- A tábla adatainak kiíratása `music_request`
@@ -446,7 +449,7 @@ INSERT INTO `music_request` (`id`, `music_id`, `expire`) VALUES
 CREATE TABLE `napok` (
   `id` int(11) NOT NULL,
   `nap` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
 --
 -- A tábla adatainak kiíratása `napok`
@@ -467,7 +470,7 @@ CREATE TABLE `orak` (
   `id` int(11) NOT NULL,
   `idopont` time NOT NULL,
   `aktive` tinyint(1) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
 --
 -- A tábla adatainak kiíratása `orak`
@@ -558,7 +561,7 @@ CREATE TABLE `playlist` (
   `id` int(11) NOT NULL,
   `music_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_hungarian_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
 -- --------------------------------------------------------
 
@@ -576,7 +579,7 @@ CREATE TABLE `users` (
   `isadmin` tinyint(1) NOT NULL DEFAULT 0,
   `email_verified` tinyint(1) NOT NULL DEFAULT 0,
   `verification_token` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_hungarian_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
 --
 -- A tábla adatainak kiíratása `users`
@@ -606,7 +609,7 @@ CREATE TABLE `user_handler` (
   `user_id` int(255) NOT NULL,
   `date` datetime NOT NULL DEFAULT current_timestamp(),
   `title` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_hungarian_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
 --
 -- A tábla adatainak kiíratása `user_handler`
