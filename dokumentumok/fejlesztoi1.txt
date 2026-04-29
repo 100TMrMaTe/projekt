@@ -16,7 +16,7 @@ php fileok
 -adatbázis kapcsolat és kezelés php- val
 
 sql adatbázis
--6 tábla, mind összekötve
+-8 tábla, mind összekötve
 (
     currently_playing
     music
@@ -24,7 +24,9 @@ sql adatbázis
     users
     active_users
     user_handler
-)
+    fav
+    music_request
+) + csengő
 
 és az egész egy raspberry-n fut 
 
