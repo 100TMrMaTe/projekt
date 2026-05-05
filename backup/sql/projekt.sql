@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: localhost:3306
--- Létrehozás ideje: 2026. Ápr 28. 11:38
+-- Létrehozás ideje: 2026. Máj 05. 06:51
 -- Kiszolgáló verziója: 11.8.3-MariaDB-0+deb13u1 from Debian
 -- PHP verzió: 8.4.16
 
@@ -35,7 +35,7 @@ CREATE TABLE `active_users` (
   `user_id` int(11) NOT NULL,
   `token` varchar(255) NOT NULL,
   `expire` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_hungarian_ai_ci;
 
 --
 -- A tábla adatainak kiíratása `active_users`
@@ -43,10 +43,10 @@ CREATE TABLE `active_users` (
 
 INSERT INTO `active_users` (`id`, `user_id`, `token`, `expire`) VALUES
 (134, 131, 'd6aadf37361287455a48510255011a170de588c428de80ec66a2d3498288785b1c21340de828aa1846de213e323b99da3a3fa9e848e166514b7691213cb6002d', '2026-04-16 10:51:29'),
-(160, 139, '2d33ec45112e5d51a2303a8b2fdeee7553e8046f0b06038a6a5313811a9fe0ed4059c9b1d6cde1e66c563dd84ba5b49f43e9066ba5d81b66dfe4fbeab9b25040', '2026-04-28 12:04:03'),
-(165, 147, '9aa5066d203a6e881c9ed6a7799eff9ebb61da598f2bc5ed73cfb236749468f08a0ed7483193a600982990250192c38bd3d3115fd69a037ed9e0fd71ec74adff', '2026-04-28 12:05:45'),
 (166, 100, '25cd4774ae435c3429514d35e54a8307df68aea664eb200d9851fcb43b22930868789887f9c2330ba09046eaa9e209106594b04cd8b9776168b3422d1232fee0', '2026-04-28 09:00:31'),
-(167, 145, '7d4f15d32d364473cd102b081566b4a0d923318af7e2eb03f935f0fd4c9f1509a38ab2d99f79c55322ec80e54fd79ebf4c474a6cb1f9c19f0a71e34938d7a836', '2026-04-28 09:04:25');
+(168, 147, '99c0f94d7ab2267fcf8411a5fccd04249feb4b6c1f572f9d0caa52db31be92b972ab755c0bb8b6d2603169849c902ec5973babbc5a4840f66a17b1ab1a604e93', '2026-05-01 19:56:55'),
+(170, 96, 'dd965d6d9f3d7ee408fc9d7f29312c676bf739d34397abf32096c29513923d8f552493306c0652ef850f3ff77759006fd2e7063b9b53f4e6a52e0a37f812e9d8', '2026-04-29 10:37:36'),
+(173, 139, 'bd4e7b9cd5cfd4801e7c7c1d7945b9dd28aed8bce0bcce0d4dac70261d407161ffffdc68c0a7ed748311fc3bf995b905481535ca06f4396c65875bc4fde581b9', '2026-05-05 07:21:40');
 
 -- --------------------------------------------------------
 
@@ -61,7 +61,7 @@ CREATE TABLE `csengetes` (
   `jelzo_id` int(11) NOT NULL,
   `becsengetes_id` int(11) NOT NULL,
   `kicsengetes_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- A tábla adatainak kiíratása `csengetes`
@@ -109,21 +109,21 @@ INSERT INTO `csengetes` (`id`, `nap_id`, `oraszam`, `jelzo_id`, `becsengetes_id`
 --
 
 CREATE TABLE `currently_playing` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL DEFAULT 1,
   `music_id` int(11) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT 0,
   `current_time` int(11) NOT NULL,
   `volume` int(11) NOT NULL,
   `porget` int(11) NOT NULL,
   `user_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+) ;
 
 --
 -- A tábla adatainak kiíratása `currently_playing`
 --
 
 INSERT INTO `currently_playing` (`id`, `music_id`, `status`, `current_time`, `volume`, `porget`, `user_id`) VALUES
-(1, 786, 1, 2056, 10, -1, 147);
+(1, 857, 0, 31, 60, -1, 139);
 
 -- --------------------------------------------------------
 
@@ -135,7 +135,7 @@ CREATE TABLE `fav` (
   `id` int(10) NOT NULL,
   `user_id` int(10) NOT NULL,
   `music_id` int(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_hungarian_ai_ci;
 
 --
 -- A tábla adatainak kiíratása `fav`
@@ -144,10 +144,20 @@ CREATE TABLE `fav` (
 INSERT INTO `fav` (`id`, `user_id`, `music_id`) VALUES
 (512, 100, 1),
 (520, 131, 713),
+(541, 139, 5),
 (522, 139, 745),
 (526, 139, 759),
+(539, 145, 843),
+(540, 147, 5),
+(538, 147, 9),
+(536, 147, 14),
+(535, 147, 584),
+(537, 147, 618),
 (530, 147, 681),
+(533, 147, 706),
+(542, 147, 759),
 (531, 147, 778),
+(534, 147, 795),
 (527, 150, 9),
 (528, 150, 723);
 
@@ -162,7 +172,7 @@ CREATE TABLE `music` (
   `video_id` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
   `length` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_hungarian_ai_ci;
 
 --
 -- A tábla adatainak kiíratása `music`
@@ -391,7 +401,38 @@ INSERT INTO `music` (`id`, `video_id`, `title`, `length`) VALUES
 (782, 'T_YHIZCiM0g', 'Kurva Karnevál', 218),
 (784, 'nV0K_DIYtIg', 'PØLEVAYA Live at Coronita After - Brandus', 4299),
 (785, 'WA8j_b5WTys', 'Kowalsky meg a Vega - Amilyen hülye vagy, úgy szeretlek (Official video klip)', 268),
-(786, 'zgunMW710rA', 'Music Mix 2026 | Party Club Dance 2026 | Best Remixes Of Popular Songs 2026 MEGAMIX', 10798);
+(786, 'zgunMW710rA', 'Music Mix 2026 | Party Club Dance 2026 | Best Remixes Of Popular Songs 2026 MEGAMIX', 10798),
+(794, 'qQ1Mj2D1uuw', 'AQUA - Barbie Girl (LIVE) 1997 HQ', 183),
+(795, 'X06-Kq2VZtY', 'MIKE CERVELLO &amp; CURBI - DEJA VU   [Official Audio]', 231),
+(796, '2n4II5XAoI4', 'Rick Wayne - Set Me Free', 171),
+(797, 'UGqOnd8ux6c', 'Rick Wayne - Shake It', 162),
+(803, '_ritYYjF9S0', 'Sam Feldt &amp; Jonas Blue - Crying On The Dancefloor (DJ Deka Remix) (feat. Violet Days)', 218),
+(804, 'wxb4-ZL7zIk', '40 Hz Test Tone', 60),
+(806, 'kR0SfDyuaik', 'Rick Wayne - Oh Ohh', 154),
+(807, 'Fx9uj6dm_18', 'Rick Wayne - UOAI', 189),
+(808, 'v2JlotJJ12k', 'Rick Wayne - Live @ Sopron, Central Palace - MYSTECH (2025.01.11.)', 3604),
+(810, '3OUdeW4HmgE', 'Travis Scott - FE!N (Lyrics)', 194),
+(816, '7OYsYScnArI', 'Azahriah - four moods', 204),
+(817, 'AUsoeiCBRfY', 'Legjobb Disco Zenék ♦️ 2026 MÁRCIUS 🔊 Dj Deka Party Mix ♦️ Dance, Hungarian, House, Coronita', 5485),
+(818, 'IkAEcyyTD3w', 'G x G - Kell hogy várj (Srs DeeJay Balkan Dance mix)', 236),
+(819, 'fmQVQGfLjX0', 'Madonna - Hung Up (Banana Inc Club Mix)', 310),
+(821, 'zfnIpF9bVWo', 'DJ CINTA PERTAMA X BUKAN CINTA 1 ATAU 2 || DJ FULL BASS || DJ TIKTOK || DJ MENGKANE •EndhyFvnky', 302),
+(822, 'umAL-6-j1Ew', 'Yeah Yeah Yeahs - Heads Will Roll (A-Trak remix)', 205),
+(823, 'NUJpTYPpUlA', 'Yeah Yeah Yeahs - Heads Will Roll (DJ Hlásznyik x D!rty Bass Remix) [2023] [Club / House Remix! ;]', 131),
+(824, 'u6cVfMTXDUY', 'Relax Gently with Smooth Jazz Instrumental Music 🌸 Spring Coffee Shop Ambience &amp; Warm Jazz Music', 42898),
+(825, 'U-mZzb1EVA0', 'Not Alone', 79),
+(826, 'pAyKJAtDNCw', 'Michael Jackson - You Are Not Alone (Official Video)', 336),
+(834, 'MYPVQccHhAQ', '4K Cozy Coffee Shop with Smooth Piano Jazz Music for Relaxing, Studying and Working', 12923),
+(840, 'CYDq4W3AF-s', 'TISZALÖK', 157),
+(841, 'ryLsNbqRs8Y', 'Így sem könnyebb', 161),
+(842, 'fiore9Z5iUg', 'Lilly Wood &amp; The Prick and Robin Schulz - Prayer In C (Robin Schulz Remix) (Official)', 194),
+(843, 'GsF05B8TFWg', 'Axwell /\\ Ingrosso, Axwell, Sebastian Ingrosso - More Than You Know', 204),
+(844, 'IcrbM1l_BoI', 'Avicii - Wake Me Up (Official Video)', 273),
+(845, 'D5drYkLiLI8', 'Kygo &amp; Selena Gomez - It Ain&#39;t Me (Audio)', 222),
+(846, '6XsVQRCBCBY', 'Királylány', 291),
+(847, 'Pgmx7z49OEk', 'Jennifer Lopez - Ain&#39;t Your Mama (Official Video)', 309),
+(856, 'vabnZ9-ex7o', 'Nirvana - Come As You Are (Official Music Video)', 225),
+(857, '04fcgFs-mjA', 'INNA - Love (Official Music Video)', 205);
 
 -- --------------------------------------------------------
 
@@ -403,7 +444,7 @@ CREATE TABLE `music_request` (
   `id` int(11) NOT NULL,
   `music_id` int(11) NOT NULL,
   `expire` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_hungarian_ai_ci;
 
 --
 -- A tábla adatainak kiíratása `music_request`
@@ -419,7 +460,7 @@ INSERT INTO `music_request` (`id`, `music_id`, `expire`) VALUES
 (14, 114, '2026-03-26 09:16:59'),
 (15, 502, '2026-03-27 07:12:14'),
 (16, 23, '2026-03-27 09:19:33'),
-(17, 14, '2026-03-27 07:14:50'),
+(17, 14, '2026-05-05 20:18:49'),
 (18, 12, '2026-03-27 07:15:13'),
 (19, 5, '2026-05-04 19:48:32'),
 (20, 473, '2026-03-27 07:16:48'),
@@ -437,8 +478,9 @@ INSERT INTO `music_request` (`id`, `music_id`, `expire`) VALUES
 (37, 201, '2026-04-29 09:47:21'),
 (38, 166, '2026-04-30 11:55:57'),
 (40, 681, '2026-05-05 07:34:09'),
-(41, 782, '2026-05-05 09:30:08');
-
+(41, 782, '2026-05-05 09:30:08'),
+(43, 34, '2026-05-05 22:11:17'),
+(44, 35, '2026-05-06 12:55:07');
 
 -- --------------------------------------------------------
 
@@ -449,7 +491,7 @@ INSERT INTO `music_request` (`id`, `music_id`, `expire`) VALUES
 CREATE TABLE `napok` (
   `id` int(11) NOT NULL,
   `nap` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- A tábla adatainak kiíratása `napok`
@@ -470,7 +512,7 @@ CREATE TABLE `orak` (
   `id` int(11) NOT NULL,
   `idopont` time NOT NULL,
   `aktive` tinyint(1) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- A tábla adatainak kiíratása `orak`
@@ -561,7 +603,7 @@ CREATE TABLE `playlist` (
   `id` int(11) NOT NULL,
   `music_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_hungarian_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -579,7 +621,7 @@ CREATE TABLE `users` (
   `isadmin` tinyint(1) NOT NULL DEFAULT 0,
   `email_verified` tinyint(1) NOT NULL DEFAULT 0,
   `verification_token` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_hungarian_ai_ci;
 
 --
 -- A tábla adatainak kiíratása `users`
@@ -588,7 +630,7 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`id`, `user_name`, `email`, `user_class`, `user_password`, `approved`, `isadmin`, `email_verified`, `verification_token`) VALUES
 (96, 'Mészáros Róbert', 'meszaros.robert@ady-nagyatad.hu', '13c', '$2y$12$j3cPoKnxOOvFBQZ6ofc/eux/yRs3gRvOOke685pkBaf6e1W4KLzAG', 1, 1, 1, '732d2684dd4c1d7f7332070e1b4b1209ba15d08bf61e59348052db98a5b49476e1d78f7d93324ede2755addaa5045612324322af0fe355015b24deaa85c9c4f1'),
 (100, 'Hunor', 'horvath.hunor.21@ady-nagyatad.hu', '13.C', '$2y$12$sIk5thDezJEZBq90bd0RruIGUnQ1vBtaxTfYA0pVUisUb6/IPG0fq', 1, 0, 1, '915d9d96ac6e47316cc4092f540fa66fdf6f4785636aa8fecf534f2b99b87ef6941fca2e19393bf253ee029e137ee68f3526330e99e93e5015be71662f1b16e1'),
-(131, 'Falusi Farkas', 'lebar.oliver.21@ady-nagyatad.hu', '13/C', '$2y$12$uZAfAHUOdg22NyZ7PkKf0.JqxBUdYswYL3pxPH/.siGE3WTTthlA6', 1, 0, 1, '550578b4de7665ea44c21034d4a261fd9e682e5dc8e7a15bcaeca80ec3c150b636dd9c22e635412a6c7d45579dd3b88ce579eb2f91b574f7d4e4bec4fcb90e6d'),
+(131, 'Falusi Farkas', 'lebar.oliver.21@ady-nagyatad.hu', '13/C', '$2y$12$uZAfAHUOdg22NyZ7PkKf0.JqxBUdYswYL3pxPH/.siGE3WTTthlA6', 1, 1, 1, '550578b4de7665ea44c21034d4a261fd9e682e5dc8e7a15bcaeca80ec3c150b636dd9c22e635412a6c7d45579dd3b88ce579eb2f91b574f7d4e4bec4fcb90e6d'),
 (139, 'matyi', 'holczer.matyas.21@ady-nagyatad.hu', '13c', '$2y$12$vRlputKKfYXMEh8rCYqa9.z9okcyUKmWc3Op9pwB9jD9ud1aUC55i', 1, 1, 1, 'cb4246e678bcd361652d3c5350c01aa6af530a3f6330afa88c9a4dc66499f9dab2f267caa702e409dec3ac4f3358683727fdfd960a49ff7ae66c8f847ae74c92'),
 (140, 'Robi', 'keszericze.akos.21@ady-nagyatad.hu', '13c', '$2y$12$2HJmzUHofzUpq5snn0AhZuQ4PY4MRjH9vIwuzC3WAunrQz5ctyBkm', 1, 0, 1, '721541a556155b69d786f48b5f134a4b753c02a6c4def4cd2b0136543a5ad5e8241842e41c08caba7e8626ab7f68a7499fc6f8516d794570917e64c730a467cc'),
 (141, 'Teszt Elek', 'papp.peter@ady-nagyatad.hu', '11K', '$2y$12$rJ/OEd..2s98qGJetLyPlOYEYqe02phphpNh7nUzisXiCf.ZDuMii', 0, 0, 0, '1650f3ea5eb3a9e337a2fe8c0543e37073726a27d86904ffffc3db96201a37856795706cd838de2dc12b6d06795897b8df17ae65294e08f90cf5d2fa265b0402'),
@@ -609,7 +651,7 @@ CREATE TABLE `user_handler` (
   `user_id` int(255) NOT NULL,
   `date` datetime NOT NULL DEFAULT current_timestamp(),
   `title` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_uca1400_hungarian_ai_ci;
 
 --
 -- A tábla adatainak kiíratása `user_handler`
@@ -666,7 +708,83 @@ INSERT INTO `user_handler` (`id`, `user_id`, `date`, `title`) VALUES
 (660, 139, '2026-04-28 11:23:29', 'Flo Rida - My House (Official Audio)'),
 (661, 147, '2026-04-28 11:27:16', 'PØLEVAYA Live at Coronita After - Brandus'),
 (662, 147, '2026-04-28 11:34:54', 'Kowalsky meg a Vega - Amilyen hülye vagy, úgy szeretlek (Official video klip)'),
-(663, 147, '2026-04-28 11:35:44', 'Music Mix 2026 | Party Club Dance 2026 | Best Remixes Of Popular Songs 2026 MEGAMIX');
+(663, 147, '2026-04-28 11:35:44', 'Music Mix 2026 | Party Club Dance 2026 | Best Remixes Of Popular Songs 2026 MEGAMIX'),
+(664, 147, '2026-04-28 12:04:47', 'MARIO &amp; FERIKE – Kimaradás van | Official Music Video'),
+(665, 147, '2026-04-28 13:31:21', 'PGT - PGT TEAM (MINECRAFT ZENE ANIMÁCIÓ)'),
+(666, 147, '2026-04-28 14:19:04', 'MARIO &amp; FERIKE – Kimaradás van | Official Music Video'),
+(667, 147, '2026-04-28 14:20:30', 'BSW - HELLO (Official Music Video)'),
+(668, 147, '2026-04-28 14:21:15', 'RENDSZERVÁLTÓ CSORONITA MIX - GYÓNTATÓFÜLKE'),
+(669, 147, '2026-04-28 14:21:49', 'DESH - VINNIPU (Official Music Video)'),
+(670, 147, '2026-04-28 14:22:33', 'Nagy Bogi x DESH - Jól leszek újra (Hűtlen Délibáb)'),
+(671, 147, '2026-04-28 14:22:59', 'ABBA - Dancing Queen (Official Music Video)'),
+(672, 147, '2026-04-28 14:23:53', 'AQUA - Barbie Girl (LIVE) 1997 HQ'),
+(673, 147, '2026-04-28 14:24:25', 'MIKE CERVELLO &amp; CURBI - DEJA VU   [Official Audio]'),
+(674, 147, '2026-04-28 14:25:29', 'Rick Wayne - Set Me Free'),
+(675, 147, '2026-04-28 14:27:05', 'Rick Wayne - Shake It'),
+(676, 147, '2026-04-28 14:30:10', 'Music Mix 2026 | Party Club Dance 2026 | Best Remixes Of Popular Songs 2026 MEGAMIX'),
+(677, 147, '2026-04-28 14:41:16', 'live is life '),
+(678, 147, '2026-04-28 14:41:44', 'Kowalsky meg a Vega - Amilyen hülye vagy, úgy szeretlek (Official video klip)'),
+(679, 147, '2026-04-28 14:46:48', 'Strong R. ft. Amanna - Oh Szív! Nyugodj!'),
+(680, 147, '2026-04-28 14:51:05', 'SZECSEI - Welcome 2026 - Club Octagon, Győr - 2025.12.31.'),
+(681, 147, '2026-04-28 14:54:33', 'Sam Feldt &amp; Jonas Blue - Crying On The Dancefloor (DJ Deka Remix) (feat. Violet Days)'),
+(682, 147, '2026-04-28 14:56:33', '40 Hz Test Tone'),
+(683, 147, '2026-04-28 14:58:32', 'DESH - TALPRA CIGÁNYOK (Official Music Video)'),
+(684, 147, '2026-04-28 15:01:00', 'Rick Wayne - Oh Ohh'),
+(685, 147, '2026-04-28 15:03:44', 'Rick Wayne - UOAI'),
+(686, 147, '2026-04-28 15:05:21', 'Rick Wayne - Live @ Sopron, Central Palace - MYSTECH (2025.01.11.)'),
+(687, 147, '2026-04-28 15:44:45', 'Strong R. ft. Amanna - Oh Szív! Nyugodj!'),
+(688, 147, '2026-04-28 17:12:00', 'Travis Scott - FE!N (Lyrics)'),
+(689, 147, '2026-04-28 17:12:36', 'DESH - TALPRA CIGÁNYOK (Official Music Video)'),
+(690, 147, '2026-04-28 17:14:48', 'DESH X YOUNG FLY - OHMAMMA (Official Music Video)'),
+(691, 147, '2026-04-28 17:17:07', 'LACIKA - FEKETE MERCEDES 🛞 (OFFICIAL MUSIC VIDEO)'),
+(692, 147, '2026-04-28 17:17:11', 'LACIKA - FEKETE MERCEDES 🛞 (OFFICIAL MUSIC VIDEO)'),
+(693, 147, '2026-04-28 17:19:04', 'Rick Wayne - Set Me Free'),
+(694, 147, '2026-04-28 17:19:44', 'Rick Wayne - Oh Ohh'),
+(695, 147, '2026-04-28 17:22:17', 'DESH - VINNIPU (Official Music Video)'),
+(696, 147, '2026-04-28 17:24:35', 'Azahriah - four moods'),
+(697, 147, '2026-04-28 17:25:47', 'Legjobb Disco Zenék ♦️ 2026 MÁRCIUS 🔊 Dj Deka Party Mix ♦️ Dance, Hungarian, House, Coronita'),
+(698, 147, '2026-04-28 17:33:43', 'G x G - Kell hogy várj (Srs DeeJay Balkan Dance mix)'),
+(699, 147, '2026-04-28 17:34:24', 'Madonna - Hung Up (Banana Inc Club Mix)'),
+(700, 147, '2026-04-28 17:37:37', 'MIKE CERVELLO &amp; CURBI - DEJA VU   [Official Audio]'),
+(701, 147, '2026-04-28 17:39:27', 'DJ CINTA PERTAMA X BUKAN CINTA 1 ATAU 2 || DJ FULL BASS || DJ TIKTOK || DJ MENGKANE •EndhyFvnky'),
+(702, 147, '2026-04-28 17:44:09', 'Yeah Yeah Yeahs - Heads Will Roll (A-Trak remix)'),
+(703, 147, '2026-04-28 17:44:42', 'Yeah Yeah Yeahs - Heads Will Roll (DJ Hlásznyik x D!rty Bass Remix) [2023] [Club / House Remix! ;]'),
+(704, 147, '2026-04-28 17:46:43', 'Relax Gently with Smooth Jazz Instrumental Music 🌸 Spring Coffee Shop Ambience &amp; Warm Jazz Music'),
+(705, 147, '2026-04-28 17:48:16', 'Not Alone'),
+(706, 147, '2026-04-28 17:48:26', 'Michael Jackson - You Are Not Alone (Official Video)'),
+(707, 147, '2026-04-28 19:14:22', 'Majka - Csurran, cseppen (official music video)'),
+(708, 147, '2026-04-28 19:15:46', 'BSW - HELLO (Official Music Video)'),
+(709, 147, '2026-04-28 19:16:23', 'MARIO – Hello /Official Music/'),
+(710, 147, '2026-04-28 19:19:09', 'ABBA - Dancing Queen (Official Music Video)'),
+(711, 147, '2026-04-28 19:20:43', 'RENDSZERVÁLTÓ CSORONITA MIX - GYÓNTATÓFÜLKE'),
+(712, 147, '2026-04-28 19:22:38', 'Michael Jackson - You Are Not Alone (Official Video)'),
+(713, 147, '2026-04-28 19:25:18', 'Jazz Relaxing Music &amp; Cozy Spring Coffee Shop Ambience 🌸 Smooth Jazz Instrumental Music for Studying'),
+(714, 147, '2026-04-28 19:26:35', '4K Cozy Coffee Shop with Smooth Piano Jazz Music for Relaxing, Studying and Working'),
+(715, 147, '2026-04-28 19:27:09', 'Coronita Mix 2024 Május - Dj Bacsa'),
+(716, 96, '2026-04-28 20:00:38', 'Dr. Alban - Sing Hallelujah (Official HD Video)'),
+(717, 147, '2026-04-29 07:57:25', 'L.L. Junior - FREY TIMI (OFFICIAL LYRICS VIDEO)'),
+(718, 147, '2026-04-29 07:59:52', 'L.L. Junior - Mr. Raggamoffin (&quot;Az én világom&quot; album)'),
+(719, 147, '2026-04-29 08:02:09', 'TISZALÖK'),
+(720, 139, '2026-04-29 08:06:39', 'Így sem könnyebb'),
+(721, 139, '2026-04-29 08:07:48', 'Lilly Wood &amp; The Prick and Robin Schulz - Prayer In C (Robin Schulz Remix) (Official)'),
+(722, 139, '2026-04-29 08:11:10', 'Axwell /\\ Ingrosso, Axwell, Sebastian Ingrosso - More Than You Know'),
+(723, 139, '2026-04-29 08:12:59', 'Avicii - Wake Me Up (Official Video)'),
+(724, 145, '2026-04-29 08:14:27', 'Kygo &amp; Selena Gomez - It Ain&#39;t Me (Audio)'),
+(725, 147, '2026-04-29 08:21:15', 'Királylány'),
+(726, 147, '2026-04-29 08:27:44', 'Jennifer Lopez - Ain&#39;t Your Mama (Official Video)'),
+(727, 147, '2026-04-29 08:32:24', 'VINI x BELANO - SHAKE DAT (Official Music Video)'),
+(728, 147, '2026-04-29 08:38:59', 'KKEVIN x L.L. Junior - GETTÓMILLIOMOS (Official Visualizer)'),
+(729, 139, '2026-04-29 08:39:55', 'KKevin - JACUZZI feat. BSW (SAVAGE ALBUM)'),
+(730, 147, '2026-04-29 08:59:03', 'Legjobb Disco Zenék ♦️ 2026 MÁRCIUS 🔊 Dj Deka Party Mix ♦️ Dance, Hungarian, House, Coronita'),
+(731, 139, '2026-04-29 11:56:53', 'Adele - Hello (Official Music Video)'),
+(732, 139, '2026-04-29 11:58:03', 'Punnany Massif - Élvezd'),
+(733, 139, '2026-04-29 11:58:30', 'Bagossy Brothers Company - Olyan Ő (Home Session)'),
+(734, 139, '2026-04-29 11:58:33', 'Adele - Hello (Official Music Video)'),
+(735, 147, '2026-05-01 15:04:46', 'live is life '),
+(736, 147, '2026-05-01 15:04:56', 'BSW - HELLO (Official Music Video)'),
+(737, 147, '2026-05-01 19:12:43', 'DESH - TALPRA CIGÁNYOK (Official Music Video)'),
+(738, 139, '2026-05-05 06:27:48', 'Nirvana - Come As You Are (Official Music Video)'),
+(739, 139, '2026-05-05 06:38:24', 'INNA - Love (Official Music Video)');
 
 --
 -- Indexek a kiírt táblákhoz
@@ -765,7 +883,7 @@ ALTER TABLE `user_handler`
 -- AUTO_INCREMENT a táblához `active_users`
 --
 ALTER TABLE `active_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=168;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=175;
 
 --
 -- AUTO_INCREMENT a táblához `csengetes`
@@ -774,28 +892,22 @@ ALTER TABLE `csengetes`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
--- AUTO_INCREMENT a táblához `currently_playing`
---
-ALTER TABLE `currently_playing`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2009;
-
---
 -- AUTO_INCREMENT a táblához `fav`
 --
 ALTER TABLE `fav`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=533;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=543;
 
 --
 -- AUTO_INCREMENT a táblához `music`
 --
 ALTER TABLE `music`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=787;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=858;
 
 --
 -- AUTO_INCREMENT a táblához `music_request`
 --
 ALTER TABLE `music_request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT a táblához `napok`
@@ -813,7 +925,7 @@ ALTER TABLE `orak`
 -- AUTO_INCREMENT a táblához `playlist`
 --
 ALTER TABLE `playlist`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=852;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=928;
 
 --
 -- AUTO_INCREMENT a táblához `users`
@@ -825,7 +937,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT a táblához `user_handler`
 --
 ALTER TABLE `user_handler`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=664;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=740;
 
 --
 -- Megkötések a kiírt táblákhoz
