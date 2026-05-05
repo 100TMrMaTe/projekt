@@ -586,16 +586,8 @@ function addToCurrentlyPlaying($conn)
 
 
 
-    $stmt = $conn->prepare("INSERT INTO currently_playing (`music_id`, `status`, `current_time`, `volume`, `porget`, `user_id`) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param(
-        "iiiiii",
-        $musicId,
-        $status,
-        $current_time,
-        $volume,
-        $porget,
-        $userId
-    );
+    $stmt = $conn->prepare("INSERT INTO currently_playing (`id`, `music_id`, `status`, `current_time`, `volume`, `porget`, `user_id`) VALUES (1, ?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE music_id = VALUES(music_id), user_id = VALUES(user_id)");
+    $stmt->bind_param("iiiiii", $musicId, $status, $current_time, $volume, $porget, $userId);
     $stmt->execute();
     $stmt->close();
 

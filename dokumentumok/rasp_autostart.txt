@@ -1,0 +1,43 @@
+1. LightDM kikapcsolása
+
+sudo systemctl disable lightdm
+sudo systemctl set-default multi-user.target
+
+2. Automatikus TTY login a kiosk usernek
+
+sudo mkdir -p /etc/systemd/system/getty@tty1.service.d
+sudo nano /etc/systemd/system/getty@tty1.service.d/autologin.conf
+
+Írd bele:
+
+[Service]
+ExecStart=
+ExecStart=-/sbin/agetty --autologin kiosk --noclear %I $TERM
+
+3. Kiosk user .bash_profile – automatikusan indítja az X-et
+
+sudo nano /home/kiosk/.bash_profile
+
+Írd bele:
+
+if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ]; then
+    startx
+fi
+
+4. Kiosk .xinitrc – csak openbox + chromium, semmi más
+
+sudo nano /home/kiosk/.xinitrc
+
+Írd bele:
+
+xset s off
+xset -dpms
+xset s noblank
+openbox &
+sleep 2
+chromium --kiosk --autoplay-policy=no-user-gesture-required --disable-infobars --disable-session-crashed-bubble --noerrdialogs --no-first-run --disable-translate --disable-gpu --disable-software-rasterizer http://localhost/audio/server.html
+
+5. Tulajdonos beállítás és reboot
+
+sudo chown kiosk:kiosk /home/kiosk/.bash_profile /home/kiosk/.xinitrc
+sudo reboot
