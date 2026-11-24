@@ -49,7 +49,7 @@ Egy iskolai aulába tervezett zenekérő rendszer: bárki bármilyen eszközről
 
 A Raspberry Pi beállítása és a rendszer üzembe helyezése lépésről lépésre a dokumentációban található. Minden szükséges információ ott van.
 
-📄 **Dokumentáció:** a [`dokumentacio`](dokumentacio/) mappában található, két részre bontva:
+📄 **Dokumentáció:** a [`dokumentacio`](dokumentumok/) mappában található, két részre bontva:
 
 - **Felhasználói dokumentáció:** regisztráció, bejelentkezés és zenekérés
 - **Admin dokumentáció:** regisztrációk elfogadása, kérések listázása, a rendszer beállítása
