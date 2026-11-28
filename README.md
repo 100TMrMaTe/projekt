@@ -81,9 +81,9 @@ A klónozás után a csengő telepítője a `csharp/csengoletoltes` mappában ta
 
 A projektet csapatban készítettük.
 
-- [@100TMrMaTe](https://github.com/100TMrMaTe) – feladatkör
-- [@Matyi01](https://github.com/profil2) – feladatkör
-- [@PeterJankovics](https://github.com/profil3) – feladatkör
+- [@100TMrMaTe](https://github.com/100TMrMaTe) – BeackEnd, Database
+- [@Matyi01](https://github.com/profil2) – FrontEnd
+- [@PeterJankovics](https://github.com/profil3) – FrontEnd
 
 ## Licenc
 
